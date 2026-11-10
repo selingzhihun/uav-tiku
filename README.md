@@ -1,4 +1,5 @@
-# 无人机题库宝典 - CAAC 理论刷题（H5）
+﻿# 无人机题库宝典 H5
+> **线上地址：https://selingzhihun.github.io/uav-tiku/** · 仓库：https://github.com/selingzhihun/uav-tiku（push main 自动部署）
 
 纯原生（vanilla JS/CSS）单页刷题应用：**零依赖、零网络请求、全离线可用**。
 全部交付物只有两个文件：`index.html`（页面与逻辑）+ `data.js`（题库数据），可部署到任何静态托管平台。
@@ -42,9 +43,11 @@ h5/
 **方式 2：本地静态服务器（推荐，行为与线上一致）**
 
 ```bash
-# 在本目录执行（需已安装 Python）
+# 无人机题库宝典 H5
+> **线上地址：https://selingzhihun.github.io/uav-tiku/** · 仓库：https://github.com/selingzhihun/uav-tiku（push main 自动部署）
 python -m http.server 8080
-# 然后浏览器打开 http://localhost:8080
+# 无人机题库宝典 H5
+> **线上地址：https://selingzhihun.github.io/uav-tiku/** · 仓库：https://github.com/selingzhihun/uav-tiku（push main 自动部署）
 ```
 
 ## 二、一键部署（三选一）
