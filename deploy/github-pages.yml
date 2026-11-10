@@ -1,0 +1,29 @@
+# GitHub Pages 一键部署 workflow
+# 用法：在 GitHub 新建仓库后，把本文件放到仓库 .github/workflows/github-pages.yml，
+# 连同 h5 目录全部内容（index.html/data.js/sw.js/manifest/icons）推上去即可。
+# 仓库 Settings → Pages → Source 选 "GitHub Actions"，下次 push 自动部署。
+name: Deploy H5 to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .            # h5 全部文件放在仓库根目录；若放子目录改为 ./h5
+      - id: deployment
+        uses: actions/deploy-pages@v4

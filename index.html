@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <!-- 移动端优先：视口宽度 = 设备宽度，初始缩放 1 倍，适配刘海屏安全区 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- 浏览器地址栏 / 状态栏主题色 -->
+  <meta name="theme-color" content="#2563EB">
+  <title>无人机题库宝典 - CAAC理论刷题</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="题库宝典">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta name="description" content="CAAC无人机理论考试1428题免费在线刷题：顺序/随机练习、多选专练、20分钟模拟考、错题本、收藏，全离线可用。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="无人机题库宝典 - 1428题免费刷">
+  <meta property="og:description" content="CAAC理论考试1428题免费在线刷：模拟考+错题本，手机直接用。">
+
+  <style>
+    /* ================= 全局与布局 ================= */
+    :root {
+      --primary: #2563EB;        /* 主色 */
+      --primary-dark: #1D4ED8;
+      --primary-light: #EFF6FF;  /* 主色浅底 */
+      --green: #16A34A;          /* 正确 */
+      --green-bg: #F0FDF4;
+      --red: #DC2626;            /* 错误 */
+      --red-bg: #FEF2F2;
+      --text: #0F172A;
+      --muted: #64748B;          /* 次要文字 */
+      --line: #E2E8F0;           /* 分隔线/边框 */
+      --bg: #F1F5F9;             /* 页面底色 */
+      --card: #FFFFFF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: #DBEAFE; /* 桌面端大屏时露出的底色 */
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    /* 移动端优先：内容列最大 480px 居中，桌面端同样正常显示 */
+    #wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--bg);
+      box-shadow: 0 0 24px rgba(15, 23, 42, .12);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .view { padding: 14px 14px 40px; }
+    .muted { color: var(--muted); font-size: 14px; }
+
+    /* ================= 首页 ================= */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(150deg, #3B82F6 0%, #2563EB 45%, #1E3A8A 100%);
+      color: #fff;
+      padding: 32px 20px 44px;
+      text-align: center;
+    }
+    .hero::before, .hero::after {
+      content: ''; position: absolute; border-radius: 50%;
+      background: rgba(255, 255, 255, .10); pointer-events: none;
+    }
+    .hero::before { width: 180px; height: 180px; top: -70px; right: -50px; }
+    .hero::after { width: 120px; height: 120px; bottom: -46px; left: -30px; background: rgba(255, 255, 255, .07); }
+    .hero-title { font-size: 25px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 2px 8px rgba(0, 0, 0, .18); }
+    .hero-sub { margin-top: 6px; font-size: 13px; opacity: .9; }
+    .hero-chip {
+      display: inline-block; margin-top: 10px; padding: 3px 12px;
+      background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 999px; font-size: 12px; letter-spacing: .5px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 12px 14px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, .06);
+    }
+    /* 统计卡上提，压住头图形成层次 */
+    .card.stat-card { position: relative; z-index: 2; margin-top: -30px; box-shadow: 0 6px 20px rgba(30, 58, 138, .12); }
+    .card.daily { position: relative; overflow: hidden; }
+    .card.daily::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+      background: linear-gradient(180deg, #F59E0B, #F97316); border-radius: 4px 0 0 4px;
+    }
+    .stat-row { display: flex; text-align: center; }
+    .stat-row + .stat-row { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+    .stat { flex: 1; }
+    .stat b { display: block; font-size: 23px; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; }
+    .stat span { font-size: 12px; color: var(--muted); }
+    .entries { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 14px 0; }
+    .tile {
+      position: relative;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--card); border-radius: 18px; padding: 18px 8px 14px;
+      text-decoration: none; color: var(--text);
+      border: 1px solid rgba(226, 232, 240, .7);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, .05);
+      transition: transform .12s, box-shadow .12s;
+    }
+    .tile:active { transform: scale(.96); box-shadow: 0 1px 3px rgba(15, 23, 42, .08); }
+    .tile-ico {
+      display: flex; align-items: center; justify-content: center;
+      width: 46px; height: 46px; border-radius: 14px; font-size: 24px;
+      background: var(--primary-light);
+    }
+    /* 每个入口一个专属色 */
+    .entries .tile:nth-child(1) .tile-ico { background: #EFF6FF; }
+    .entries .tile:nth-child(2) .tile-ico { background: #F5F3FF; }
+    .entries .tile:nth-child(3) .tile-ico { background: #F0FDF4; }
+    .entries .tile:nth-child(4) .tile-ico { background: #FFFBEB; }
+    .entries .tile:nth-child(5) .tile-ico { background: #FEF2F2; }
+    .entries .tile:nth-child(6) .tile-ico { background: #F0F9FF; }
+    .tile-name { margin-top: 8px; font-size: 14px; font-weight: 700; }
+    .tile-desc { margin-top: 2px; font-size: 11px; color: var(--muted); }
+    .badge {
+      position: absolute; top: 8px; right: 10px;
+      background: var(--red); color: #fff; font-size: 11px; font-style: normal; font-weight: 700;
+      min-width: 18px; height: 18px; border-radius: 9px; line-height: 18px;
+      text-align: center; padding: 0 4px;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, .35);
+    }
+    .footer-note { text-align: center; color: var(--muted); font-size: 12px; margin: 22px 0 28px; }
+
+    /* ================= 顶栏 ================= */
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 8px;
+      background: var(--primary); color: #fff; padding: 12px 14px;
+    }
+    .topbar .back { color: #fff; text-decoration: none; font-size: 15px; padding: 4px 8px 4px 0; white-space: nowrap; }
+    .topbar-title { flex: 1; text-align: center; font-weight: 600; font-size: 17px; }
+    .topbar-side { width: 30px; }
+    .star { background: transparent; border: none; color: #fff; font-size: 22px; line-height: 1; padding: 4px; cursor: pointer; }
+    .star.on { color: #FACC15; }
+    .clock {
+      background: rgba(255, 255, 255, .2); border-radius: 999px; padding: 3px 12px;
+      font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .clock.danger { background: var(--red); }
+
+    /* ================= 按钮 ================= */
+    .btn {
+      display: inline-block; border: none; border-radius: 12px;
+      padding: 12px 18px; font-size: 16px; font-weight: 600;
+      cursor: pointer; text-align: center; text-decoration: none;
+      transition: opacity .15s, transform .1s; min-height: 44px; /* 触控友好 */
+    }
+    .btn:active { opacity: .85; transform: scale(.98); }
+    .btn:disabled { opacity: .45; cursor: default; transform: none; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-danger { background: var(--red); color: #fff; }
+    .btn-ghost { background: var(--card); color: var(--primary); border: 1.5px solid var(--primary); }
+    .btn-ghost-red { background: var(--card); color: var(--red); border: 1.5px solid var(--red); }
+    .btn-block { display: block; width: 100%; }
+
+    /* ================= 刷题 ================= */
+    .progress-wrap { display: flex; align-items: center; gap: 10px; margin: 12px 14px 0; }
+    .bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: var(--primary); border-radius: 4px; transition: width .2s; }
+    .progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .q-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .chip { font-size: 12px; color: var(--muted); background: var(--bg); border-radius: 999px; padding: 2px 10px; }
+    .chip-blue { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+    .q-stem { font-size: 16px; font-weight: 600; margin-bottom: 14px; word-break: break-word; }
+    .opt {
+      display: flex; align-items: flex-start;
+      border: 1.5px solid var(--line); border-radius: 12px;
+      padding: 11px 12px; margin-bottom: 10px;
+      background: var(--card); font-size: 15px; cursor: pointer;
+      transition: border-color .15s, background .15s, transform .1s;
+    }
+    .opt:active { transform: scale(.99); }
+    .opt .letter {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--bg); color: var(--muted);
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 10px; margin-top: 1px;
+    }
+    .opt-text { flex: 1; word-break: break-word; }
+    .opt.picked { border-color: var(--primary); background: var(--primary-light); }
+    .opt.picked .letter { background: var(--primary); color: #fff; }
+    .opt.correct { border-color: var(--green); background: var(--green-bg); }
+    .opt.correct .letter { background: var(--green); color: #fff; }
+    .opt.wrong { border-color: var(--red); background: var(--red-bg); }
+    .opt.wrong .letter { background: var(--red); color: #fff; }
+    .opt.disabled { cursor: default; }
+    .judge-strip { border-radius: 12px; padding: 12px 14px; font-size: 15px; font-weight: 600; margin-top: 4px; }
+    .judge-strip.ok { background: var(--green-bg); color: var(--green); border: 1px solid #BBF7D0; }
+    .judge-strip.no { background: var(--red-bg); color: var(--red); border: 1px solid #FECACA; }
+    .judge-strip small { display: block; font-weight: 400; color: var(--muted); margin-top: 2px; font-size: 13px; }
+    .exp-box { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+    .navbtns { display: flex; gap: 12px; margin: 14px; }
+    .navbtns .btn { flex: 1; }
+    .exam-foot { margin: 0 14px 20px; }
+    .exam-foot p { margin-bottom: 10px; }
+
+    /* ================= 列表（错题本/收藏/错题回顾） ================= */
+    .bk-item {
+      background: var(--card); border-radius: 14px; padding: 14px;
+      margin: 0 14px 12px; box-shadow: 0 1px 3px rgba(15, 23, 42, .06);
+    }
+    .bk-stem { font-size: 14px; font-weight: 600; margin: 8px 0; word-break: break-word; }
+    .bk-ans { font-size: 13px; color: var(--green); font-weight: 600; }
+    .rv-line { font-size: 13px; margin-top: 4px; }
+    .rv-line.bad { color: var(--red); }
+    .rv-line.good { color: var(--green); }
+    .bk-actions { display: flex; gap: 10px; margin-top: 10px; }
+    .bk-actions .btn { flex: 1; padding: 9px 0; font-size: 14px; border-radius: 10px; min-height: 38px; }
+    .sec-title { margin: 18px 16px 12px; font-size: 16px; }
+
+    /* ================= 模拟考评分 ================= */
+    .score-circle {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 6px solid var(--primary);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      margin: 16px auto 18px;
+    }
+    .score-circle b { font-size: 40px; color: var(--primary); line-height: 1.1; }
+    .score-circle span { font-size: 13px; color: var(--muted); }
+
+    /* ================= 空状态 ================= */
+    .empty { text-align: center; color: var(--muted); padding: 56px 20px; }
+    .empty .big { font-size: 44px; margin-bottom: 10px; }
+    .empty p { margin-bottom: 4px; }
+    .daily-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:14px;color:#4B5563}
+    .daily-streak{color:#EA580C;font-weight:600}
+    .daily-stem{font-weight:600;margin-bottom:10px;line-height:1.5}
+    .daily-result{margin-top:4px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:600}
+    .daily-result.ok{background:#EAF9EF;color:#15803D}
+    .daily-result.bad{background:#FDEBEB;color:#B91C1C}
+  
+    /* ---------- 个人主页 ---------- */
+    .hero { position: relative; }
+    .hero-me {
+      position: absolute; top: 14px; right: 14px;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.18); border-radius: 999px;
+      padding: 3px 12px 3px 4px; color: #fff; text-decoration: none;
+    }
+    .hero-me-emoji {
+      width: 26px; height: 26px; background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .hero-me-nick { font-size: 12px; font-weight: 600; }
+    .me-card { display: flex; align-items: center; gap: 14px; }
+    .me-avatar {
+      width: 56px; height: 56px; border-radius: 50%; flex: none;
+      background: #EFF6FF; display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+    }
+    .me-info { flex: 1; min-width: 0; }
+    .me-nick-input {
+      width: 100%; border: none; outline: none; background: transparent;
+      font-size: 18px; font-weight: 700; color: var(--ink);
+      border-bottom: 1.5px dashed #CBD5E1; padding: 2px 0 4px;
+    }
+    .me-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .me-sec-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--ink); }
+    .me-lit { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .avatar-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .avatar-opt {
+      width: 42px; height: 42px; border-radius: 50%; font-size: 20px;
+      border: 2px solid transparent; background: #F1F5F9; cursor: pointer;
+    }
+    .avatar-opt.on { border-color: #2563EB; background: #EFF6FF; }
+    .me-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .me-stat { text-align: center; background: #F8FAFC; border-radius: 12px; padding: 12px 4px; }
+    .me-stat b { display: block; font-size: 18px; color: #2563EB; }
+    .me-stat span { font-size: 11px; color: var(--muted); }
+    .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .badge {
+      text-align: center; background: #F8FAFC; border-radius: 12px;
+      padding: 12px 4px; opacity: .4;
+    }
+    .badge.on { opacity: 1; background: #FFF7E6; box-shadow: 0 2px 8px rgba(245,158,11,.15); }
+    .badge-ico { font-size: 24px; }
+    .badge-name { font-size: 12px; font-weight: 700; margin-top: 4px; }
+    .badge-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-cell { aspect-ratio: 1; border-radius: 4px; background: #F1F5F9; }
+    .cal-cell.lv1 { background: #BFDBFE; }
+    .cal-cell.lv2 { background: #60A5FA; }
+    .cal-cell.lv3 { background: #2563EB; }
+    .cal-legend { font-size: 11px; color: var(--muted); margin-top: 8px; }
+    .me-btn {
+      width: 100%; padding: 12px; border-radius: 10px; margin-top: 8px;
+      border: 1.5px solid #E2E8F0; background: #fff; font-size: 14px;
+      color: var(--ink); cursor: pointer;
+    }
+    .me-btn:active { transform: scale(.98); }
+    .me-btn.primary { background: #2563EB; border-color: #2563EB; color: #fff; font-weight: 600; }
+    .me-btn.danger { color: #DC2626; border-color: #FECACA; }
+    .auth-row { display: flex; gap: 8px; margin-bottom: 4px; }
+    .me-input {
+      flex: 1; min-width: 0; padding: 11px 12px; border-radius: 10px;
+      border: 1.5px solid #E2E8F0; font-size: 14px; outline: none;
+    }
+    .me-input:focus { border-color: #2563EB; }
+    .cloud-note {
+      font-size: 12.5px; color: var(--muted); line-height: 1.8;
+      background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px 12px;
+    }
+    .me-tip { font-size: 12px; color: #DC2626; margin-top: 8px; min-height: 14px; }
+    .me-foot { font-size: 11px; color: var(--muted); text-align: center; margin: 4px 0 20px; }
+    /* ---------- 底部导航栏 ---------- */
+    .tabbar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      display: flex; background: #fff;
+      border-top: 1px solid var(--line);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .tabbar a {
+      flex: 1; position: relative;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 7px 0 6px; text-decoration: none;
+      color: var(--muted); font-size: 10.5px;
+    }
+    .tabbar .t-ico { font-size: 20px; line-height: 1; filter: grayscale(1); opacity: .55; }
+    .tabbar a.on { color: var(--brand); font-weight: 600; }
+    .tabbar a.on .t-ico { filter: none; opacity: 1; }
+    .tabbar.off { display: none; }
+    .tab-badge {
+      position: absolute; top: 3px; right: calc(50% - 24px);
+      min-width: 16px; height: 16px; border-radius: 8px; padding: 0 4px;
+      background: #EF4444; color: #fff; font-size: 10px; font-style: normal;
+      font-weight: 700; display: flex; align-items: center; justify-content: center;
+    }
+    body.tabbed .view { padding-bottom: 96px; }
+
+    /* ---------- 游戏化：XP / 等级 / 任务 / 连击 / 结算 / 弱点 ---------- */
+    .lvl-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .lvl-chip {
+      background: rgba(255,255,255,.95); color: var(--brand);
+      font-size: 11px; font-weight: 800; border-radius: 10px; padding: 2px 8px;
+    }
+    .lvl-bar {
+      flex: 1; height: 8px; border-radius: 4px;
+      background: rgba(255,255,255,.25); overflow: hidden;
+    }
+    .lvl-bar i { display: block; height: 100%; background: #FDE047; border-radius: 4px; transition: width .3s; }
+    .lvl-num { font-size: 10.5px; color: rgba(255,255,255,.9); white-space: nowrap; }
+    .card .lvl-bar { background: var(--line); }
+    .card .lvl-chip { background: var(--brand); color: #fff; }
+    .card .lvl-num { color: var(--muted); }
+    .sec-inline { font-size: 13.5px; font-weight: 800; margin-bottom: 10px; color: var(--ink); }
+    .task-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 4px; border-bottom: 1px dashed var(--line); font-size: 13px;
+    }
+    .task-row:last-child { border-bottom: none; }
+    .task-row.done .task-name, .task-row.done .task-prog { color: var(--muted); text-decoration: line-through; }
+    .task-ico { font-size: 16px; }
+    .task-name { flex: 1; font-weight: 600; }
+    .task-prog { font-size: 12px; color: var(--muted); }
+    .task-xp {
+      font-size: 11px; font-weight: 800; color: #B45309;
+      background: #FEF3C7; border-radius: 8px; padding: 2px 7px;
+    }
+    .task-row.done .task-xp { background: #DCFCE7; color: #15803D; }
+    .combo-chip { color: #EA580C; }
+    .xp-chip { color: #B45309; }
+    .judge-strip { position: relative; }
+    .combo-hot { margin-left: 6px; color: #EA580C; font-weight: 700; }
+    .xp-pop {
+      position: absolute; right: 12px; top: 50%; margin-top: -10px;
+      font-size: 13px; font-weight: 800; color: #16A34A;
+      animation: xpup 1.1s ease-out forwards; pointer-events: none;
+    }
+    @keyframes xpup {
+      0% { opacity: 0; transform: translateY(6px); }
+      25% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-14px); }
+    }
+    .settle-stats { display: flex; gap: 8px; margin: 14px 0 4px; }
+    .settle-stat {
+      flex: 1; background: #F8FAFC; border-radius: 12px; padding: 10px 4px;
+    }
+    .settle-stat b { display: block; font-size: 17px; color: var(--brand); }
+    .settle-stat span { font-size: 10.5px; color: var(--muted); }
+    .weak-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .weak-chip {
+      font-size: 11.5px; font-weight: 700; color: #B91C1C;
+      background: #FEE2E2; border-radius: 9px; padding: 3px 9px;
+    }
+
+    /* ---------- 段位晋级卡 ---------- */
+    .rank-card {
+      border: 2px solid rgba(37,99,235,.14);
+      background: linear-gradient(160deg, #EFF6FF, #FFFFFF 55%);
+    }
+    .rank-head { display: flex; align-items: center; gap: 12px; }
+    .rank-icon { font-size: 34px; line-height: 1; }
+    .rank-info { flex: 1; min-width: 0; }
+    .rank-name { font-size: 16px; font-weight: 800; color: var(--ink); }
+    .rank-sub { font-size: 11.5px; margin-top: 2px; }
+    .rank-pct { font-size: 18px; font-weight: 800; color: var(--brand); }
+    .rank-bar { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; margin-top: 12px; }
+    .rank-bar i { display: block; height: 100%; background: linear-gradient(90deg, #2563EB, #60A5FA); border-radius: 5px; transition: width .3s; }
+    .rank-exam-btn { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+    .rank-verdict { border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.7; margin: 12px 0; }
+    .rank-verdict.pass { background: #DCFCE7; color: #15803D; }
+    .rank-verdict.fail { background: #FEE2E2; color: #B91C1C; }
+
+    /* ---------- 宠物伙伴「小飞」 ---------- */
+    .pet {
+      position: fixed; right: 14px; bottom: 100px; z-index: 70;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(150deg, #3B82F6, #1E3A8A);
+      box-shadow: 0 6px 16px rgba(30,58,138,.35);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; animation: petFloat 3.2s ease-in-out infinite;
+      border: 2.5px solid rgba(255,255,255,.85);
+    }
+    .pet.off { display: none; }
+    .pet-body { font-size: 26px; line-height: 1; }
+    .pet-bubble {
+      position: absolute; right: 4px; bottom: 60px;
+      max-width: 210px; padding: 10px 12px;
+      background: #fff; border-radius: 14px; border-bottom-right-radius: 4px;
+      box-shadow: 0 6px 20px rgba(15,23,42,.15);
+      font-size: 12.5px; line-height: 1.65; color: #1e293b;
+      opacity: 0; transform: translateY(8px) scale(.96); pointer-events: none;
+      transition: all .25s ease;
+    }
+    .pet-bubble.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    @keyframes petFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    .pet:active { transform: scale(.92); }
+
+    /* 宠物互动：操作按钮 / 爱心粒子 / 摇摆笑 */
+    .pet-acts { display: flex; gap: 8px; margin-top: 9px; }
+    .pet-act {
+      flex: 1; border: none; cursor: pointer;
+      background: #EFF6FF; color: #2563EB;
+      font-size: 12px; font-weight: 700;
+      border-radius: 10px; padding: 7px 0;
+    }
+    .pet-act:active { background: #DBEAFE; }
+    .pet-heart {
+      position: absolute; top: -6px; left: 50%;
+      font-size: 15px; pointer-events: none;
+      animation: heartUp 1.2s ease-out forwards;
+    }
+    @keyframes heartUp {
+      0% { opacity: 0; transform: translate(-50%, 0) scale(.6); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), -52px) scale(1.15); }
+    }
+    .pet.excited { animation: petWiggle .55s ease; }
+    @keyframes petWiggle {
+      0%, 100% { transform: rotate(0); }
+      25% { transform: rotate(-12deg) scale(1.08); }
+      55% { transform: rotate(12deg) scale(1.08); }
+      80% { transform: rotate(-6deg); }
+    }
+
+    /* ---------- 新手引导遮罩 ---------- */
+    .tut-mask {
+      position: fixed; inset: 0; z-index: 90;
+      background: rgba(15, 23, 42, .62);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .tut-card {
+      width: 100%; max-width: 340px; background: #fff;
+      border-radius: 20px; padding: 26px 22px 18px; text-align: center;
+      animation: tutIn .28s ease;
+    }
+    @keyframes tutIn {
+      from { opacity: 0; transform: translateY(14px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .tut-ico { font-size: 44px; }
+    .tut-title { font-size: 17px; font-weight: 800; color: #0f172a; margin-top: 10px; }
+    .tut-desc { font-size: 13px; color: #64748b; line-height: 1.7; margin-top: 8px; }
+    .tut-dots { display: flex; justify-content: center; gap: 6px; margin: 16px 0 4px; }
+    .tut-dot { width: 7px; height: 7px; border-radius: 50%; background: #E2E8F0; }
+    .tut-dot.on { background: #2563EB; width: 18px; border-radius: 4px; }
+    .tut-btns { display: flex; gap: 10px; margin-top: 14px; }
+    .tut-skip {
+      flex: 1; border: none; background: none; color: #94a3b8;
+      font-size: 13px; padding: 10px 0; cursor: pointer;
+    }
+    .tut-next {
+      flex: 2; border: none; background: #2563EB; color: #fff;
+      font-size: 14px; font-weight: 700; border-radius: 12px;
+      padding: 11px 0; cursor: pointer;
+    }
+
+    /* ============ Duolingo 视觉语言覆盖层 ============
+       绿系主色 / 厚灰描边卡片 / 3D底边按钮 / 圆胖字 / 判定红绿 */
+    :root {
+      --brand: #58CC02;
+      --brand-dark: #46A302;
+      --ink: #3C3C3C;
+      --line: #E5E5E5;
+      --bg: #ffffff;
+      --primary: #58CC02;
+      --primary-light: #EBFFD6;
+    }
+    body { font-weight: 800; }
+    .btn, .btn-primary {
+      background: #58CC02 !important;
+      color: #fff !important;
+      border-radius: 16px !important;
+      box-shadow: 0 4px 0 #46A302 !important;
+      font-weight: 800 !important;
+      letter-spacing: .3px;
+    }
+    .btn:active, .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 #46A302 !important; }
+    .btn-ghost {
+      background: #fff !important;
+      color: #58CC02 !important;
+      border: 2px solid var(--line) !important;
+      box-shadow: 0 4px 0 var(--line) !important;
+    }
+    .btn-ghost:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--line) !important; }
+    .card { border: 2px solid var(--line); border-radius: 18px; box-shadow: none; }
+    .hero { background: linear-gradient(150deg, #6FDD0B, #58CC02 45%, #3E8F02); }
+    .lvl-bar { background: rgba(255,255,255,.28); }
+    .lvl-bar i { background: #FFE066; }
+    .card .lvl-bar { background: var(--line); }
+    .card .lvl-chip { background: var(--brand); }
+    .opt { background: #fff; border: 2px solid var(--line); border-radius: 16px; }
+    .opt:hover { border-color: #A5E56F; background: #FBFFF5; }
+    .letter { border-radius: 9px; background: #F1F7FF; color: #1CB0F6; }
+    .opt.picked { background: #F0FFF8; border-color: var(--brand); }
+    .opt.picked .letter { background: var(--brand); color: #fff; }
+    .opt.correct { background: #D7FFB8; border-color: var(--brand); }
+    .opt.correct .letter { background: #fff; color: var(--brand); }
+    .opt.wrong { background: #FFDFE0; border-color: #FF4B4B; }
+    .opt.wrong .letter { background: #fff; color: #FF4B4B; }
+    .opt.dim { opacity: .55; }
+    .judge-strip.ok { background: #D7FFB8; color: #46A302; border: none; border-radius: 14px; }
+    .judge-strip.no { background: #FFDFE0; color: #D33; border: none; border-radius: 14px; }
+    .bar { background: var(--line); }
+    .bar i { background: linear-gradient(180deg, #6FDD0B, #58CC02); }
+    .tile { border: 2px solid var(--line); border-radius: 16px; }
+    .tile-ico { border-radius: 14px; }
+    .tabbar { border-top: 2px solid var(--line); }
+    .t-ico.on, .tab.on { color: var(--brand); }
+    .task-xp { background: #EBFFD6; color: #46A302; }
+    .task-row.done .task-xp { background: #F0F0F0; color: #AFAFAF; }
+    .xp-chip { color: #46A302; }
+    .settle-stat { background: #FBFBFB; border: 2px solid var(--line); }
+    .settle-stat b { color: var(--brand); }
+    .tut-dot.on { background: var(--brand); }
+    .tut-next { background: var(--brand); }
+    .daily::before { background: var(--brand); }
+    .badge.on { background: #F0FFF8; }
+  </style>
+</head>
+<body>
+  <!-- 单页应用挂载点：所有视图由 JS 渲染进 #app -->
+  <div id="wrap"><div id="app"></div></div>
+  <!-- 宠物伙伴「小飞」：情绪价值 + 情境提醒（固定右下角，随视图显隐） -->
+  <div id="pet" class="pet off" data-act="pet">
+    <div class="pet-bubble" id="petBubble"></div>
+    <div class="pet-body">🚁</div>
+  </div>
+
+  <!-- 底部导航栏：首页 / 错题本 / 我的（刷题与考试页自动隐藏） -->
+  <nav class="tabbar off" id="tabbar">
+    <a href="#/" data-t="home"><span class="t-ico">🏠</span><span>首页</span></a>
+    <a href="#/wrong" data-t="wrong"><span class="t-ico">📕</span><span>错题本</span><i class="tab-badge" id="tabWrongBadge" style="display:none">0</i></a>
+    <a href="#/me" data-t="me"><span class="t-ico">👤</span><span>我的</span></a>
+  </nav>
+
+  <!-- 题库数据（纯静态、离线；内容与源 h5_data.js 完全一致） -->
+  <script src="data.js"></script>
+
+  <script src="cloud-config.js"></script>
+  <!-- 应用逻辑 -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* =====================================================================
+     * 一、常量与本地存储层
+     * ===================================================================== */
+
+    // localStorage 键名：学习进度 / 错题 / 收藏
+    var KEY_PROGRESS = 'wrh5_progress';
+    var KEY_WRONG    = 'wrh5_wrong';
+    var KEY_FAV      = 'wrh5_fav';
+
+    // 模拟考试参数：随机 30 道单选题，限时 20 分钟
+    var EXAM_COUNT   = 30;
+    var EXAM_SECONDS = 20 * 60;
+
+    // 选项字母顺序
+    var LETTERS = ['A', 'B', 'C', 'D'];
+
+    /** 安全读取 JSON：键不存在或解析失败时返回默认值 */
+    function lsGet(key, def) {
+      try {
+        var raw = localStorage.getItem(key);
+        if (raw === null || raw === undefined) return def;
+        var val = JSON.parse(raw);
+        return (val === null || val === undefined) ? def : val;
+      } catch (e) { return def; }
+    }
+    /** 写入 JSON（失败静默处理，例如浏览器隐私模式写入受限） */
+    function lsSet(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+    }
+
+    // 应用状态（内存缓存，每次变更后立即写回 localStorage）
+    var progress = lsGet(KEY_PROGRESS, { doneId: [], correct: 0, total: 0 });
+    if (!Array.isArray(progress.doneId)) progress.doneId = [];
+    if (typeof progress.correct !== 'number') progress.correct = 0;
+    if (typeof progress.total  !== 'number') progress.total  = 0;
+    var wrongIds = lsGet(KEY_WRONG, []); // 答错题目的 id 列表
+    var favIds   = lsGet(KEY_FAV, []);   // 收藏题目的 id 列表
+    if (!Array.isArray(wrongIds)) wrongIds = [];
+    if (!Array.isArray(favIds))   favIds   = [];
+
+    function saveProgress() { lsSet(KEY_PROGRESS, progress); }
+    function saveWrong()    { lsSet(KEY_WRONG, wrongIds); }
+    function saveFav()      { lsSet(KEY_FAV, favIds); }
+
+    /* =====================================================================
+     * 二·五 游戏化核心：XP经验 / 等级 / 每日任务 / 易错点掌握度
+     * ===================================================================== */
+
+    var KEY_XP      = 'wrh5_xp';       // 经验值总量
+    var KEY_TASKS   = 'wrh5_tasks';    // 每日任务 {date,answers,corrects,maxCombo,awarded:{a1,a2,a3}}
+    var KEY_MASTERY = 'wrh5_mastery';  // 掌握度 {qid:{w:错次,r:对次,s:连对}}，连对2次=已掌握
+    var KEY_GAME    = 'wrh5_game';     // 游戏化档案 {bestCombo:历史最高连对,levels:已完成关卡数}
+
+    var xp     = lsGet(KEY_XP, 0);
+    var tasks  = lsGet(KEY_TASKS, null);
+    var mastery = lsGet(KEY_MASTERY, {});
+    var game   = lsGet(KEY_GAME, { bestCombo: 0, levels: 0 });
+    if (typeof xp !== 'number' || xp < 0) xp = 0;
+    if (!tasks || typeof tasks !== 'object') tasks = { date: '', answers: 0, corrects: 0, maxCombo: 0, awarded: {} };
+    if (!tasks.awarded) tasks.awarded = {};
+    if (!mastery || typeof mastery !== 'object') mastery = {};
+    if (!game || typeof game !== 'object') game = { bestCombo: 0, levels: 0 };
+
+    // 当前会话连对数（由刷题判定处维护，recordAnswer 内读取计入每日任务）
+    var comboNow = 0;
+
+    /** 等级信息：每 100 XP 升 1 级 */
+    function levelInfo() {
+      return { lv: Math.floor(xp / 100) + 1, cur: xp % 100, need: 100 };
+    }
+    function addXp(n) {
+      if (n <= 0) return;
+      xp += n;
+      lsSet(KEY_XP, xp);
+    }
+
+    /** 每日任务推进 + 自动发奖（跨天自动重置） */
+    function bumpTasks(right) {
+      var today = todayStr();
+      if (tasks.date !== today) {
+        tasks = { date: today, answers: 0, corrects: 0, maxCombo: 0, awarded: {} };
+      }
+      tasks.answers++;
+      if (right) tasks.corrects++;
+      if (comboNow > tasks.maxCombo) tasks.maxCombo = comboNow;
+      // 三个任务达标自动发 XP（一次）
+      if (!tasks.awarded.a1 && tasks.answers >= 10) { tasks.awarded.a1 = 1; addXp(20); }
+      if (!tasks.awarded.a2 && tasks.corrects >= 8) { tasks.awarded.a2 = 1; addXp(20); }
+      if (!tasks.awarded.a3 && tasks.maxCombo >= 5) { tasks.awarded.a3 = 1; addXp(30); }
+      lsSet(KEY_TASKS, tasks);
+    }
+
+    /** 掌握度推进：答错 s 清零；连对 2 次视为"已掌握"（易错点特训完成标准） */
+    function bumpMastery(q, right) {
+      var m = mastery[q.id] || { w: 0, r: 0, s: 0 };
+      if (right) { m.r++; m.s++; } else { m.w++; m.s = 0; }
+      mastery[q.id] = m;
+      lsSet(KEY_MASTERY, mastery);
+    }
+    function isMastered(qid) {
+      var m = mastery[qid];
+      return !!(m && m.s >= 2);
+    }
+    function masteredCount() {
+      return Object.keys(mastery).filter(isMastered).length;
+    }
+
+    /** 弱点画像：按分类统计错题占比，返回错误最多的分类（≥2 错才计入） */
+    function weakCats() {
+      var byCat = {};
+      function addWrong(cat) { if (!byCat[cat]) byCat[cat] = 0; byCat[cat]++; }
+      wrongIds.forEach(function (id) {
+        var q = qById[id];
+        if (q) addWrong(q.cat || '未分类');
+      });
+      Object.keys(mastery).forEach(function (id) {
+        var m = mastery[id];
+        // 历史错 2 次以上且尚未掌握的，也计入弱点
+        if (m.w >= 2 && !isMastered(Number(id))) {
+          var q2 = qById[Number(id)];
+          if (q2) addWrong(q2.cat || '未分类');
+        }
+      });
+      return Object.keys(byCat)
+        .filter(function (c) { return byCat[c] >= 2; })
+        .map(function (c) { return { cat: c, wrong: byCat[c] }; })
+        .sort(function (a, b) { return b.wrong - a.wrong; })
+        .slice(0, 4);
+    }
+
+    /**
+     * 易错点特训题池 = 未掌握的错题 + 同分类的其他低掌握度题（强化易错领域）
+     */
+    function weakPool() {
+      var pool = [];
+      var seen = {};
+      wrongIds.forEach(function (id) {
+        if (!isMastered(id) && qById[id]) { pool.push(qById[id]); seen[id] = 1; }
+      });
+      var cats = {};
+      pool.forEach(function (q) { cats[q.cat || '未分类'] = 1; });
+      Object.keys(cats).forEach(function (c) {
+        var extra = QBANK.filter(function (q) {
+          return (q.cat || '未分类') === c && !seen[q.id];
+        }).slice(0, 15);
+        extra.forEach(function (q) { pool.push(q); seen[q.id] = 1; });
+      });
+      return shuffle(pool).slice(0, 40);
+    }
+
+    /* =====================================================================
+     * 二、题库辅助
+     * ===================================================================== */
+
+    // 过滤掉不完整的数据，保证渲染安全
+    var QBANK = (window.QUESTIONS || []).filter(function (q) {
+      return q && typeof q.id === 'number' && q.stem && q.answer;
+    });
+    var qById = {};
+    QBANK.forEach(function (q) { qById[q.id] = q; });
+
+    /** Fisher-Yates 洗牌（返回新数组，不修改原数组） */
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+    /** HTML 转义，防止题干/选项中的特殊字符破坏页面结构 */
+    function esc(s) {
+      return String(s === null || s === undefined ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    /** 判定作答是否正确：单选/多选统一处理，多选需与答案完全一致（忽略顺序） */
+    function isRight(q, picks) {
+      return picks.slice().sort().join('') === String(q.answer).split('').sort().join('');
+    }
+    /** 秒数 → mm:ss */
+    function fmtTime(sec) {
+      var m = Math.floor(sec / 60), s = sec % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    /* =====================================================================
+     * 三、运行时会话状态
+     * ===================================================================== */
+
+    var app = document.getElementById('app');
+    var session = null;   // 刷题会话 {mode, queue, idx, picks, judged}
+    var exam = null;      // 模拟考会话 {queue, idx, picks, started, submitted, result, endAt}
+    var examTimer = null; // 模拟考倒计时句柄
+
+    // 各刷题模式的标题
+    var MODE_TITLE = {
+      seq: '顺序刷题', rand: '随机刷题', multi: '多选题专练',
+      wrong: '错题本重练', fav: '收藏重练', weak: '易错点特训', lv: '等级挑战'
+    };
+
+    /**
+     * 按模式构建刷题队列：
+     * seq   → 全部题目按 id 顺序
+     * rand  → 全部题目随机排序
+     * multi → 仅多选题，随机排序
+     * wrong → 错题本中的题目（按加入顺序）
+     * fav   → 收藏的题目（按收藏顺序）
+     * weak  → 易错点特训：未掌握错题 + 同分类强化题，随机排序
+     */
+    function buildSession(mode) {
+      var pool;
+      if (mode === 'seq') {
+        pool = QBANK.slice().sort(function (a, b) { return a.id - b.id; });
+      } else if (mode === 'rand') {
+        pool = shuffle(QBANK);
+      } else if (mode === 'multi') {
+        pool = shuffle(QBANK.filter(function (q) { return q.type === 'multi'; }));
+      } else if (mode === 'wrong') {
+        pool = wrongIds.map(function (id) { return qById[id]; }).filter(Boolean);
+      } else if (mode === 'weak') {
+        pool = weakPool();
+      } else if (mode === 'lv') {
+        pool = lvPool(getRank().lv).slice(); // 当前段位题池：按难度从低到高
+      } else { // fav
+        pool = favIds.map(function (id) { return qById[id]; }).filter(Boolean);
+      }
+      return { mode: mode, queue: pool, idx: 0, picks: {}, judged: {}, combo: 0, xpGain: 0, maxCombo: 0 };
+    }
+
+    /**
+     * 记录一次作答（刷题与模拟考共用）：
+     * - 进度：id 记入 doneId（去重），total/correct 累加
+     * - 错题：答错且不在错题本 → 收入；答对 → 从错题本移除
+     */
+    function recordAnswer(q, right) {
+      if (progress.doneId.indexOf(q.id) < 0) progress.doneId.push(q.id);
+      progress.total++;
+      if (right) progress.correct++;
+      var wi = wrongIds.indexOf(q.id);
+      if (right) {
+        if (wi >= 0) { wrongIds.splice(wi, 1); saveWrong(); }
+      } else if (wi < 0) {
+        wrongIds.push(q.id); saveWrong();
+      }
+      saveProgress();
+      bumpActivity(); // 学习日历：记录今日活跃
+      // —— 游戏化：XP / 每日任务 / 掌握度 ——
+      bumpMastery(q, right);
+      if (right) addXp(10);
+      bumpTasks(right);
+    }
+
+    /* =====================================================================
+     * 三·五 个人主页（资料 / 成就徽章 / 学习日历 / 备份 / 云同步）
+     * ===================================================================== */
+
+    var KEY_PROFILE  = 'wrh5_profile';
+    var KEY_ACTIVITY = 'wrh5_activity';
+    var KEY_EXAMBEST = 'wrh5_examBest';
+    var KEY_SESSION  = 'wrh5_session';
+    var KEY_RANK     = 'wrh5_rank';
+    var profile  = lsGet(KEY_PROFILE,  { nick: '', avatar: '🦁' });
+    var activity = lsGet(KEY_ACTIVITY, {});
+    if (!profile || typeof profile !== 'object') profile = { nick: '', avatar: '🦁' };
+    if (!activity || typeof activity !== 'object') activity = {};
+
+    /* ---------- 段位晋级：题目难度分级 + 晋级考试 ---------- */
+    var LV_COUNT = 5;               // 5 个段位
+    var LV_PASS = 75;               // 晋级考试通过线（正确率 %）
+    var LV_EXAM_COUNT = 20;         // 晋级考试题数
+    var LV_EXAM_SECONDS = 15 * 60;  // 晋级考试限时
+    var LV_EXAM_UNLOCK_PCT = 60;    // 本级题池练满 60% 解锁晋级考试
+    var RANKS = [
+      { icon: '🥚',  name: '见习飞手' },
+      { icon: '🎖️', name: '初级驾驶员' },
+      { icon: '🛩️', name: '副驾驶' },
+      { icon: '✈️',  name: '机长' },
+      { icon: '👑',  name: '传奇教员' }
+    ];
+
+    /** 题目难度分（0~6，越高越难；仅用于分层排序） */
+    function diffScore(q) {
+      var s = 0, stem = q.stem || '';
+      if (q.type === 'multi') s += 2;                                              // 多选：漏选即错
+      if (stem.length > 45) s++;                                                   // 长题干更绕
+      if (/[0-9]/.test(stem) && /(米|秒|MHz|高度|速度|角度|气压|纬度|经度|距离|计算|百分|占比)/.test(stem)) s += 2; // 数字计算类
+      if (/不正确|错误的是|不属于|除外|不能|禁止/.test(stem)) s++;                  // 否定/排除类
+      if (q.cat === '领航与任务规划' || q.cat === '航空气象') s++;                  // 公式/天气判断类
+      return s;
+    }
+
+    /** 全库难度升序视图（稳定排序：同分按 id） */
+    var SORTED_BANK = QBANK.slice().sort(function (a, b) {
+      var d = diffScore(a) - diffScore(b);
+      return d !== 0 ? d : a.id - b.id;
+    });
+
+    /** 第 lv 级题池：全库等分切层（1=最易 … 5=最难） */
+    function lvPool(lv) {
+      var size = Math.ceil(QBANK.length / LV_COUNT);
+      return SORTED_BANK.slice((lv - 1) * size, lv * size);
+    }
+
+    function getRank() { return lsGet(KEY_RANK, { lv: 1, passed: {} }); }
+    function saveRank(r) { lsSet(KEY_RANK, r); }
+
+    /** 当前段位信息：题池 / 练题进度 / 考试解锁状态 */
+    function rankInfo() {
+      var r = getRank();
+      var pool = lvPool(r.lv);
+      var done = pool.filter(function (q) { return progress.doneId.indexOf(q.id) !== -1; }).length;
+      var pct = pool.length ? Math.round(done / pool.length * 100) : 0;
+      return {
+        lv: r.lv, passed: r.passed || {},
+        rank: RANKS[r.lv - 1], next: RANKS[r.lv] || null,
+        pool: pool, done: done, pct: pct,
+        examUnlocked: pct >= LV_EXAM_UNLOCK_PCT,
+        remain: Math.max(0, pool.length - done)
+      };
+    }
+
+    var AVATARS = ['🦁','🐼','🦊','🐸','🐨','🦉','🐙','🦄','🐝','🐬','🚁','✈️'];
+
+    // 今日活跃 +1（供学习日历热力格）
+    function bumpActivity() {
+      var d = new Date();
+      var key = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      activity[key] = (activity[key] || 0) + 1;
+      lsSet(KEY_ACTIVITY, activity);
+    }
+
+    // 学习快照：个人主页与成就共用
+    function studySnapshot() {
+      var done = progress.doneId.length;
+      var rate = progress.total > 0 ? Math.round(progress.correct / progress.total * 100) : 0;
+      var d = dailyInfo();
+      return {
+        done: done, all: QBANK.length, total: progress.total,
+        rate: rate, fav: favIds.length, wrong: wrongIds.length,
+        streak: d.streak || 0, examBest: lsGet(KEY_EXAMBEST, 0),
+        bestCombo: game.bestCombo || 0, levelsDone: game.levels || 0,
+        mastered: masteredCount(), lv: levelInfo().lv,
+        passedLv: getRank().lv
+      };
+    }
+
+    // 成就定义：test(快照) 为 true 即点亮
+    var ACHIEVEMENTS = [
+      { icon: '🎯', name: '初来乍到', desc: '完成第 1 题',             test: function (s) { return s.done >= 1; } },
+      { icon: '📚', name: '小有积累', desc: '累计刷 50 题',            test: function (s) { return s.done >= 50; } },
+      { icon: '💪', name: '题海冲浪', desc: '累计刷 200 题',           test: function (s) { return s.done >= 200; } },
+      { icon: '🌊', name: '五百斩',   desc: '累计刷 500 题',           test: function (s) { return s.done >= 500; } },
+      { icon: '👑', name: '全库通关', desc: '1422 题全部刷过',         test: function (s) { return s.done >= s.all; } },
+      { icon: '🎓', name: '稳准狠',   desc: '正确率 ≥90%（≥50 题）',   test: function (s) { return s.total >= 50 && s.rate >= 90; } },
+      { icon: '🔥', name: '三日之约', desc: '连续打卡 3 天',           test: function (s) { return s.streak >= 3; } },
+      { icon: '⚡', name: '七日不辍', desc: '连续打卡 7 天',           test: function (s) { return s.streak >= 7; } },
+      { icon: '📝', name: '模拟及格', desc: '模拟考 ≥60 分',           test: function (s) { return s.examBest >= 60; } },
+      { icon: '🏅', name: '模拟优秀', desc: '模拟考 ≥85 分',           test: function (s) { return s.examBest >= 85; } },
+      { icon: '⭐', name: '收藏家',   desc: '收藏 10 道题',            test: function (s) { return s.fav >= 10; } },
+      { icon: '🧹', name: '错题清零', desc: '刷 50 题后清空错题本',     test: function (s) { return s.done >= 50 && s.wrong === 0; } },
+      { icon: '🔥', name: '连击达人', desc: '单次连对 10 题',           test: function (s) { return s.bestCombo >= 10; } },
+      { icon: '🏆', name: '闯关新手', desc: '完成 10 个关卡',           test: function (s) { return s.levelsDone >= 10; } },
+      { icon: '🎯', name: '特训大师', desc: '掌握 50 道弱点题',         test: function (s) { return s.mastered >= 50; } },
+      { icon: '🎖️', name: '晋级学员', desc: '通过第 1 次晋级考试',      test: function (s) { return s.passedLv >= 2; } },
+      { icon: '👑', name: '登顶传奇', desc: '达到最高段位 Lv.5',        test: function (s) { return s.passedLv >= 5; } }
+    ];
+
+    function badgesOf(s) {
+      return ACHIEVEMENTS.map(function (a) {
+        return { icon: a.icon, name: a.name, desc: a.desc, on: !!a.test(s) };
+      });
+    }
+
+    // 最近 28 天日历格
+    function calendarCells() {
+      var cells = [];
+      for (var i = 27; i >= 0; i--) {
+        var d = new Date(); d.setDate(d.getDate() - i);
+        var key = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+        var c = activity[key] || 0;
+        cells.push({ key: key, count: c, level: c === 0 ? 0 : (c <= 4 ? 1 : (c <= 14 ? 2 : 3)) });
+      }
+      return cells;
+    }
+
+    function meStat(v, label) { return '<div class="me-stat"><b>' + v + '</b><span>' + label + '</span></div>'; }
+
+    // 全量数据导出对象（备份/云同步共用）
+    function exportAll() {
+      return {
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        progress: progress, wrongIds: wrongIds, favIds: favIds,
+        daily: lsGet('wrh5_daily', {}), profile: profile,
+        examBest: lsGet(KEY_EXAMBEST, 0), activity: activity,
+        xp: xp, tasks: tasks, mastery: mastery, game: game,
+        rank: getRank()
+      };
+    }
+
+    // 导入备份：校验 + 覆盖 + 刷新
+    function applyImport(obj) {
+      if (!obj || !obj.progress || !Array.isArray(obj.progress.doneId)) { alert('备份文件格式不正确'); return; }
+      if (!window.confirm('导入将覆盖当前全部本地数据，确定继续？')) return;
+      lsSet(KEY_PROGRESS, obj.progress);
+      lsSet(KEY_WRONG, Array.isArray(obj.wrongIds) ? obj.wrongIds : []);
+      lsSet(KEY_FAV, Array.isArray(obj.favIds) ? obj.favIds : []);
+      if (obj.daily) lsSet('wrh5_daily', obj.daily);
+      if (obj.profile) lsSet(KEY_PROFILE, obj.profile);
+      if (typeof obj.examBest === 'number') lsSet(KEY_EXAMBEST, obj.examBest);
+      if (obj.activity) lsSet(KEY_ACTIVITY, obj.activity);
+      // v2 备份携带游戏化数据
+      if (typeof obj.xp === 'number') lsSet(KEY_XP, obj.xp);
+      if (obj.tasks) lsSet(KEY_TASKS, obj.tasks);
+      if (obj.mastery) lsSet(KEY_MASTERY, obj.mastery);
+      if (obj.game) lsSet(KEY_GAME, obj.game);
+      if (obj.rank) lsSet(KEY_RANK, obj.rank);
+      alert('导入成功');
+      location.reload();
+    }
+
+    /* ---------- 云同步（LeanCloud REST 直连，零依赖） ---------- */
+    function cloudReady() {
+      return !!(window.LEANCLOUD && window.LEANCLOUD.appId && window.LEANCLOUD.appKey);
+    }
+    function cloudBase() { return (window.LEANCLOUD && window.LEANCLOUD.apiBase) || 'https://leancloud.cn'; }
+    function cloudHeaders(withToken) {
+      var hh = {
+        'X-LeanCloud-App-ID': window.LEANCLOUD.appId,
+        'X-LeanCloud-App-Key': window.LEANCLOUD.appKey,
+        'Content-Type': 'application/json'
+      };
+      if (withToken) {
+        var sess = lsGet(KEY_SESSION, null);
+        if (sess && sess.token) hh['X-LeanCloud-Session-Token'] = sess.token;
+      }
+      return hh;
+    }
+    // mode: 'login' | 'register'
+    function doAuth(mode, user, pass, tipEl) {
+      var url = cloudBase() + (mode === 'login' ? '/1.1/login' : '/1.1/users');
+      fetch(url, {
+        method: 'POST',
+        headers: cloudHeaders(false),
+        body: JSON.stringify({ username: user, password: pass })
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      }).then(function (res) {
+        if (!res.ok) {
+          var map = { 202: '用户名已被占用', 210: '用户名或密码错误', 201: '缺少密码', 200: '缺少用户名', 219: '登录失败次数过多，请稍后再试' };
+          tipEl.textContent = '❌ ' + (map[res.j.code] || (res.j.error || '请求失败') + '（code ' + res.j.code + '）');
+          return;
+        }
+        lsSet(KEY_SESSION, { token: res.j.sessionToken, objectId: res.j.objectId, user: user });
+        window.alert(mode === 'login' ? '登录成功' : '注册并登录成功');
+        renderMe();
+      }).catch(function () { tipEl.textContent = '❌ 网络请求失败，请检查网络或 apiBase 配置'; });
+    }
+    function cloudUpload(tipEl) {
+      var sess = lsGet(KEY_SESSION, null);
+      if (!sess) { tipEl.textContent = '❌ 请先登录'; return; }
+      tipEl.textContent = '⏳ 正在上传备份…';
+      fetch(cloudBase() + '/1.1/classes/Backup', {
+        method: 'POST',
+        headers: cloudHeaders(true),
+        body: JSON.stringify({ owner: sess.user, data: JSON.stringify(exportAll()) })
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        tipEl.textContent = (j.objectId) ? '✅ 已上传云端备份' : '❌ 上传失败：' + (j.error || '未知错误');
+      }).catch(function () { tipEl.textContent = '❌ 网络请求失败'; });
+    }
+    function cloudDownload(tipEl) {
+      var sess = lsGet(KEY_SESSION, null);
+      if (!sess) { tipEl.textContent = '❌ 请先登录'; return; }
+      tipEl.textContent = '⏳ 正在获取云端备份…';
+      fetch(cloudBase() + '/1.1/classes/Backup?order=-createdAt&limit=1', {
+        headers: cloudHeaders(true)
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        if (!j.results || !j.results.length) { tipEl.textContent = '❌ 云端暂无备份，请先上传'; return; }
+        try {
+          var obj = JSON.parse(j.results[0].data);
+          tipEl.textContent = '';
+          applyImport(obj);
+        } catch (e) { tipEl.textContent = '❌ 云端备份解析失败'; }
+      }).catch(function () { tipEl.textContent = '❌ 网络请求失败'; });
+    }
+
+    function accountSectionHTML() {
+      if (!cloudReady()) {
+        return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
+          '<div class="cloud-note">🔒 当前为<b>本地模式</b>：数据仅保存在这台设备，跨设备可用"导出/导入备份"迁移。<br>' +
+          '想开启注册登录 + 云端同步？按项目里的《云同步开通教程》注册 LeanCloud 免费版，' +
+          '把 AppID / AppKey 填进 <b>cloud-config.js</b>，刷新本页即可激活登录。</div></div>';
+      }
+      var sess = lsGet(KEY_SESSION, null);
+      if (sess && sess.user) {
+        return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
+          '<div class="cloud-note">👤 已登录：<b>' + esc(sess.user) + '</b></div>' +
+          '<button class="me-btn" data-act="cloudup">☁️ 上传备份到云端</button>' +
+          '<button class="me-btn" data-act="clouddown">☁️ 从云端恢复备份</button>' +
+          '<button class="me-btn danger" data-act="logout">退出登录</button>' +
+          '<div class="me-tip" id="meCloudTip"></div></div>';
+      }
+      return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
+        '<div class="cloud-note">注册 / 登录后可将学习数据同步到云端，换设备不丢失。</div>' +
+        '<div class="auth-row"><input id="meAuthUser" class="me-input" maxlength="20" placeholder="用户名">' +
+        '<input id="meAuthPass" class="me-input" type="password" maxlength="40" placeholder="密码（≥6位）"></div>' +
+        '<div class="auth-row"><button class="me-btn primary" data-act="authlogin">登录</button>' +
+        '<button class="me-btn primary" data-act="authreg">注册新账号</button></div>' +
+        '<div class="me-tip" id="meAuthTip"></div></div>';
+    }
+
+    function renderMe() {
+      var s = studySnapshot();
+      var badges = badgesOf(s);
+      var lit = badges.filter(function (b) { return b.on; }).length;
+      var html = topbar('个人主页') + '<div class="view">';
+      // 资料卡
+      html += '<div class="card me-card">' +
+        '<div class="me-avatar">' + esc(profile.avatar || '🦁') + '</div>' +
+        '<div class="me-info">' +
+          '<input id="meNick" class="me-nick-input" maxlength="12" placeholder="点击设置昵称" value="' + esc(profile.nick || '') + '">' +
+          '<div class="me-sub">已刷 ' + s.done + '/' + s.all + ' · 正确率 ' + (s.total ? s.rate + '%' : '--') + '</div>' +
+        '</div></div>';
+      // 头像选择
+      html += '<div class="card"><div class="me-sec-title">选择头像</div><div class="avatar-row">';
+      AVATARS.forEach(function (a) {
+        html += '<button class="avatar-opt' + (a === (profile.avatar || '🦁') ? ' on' : '') + '" data-act="avatar" data-a="' + a + '">' + a + '</button>';
+      });
+      html += '</div></div>';
+      // 数据看板
+      html += '<div class="card"><div class="me-sec-title">数据看板</div><div class="me-stat-grid">' +
+        meStat(s.done, '已刷题') + meStat(s.total ? s.rate + '%' : '--', '正确率') +
+        meStat(s.streak + ' 天', '连续打卡') + meStat(s.examBest || '--', '模考最佳') +
+        meStat(s.wrong, '待消灭错题') + meStat(s.fav, '收藏') +
+        '</div></div>';
+      // 成就徽章
+      html += '<div class="card"><div class="me-sec-title">成就徽章 <span class="me-lit">' + lit + '/' + badges.length + '</span></div><div class="badge-grid">';
+      badges.forEach(function (b) {
+        html += '<div class="badge' + (b.on ? ' on' : '') + '"><div class="badge-ico">' + b.icon + '</div>' +
+          '<div class="badge-name">' + b.name + '</div><div class="badge-desc">' + b.desc + '</div></div>';
+      });
+      html += '</div></div>';
+      // 学习日历
+      html += '<div class="card"><div class="me-sec-title">最近 28 天学习日历</div><div class="cal-grid">';
+      calendarCells().forEach(function (c) {
+        html += '<div class="cal-cell lv' + c.level + '" title="' + c.key + (c.count ? ' · 刷了 ' + c.count + ' 题' : '') + '"></div>';
+      });
+      html += '</div><div class="cal-legend">颜色越深 = 当天刷题越多</div></div>';
+      // 账号与云同步
+      html += accountSectionHTML();
+      // 数据管理
+      html += '<div class="card"><div class="me-sec-title">数据管理</div>' +
+        '<button class="me-btn" data-act="export">⬇️ 导出备份（JSON）</button>' +
+        '<button class="me-btn" data-act="importpick">⬆️ 导入备份</button>' +
+        '<input type="file" id="importFile" accept=".json,application/json" style="display:none">' +
+        '<button class="me-btn danger" data-act="wipe">🗑 清空本地数据</button></div>';
+      html += '<div class="me-foot">数据默认保存在本机浏览器；换设备用导出/导入，或登录后云同步。</div></div>';
+      app.innerHTML = html;
+      bindMeEvents();
+    }
+
+    function bindMeEvents() {
+      // 昵称修改
+      var nick = document.getElementById('meNick');
+      if (nick) nick.addEventListener('change', function () {
+        profile.nick = nick.value.trim();
+        lsSet(KEY_PROFILE, profile);
+        renderMe();
+      });
+      // 头像 / 按钮（本页独立委托，避免干扰全局路由）
+      var view = document.querySelector('.view');
+      if (view) view.addEventListener('click', function (ev) {
+        var el = ev.target.closest('[data-act]');
+        if (!el) return;
+        var act = el.getAttribute('data-act');
+        if (act === 'avatar') {
+          profile.avatar = el.getAttribute('data-a');
+          lsSet(KEY_PROFILE, profile);
+          renderMe();
+        } else if (act === 'export') {
+          var blob = new Blob([JSON.stringify(exportAll())], { type: 'application/json' });
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = '无人机题库备份-' + new Date().toISOString().slice(0, 10) + '.json';
+          document.body.appendChild(a); a.click(); a.remove();
+        } else if (act === 'importpick') {
+          var f = document.getElementById('importFile');
+          if (f) f.click();
+        } else if (act === 'wipe') {
+          if (window.confirm('确定清空本地全部学习数据？此操作不可恢复！') &&
+              window.confirm('再次确认：真的要清空吗？')) {
+            lsSet(KEY_PROGRESS, { doneId: [], correct: 0, total: 0 });
+            lsSet(KEY_WRONG, []); lsSet(KEY_FAV, []);
+            lsSet(KEY_ACTIVITY, {}); lsSet(KEY_EXAMBEST, 0);
+            lsSet('wrh5_daily', {});
+            window.alert('已清空');
+            location.reload();
+          }
+        } else if (act === 'authlogin' || act === 'authreg') {
+          var u = document.getElementById('meAuthUser'), p = document.getElementById('meAuthPass');
+          var tip = document.getElementById('meAuthTip');
+          if (!u.value.trim() || p.value.length < 6) { tip.textContent = '请填写用户名，密码至少 6 位'; return; }
+          tip.textContent = '⏳ 请求中…';
+          doAuth(act === 'authlogin' ? 'login' : 'register', u.value.trim(), p.value, tip);
+        } else if (act === 'cloudup') {
+          cloudUpload(document.getElementById('meCloudTip'));
+        } else if (act === 'clouddown') {
+          cloudDownload(document.getElementById('meCloudTip'));
+        } else if (act === 'logout') {
+          lsSet(KEY_SESSION, null);
+          renderMe();
+        }
+      });
+      // 导入文件
+      var file = document.getElementById('importFile');
+      if (file) file.addEventListener('change', function () {
+        var f = file.files && file.files[0];
+        if (!f) return;
+        var rd = new FileReader();
+        rd.onload = function () {
+          try { applyImport(JSON.parse(rd.result)); }
+          catch (e) { alert('文件解析失败：不是有效的 JSON 备份'); }
+        };
+        rd.readAsText(f);
+      });
+    }
+
+    /* =====================================================================
+     * 四、路由（hash 路由：#/ /practice/xxx /exam /wrong /fav）
+     * ===================================================================== */
+
+    function route() {
+      var h = (location.hash || '').replace(/^#\/?/, '');
+      var parts = h.split('/');
+      var view = parts[0] || '';
+      // 离开模拟考页面即丢弃考试会话（含未交卷的作答与倒计时）
+      if (view !== 'exam' && view !== 'lvexam') { stopExamTimer(); exam = null; }
+      window.scrollTo(0, 0);
+      switch (view) {
+        case '':
+        case 'home':    renderHome(); break;
+        case 'practice': renderPracticeRoute(parts[1] || 'seq'); break;
+        case 'exam':    renderExamRoute(); break;
+        case 'lvexam':  renderLvExamRoute(); break;
+        case 'wrong':   renderBook(false); break;
+        case 'fav':     renderBook(true); break;
+        case 'me':      renderMe(); break;
+        default:        renderHome();
+      }
+      syncTabbar(view);
+      if (typeof petSync === 'function') petSync(view); // 宠物显隐 + 情绪检测
+    }
+
+    /** 底部导航栏：按当前视图显示/隐藏并同步高亮角标 */
+    function syncTabbar(view) {
+      var bar = document.getElementById('tabbar');
+      if (!bar) return;
+      var show = view === '' || view === 'home' || view === 'wrong' || view === 'fav' || view === 'me';
+      bar.classList.toggle('off', !show);
+      document.body.classList.toggle('tabbed', show);
+      var active = (view === '' || view === 'home') ? 'home' : (view === 'wrong' ? 'wrong' : (view === 'me' ? 'me' : ''));
+      var links = bar.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) {
+        links[i].classList.toggle('on', links[i].getAttribute('data-t') === active);
+      }
+      // 错题角标
+      var bd = document.getElementById('tabWrongBadge');
+      if (bd) {
+        var n = wrongIds.length;
+        bd.style.display = n > 0 ? 'flex' : 'none';
+        bd.textContent = n > 99 ? '99+' : n;
+      }
+    }
+
+    /* =====================================================================
+     * 五、视图渲染
+     * ===================================================================== */
+
+    /** 通用小部件：统计项 */
+    function stat(v, label) {
+      return '<div class="stat"><b>' + v + '</b><span>' + label + '</span></div>';
+    }
+    /** 通用小部件：首页功能入口 */
+    function tile(href, ico, name, desc, badge) {
+      return '<a class="tile" href="' + href + '">' +
+        '<span class="tile-ico">' + ico + '</span>' +
+        '<span class="tile-name">' + name + '</span>' +
+        (desc ? '<span class="tile-desc">' + desc + '</span>' : '') +
+        (badge ? '<i class="badge">' + badge + '</i>' : '') +
+        '</a>';
+    }
+    /** 通用小部件：子页顶栏（带返回首页链接） */
+    function topbar(title, withStar) {
+      return '<div class="topbar"><a class="back" href="#/">‹ 返回</a>' +
+        '<div class="topbar-title">' + title + '</div>' +
+        (withStar
+          ? '<button class="star" data-act="fav" title="收藏">☆</button>'
+          : '<span class="topbar-side"></span>') +
+        '</div>';
+    }
+
+    /* ---------- 首页 ---------- */
+    /** 每日任务卡（3 项，达标自动发 XP） */
+    function tasksCardHTML() {
+      var t = tasks && tasks.date === todayStr() ? tasks : { answers: 0, corrects: 0, maxCombo: 0, awarded: {} };
+      var a1 = t.awarded && t.awarded.a1, a2 = t.awarded && t.awarded.a2, a3 = t.awarded && t.awarded.a3;
+      function row(ico, name, done, cur, target, xp) {
+        return '<div class="task-row' + (done ? ' done' : '') + '">' +
+          '<span class="task-ico">' + (done ? '✅' : ico) + '</span>' +
+          '<span class="task-name">' + name + '</span>' +
+          '<span class="task-prog">' + Math.min(cur, target) + '/' + target + '</span>' +
+          '<span class="task-xp">+' + xp + 'XP</span></div>';
+      }
+      return '<div class="card tasks"><div class="sec-inline">🎯 今日任务 <span class="muted" style="font-weight:400">完成自动领XP</span></div>' +
+        row('📖', '刷 10 道题', a1, t.answers, 10, 20) +
+        row('✅', '答对 8 道题', a2, t.corrects, 8, 20) +
+        row('🔥', '单次连对 5 题', a3, t.maxCombo, 5, 30) +
+        '</div>';
+    }
+
+    /** 弱点诊断卡：错误最多的分类 + 易错点特训入口 */
+    function weakCardHTML() {
+      var weak = weakCats();
+      var h = '<div class="card weak-card"><div class="sec-inline">🩺 易错点诊断</div>';
+      if (!weak.length) {
+        h += '<p class="muted" style="font-size:12.5px;line-height:1.7;">先刷 10 题以上，这里会生成你的<b>弱点分类画像</b>，并为你组一套"易错点特训"卷。</p>';
+      } else {
+        h += '<div class="weak-chips">' + weak.map(function (w) {
+          return '<span class="weak-chip">' + esc(w.cat) + ' · 错' + w.wrong + '</span>';
+        }).join('') + '</div>' +
+        '<a class="btn btn-primary btn-block" href="#/practice/weak" style="margin-top:12px;">🎯 开始易错点特训</a>';
+      }
+      h += '</div>';
+      return h;
+    }
+
+    /** 首页段位卡：当前段位 + 题池进度 + 晋级考试入口 */
+    function rankCardHTML() {
+      var ri = rankInfo();
+      var h = '<div class="card rank-card">' +
+        '<div class="rank-head"><span class="rank-icon">' + ri.rank.icon + '</span>' +
+          '<div class="rank-info"><div class="rank-name">Lv.' + ri.lv + ' · ' + esc(ri.rank.name) + '</div>' +
+          '<div class="rank-sub muted">第 ' + ri.lv + ' 级题库（简单 → 困难）· 已练 ' + ri.done + '/' + ri.pool.length + ' 题</div></div>' +
+          '<span class="rank-pct">' + ri.pct + '%</span></div>' +
+        '<div class="rank-bar"><i style="width:' + ri.pct + '%"></i></div>';
+      if (ri.lv >= LV_COUNT) {
+        h += '<p class="muted" style="font-size:12px;margin-top:10px;">👑 最高段位！继续刷题保持手感</p>' +
+          '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:10px;">继续刷第 ' + ri.lv + ' 级题库</a>';
+      } else if (ri.examUnlocked) {
+        h += '<a class="btn btn-primary btn-block rank-exam-btn" href="#/lvexam" style="margin-top:12px;">📝 参加晋级考试 · ≥' + LV_PASS + '% 晋级 Lv.' + (ri.lv + 1) + '</a>' +
+          '<a class="btn btn-ghost btn-block" href="#/practice/lv" style="margin-top:8px;">继续刷题</a>';
+      } else {
+        h += '<p class="muted" style="font-size:12px;margin-top:10px;">练满 ' + LV_EXAM_UNLOCK_PCT + '% 解锁晋级考试，还差 ' + ri.remain + ' 题 · 通过后晋级「' + esc((ri.next || {}).name || '') + '」</p>' +
+          '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:8px;">▶ 等级挑战（' + ri.pool.length + ' 题由易到难）</a>';
+      }
+      h += '</div>';
+      return h;
+    }
+
+    function renderHome() {
+      var singles = QBANK.filter(function (q) { return q.type !== 'multi'; }).length;
+      var multis = QBANK.length - singles;
+      var expN = QBANK.filter(function (q) { return q.exp; }).length;
+      var done = progress.doneId.length;
+      var rate = progress.total > 0
+        ? Math.round(progress.correct / progress.total * 100) + '%'
+        : '--';
+      var lv = levelInfo();
+      app.innerHTML =
+        '<div class="hero">' +
+          '<div class="hero-title">🚁 无人机题库宝典</div>' +
+          '<div class="hero-sub">CAAC 无人机理论考试 · 全离线刷题</div>' +
+          '<div class="hero-chip">' + QBANK.length + ' 题免费刷 · ' + expN + ' 题带解析</div>' +
+          '<a class="hero-me" href="#/me" title="个人主页"><span class="hero-me-emoji">' + esc(profile.avatar || '🦁') + '</span><span class="hero-me-nick">' + (profile.nick ? esc(profile.nick) : '我的') + '</span></a>' +
+          // 等级进度条（Duolingo 式）
+          '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
+            '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
+            '<span class="lvl-num">' + lv.cur + '/' + lv.need + ' XP</span></div>' +
+        '</div>' +
+        '<div class="card stat-card">' +
+          '<div class="stat-row">' +
+            stat(QBANK.length, '总题数') + stat(singles, '单选题') + stat(multis, '多选题') +
+          '</div>' +
+          '<div class="stat-row">' + stat(done, '已刷题数') + stat(rate, '正确率') + '</div>' +
+        '</div>' +
+        '<div class="card daily">' + dailyCardHTML() + '</div>' +
+        rankCardHTML() +
+        tasksCardHTML() +
+        weakCardHTML() +
+        '<div class="entries">' +
+          tile('#/practice/seq', '📖', '顺序刷题', '按题库顺序逐题练') +
+          tile('#/practice/weak', '🎯', '易错点特训', '弱点分类强化训练', wrongIds.length) +
+          tile('#/practice/rand', '🎲', '随机刷题', '乱序巩固记忆') +
+          tile('#/practice/multi', '✅', '多选专练', '194道漏选克星') +
+          tile('#/exam', '📝', '模拟考试', '30题仿真卷') +
+          tile('#/wrong', '❌', '错题本', '答对自动移出', wrongIds.length) +
+          tile('#/fav', '⭐', '我的收藏', '重点题随时刷', favIds.length) +
+        '</div>' +
+        '<p class="footer-note">题库仅供学习参考，非官方题库</p>';
+    }
+
+    /* ---------- 每日一题 ---------- */
+    function todayStr() {
+      var d = new Date();
+      function p(n) { return (n < 10 ? '0' : '') + n; }
+      return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+    function yesterdayStr() {
+      var d = new Date(Date.now() - 86400000);
+      function p(n) { return (n < 10 ? '0' : '') + n; }
+      return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+    function dailyInfo() {
+      var st;
+      try { st = JSON.parse(localStorage.getItem('wrh5_daily') || '{}'); } catch (e) { st = {}; }
+      if (!st.streak) st.streak = 0;
+      return st;
+    }
+    function dailyQuestion() {
+      var d = new Date();
+      var seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+      var idx = seed % QBANK.length;
+      while (QBANK[idx].type === 'multi') idx = (idx + 1) % QBANK.length;
+      return QBANK[idx];
+    }
+    function dailyCardHTML() {
+      var q = dailyQuestion();
+      var st = dailyInfo();
+      var doneToday = st.last === todayStr() && st.lastId === q.id;
+      var h = '<div class="daily-head"><b>📅 每日一题 · ' + todayStr() + '</b>' +
+        '<span class="daily-streak">🔥 连续打卡 ' + (st.streak || 0) + ' 天</span></div>' +
+        '<div class="daily-stem">' + q.stem + '</div>';
+      if (doneToday) {
+        var right = st.lastPick === q.answer;
+        h += '<div class="daily-result ' + (right ? 'ok' : 'bad') + '">' +
+          (right ? '✓ 今日已答对，明天再来！' : '✗ 今日答错了，正确答案 ' + q.answer) + '</div>';
+        if (q.exp) h += '<div class="exp-box">💡 解析：' + esc(q.exp) + '</div>';
+      } else {
+        h += ['A', 'B', 'C', 'D'].map(function (L) {
+          return '<div class="opt" data-act="dopt" data-letter="' + L + '"><span class="letter">' + L + '</span><span class="opt-text">' + q[L] + '</span></div>';
+        }).join('');
+      }
+      return h;
+    }
+    function dailyPick(letter) {
+      var q = dailyQuestion();
+      var st = dailyInfo();
+      if (st.last === todayStr()) return; // 今日已完成
+      var right = letter === q.answer;
+      comboNow = right ? 1 : 0; // 每日一题计入每日任务（连对按1题计）
+      recordAnswer(q, right);             // 复用总进度+错题本逻辑
+      comboNow = 0;
+      st.streak = (st.last === yesterdayStr()) ? st.streak + 1 : 1;
+      st.last = todayStr();
+      st.lastId = q.id;
+      st.lastPick = letter;
+      localStorage.setItem('wrh5_daily', JSON.stringify(st));
+      renderHome();
+    }
+    /* ---------- 刷题 ---------- */
+    function renderPracticeRoute(mode) {
+      if (!MODE_TITLE[mode]) mode = 'seq';
+      // 错题本/收藏重练：每次进入都按最新列表重建；
+      // 常规模式：中途退出再进入可沿用未完成的会话
+      if (!session || session.mode !== mode || mode === 'wrong' || mode === 'fav') {
+        session = buildSession(mode);
+      }
+      if (!session.queue.length) {
+        app.innerHTML = topbar(MODE_TITLE[mode]) +
+          '<div class="empty"><div class="big">🈳</div><p>本组暂时没有题目</p>' +
+          '<a class="btn btn-primary" href="#/" style="margin-top:16px;">返回首页</a></div>';
+        return;
+      }
+      renderPractice();
+    }
+
+    function renderPractice() {
+      var s = session;
+      var q = s.queue[s.idx];
+      if (!q) { renderSessionDone(); return; }
+
+      var judged = s.judged[q.id];   // 已判定：{picks:'AB', right:true/false}，否则 undefined
+      var picks = s.picks[q.id] || []; // 多选未判定前的已勾选字母
+      var isFav = favIds.indexOf(q.id) >= 0;
+      var pct = Math.round(((s.idx + 1) / s.queue.length) * 100);
+      // 关卡制：顺序刷题每 10 题为一关
+      var CHUNK = 10;
+      var chunkNo = Math.floor(s.idx / CHUNK) + 1;
+      var titleText = MODE_TITLE[s.mode] + (s.mode === 'seq' ? ' · 第' + chunkNo + '关' : '');
+
+      var html = '<div class="topbar"><a class="back" href="#/">‹ 返回</a>' +
+        '<div class="topbar-title">' + titleText + '</div>' +
+        '<button class="star' + (isFav ? ' on' : '') + '" data-act="fav">' + (isFav ? '★' : '☆') + '</button></div>' +
+        // 进度条 + 连击指示
+        '<div class="progress-wrap"><div class="bar"><i style="width:' + pct + '%"></i></div>' +
+        '<span class="progress-text">' + (s.idx + 1) + ' / ' + s.queue.length +
+        (s.combo >= 2 ? ' · <b class="combo-chip">🔥连对' + s.combo + '</b>' : '') +
+        (s.xpGain ? ' · <b class="xp-chip">+' + s.xpGain + 'XP</b>' : '') + '</span></div>' +
+        // 题目卡片
+        '<div class="card">' +
+          '<div class="q-meta">' +
+            '<span class="chip chip-blue">' + (q.type === 'multi' ? '多选题' : '单选题') + '</span>' +
+            '<span class="chip">' + esc(q.cat || '未分类') + '</span>' +
+          '</div>' +
+          '<div class="q-stem">' + (s.idx + 1) + '. ' + esc(q.stem) + '</div>' +
+          '<div class="opts">';
+      // 四个选项；判定后：正确选项绿、错选红
+      LETTERS.forEach(function (L) {
+        if (!q[L]) return;
+        var cls = 'opt';
+        if (judged) {
+          cls += ' disabled';
+          if (String(q.answer).indexOf(L) >= 0) cls += ' correct';
+          else if (judged.picks.indexOf(L) >= 0) cls += ' wrong';
+        } else if (picks.indexOf(L) >= 0) {
+          cls += ' picked';
+        }
+        html += '<div class="' + cls + '" data-act="opt" data-letter="' + L + '">' +
+          '<span class="letter">' + L + '</span>' +
+          '<span class="opt-text">' + esc(q[L]) + '</span></div>';
+      });
+      html += '</div>';
+      // 多选：勾选后点击“确认答案”统一判定
+      if (q.type === 'multi' && !judged) {
+        html += '<button class="btn btn-primary btn-block" data-act="confirm"' +
+          (picks.length ? '' : ' disabled') + '>确认答案（已选 ' + picks.length + ' 项）</button>';
+      }
+      // 判定结果条（带 XP 飘字与连击提示）
+      if (judged) {
+        html += judged.right
+          ? '<div class="judge-strip ok">✅ 回答正确，继续加油！<small>正确答案：' + esc(q.answer) + '</small>' +
+            (s.combo >= 2 ? '<small class="combo-hot">🔥 连对 ' + s.combo + '</small>' : '') +
+            '<span class="xp-pop">+10 XP</span></div>'
+          : '<div class="judge-strip no">❌ 回答错误<small>你的答案：' + esc(judged.picks) +
+            ' · 正确答案：' + esc(q.answer) + '</small></div>';
+        if (q.exp) html += '<div class="exp-box">💡 解析：' + esc(q.exp) + '</div>';
+      }
+      html += '</div>';
+      // 上一题 / 下一题（最后一题的“下一题”变为“完成本组”）
+      var last = s.idx === s.queue.length - 1;
+      html += '<div class="navbtns">' +
+        '<button class="btn btn-ghost" data-act="prev"' + (s.idx === 0 ? ' disabled' : '') + '>上一题</button>' +
+        '<button class="btn btn-primary" data-act="next">' + (last ? '完成本组' : '下一题') + '</button>' +
+        '</div>';
+      app.innerHTML = html;
+    }
+
+    /** 刷完本组后的结算页 */
+    function renderSessionDone() {
+      var s = session;
+      var total = 0, right = 0;
+      Object.keys(s.judged).forEach(function (k) {
+        total++;
+        if (s.judged[k].right) right++;
+      });
+      var rate = total ? Math.round(right / total * 100) + '%' : '--';
+      var lv = levelInfo();
+      var againLabel = s.mode === 'rand' ? '🎲 再随机一组' : (s.mode === 'weak' ? '🔁 再来一组特训' : (s.mode === 'lv' ? '🔁 继续刷本段题库' : '🔁 重新刷本组'));
+      // 等级挑战：结算页给出晋级考试入口
+      var lvCta = '';
+      if (s.mode === 'lv') {
+        var ri = rankInfo();
+        if (ri.lv >= LV_COUNT) {
+          lvCta = '<p class="muted" style="font-size:12px;margin-top:10px;">👑 已是最高段位「' + esc(ri.rank.name) + '」，保持手感！</p>';
+        } else if (ri.examUnlocked) {
+          lvCta = '<a class="btn btn-primary btn-block" href="#/lvexam" style="margin-top:18px;">📝 参加晋级考试（≥' + LV_PASS + '% 晋级 Lv.' + (ri.lv + 1) + '）</a>';
+        } else {
+          lvCta = '<p class="muted" style="font-size:12px;margin-top:10px;">练满 ' + LV_EXAM_UNLOCK_PCT + '% 解锁晋级考试（当前 ' + ri.pct + '%，还差 ' + ri.remain + ' 题）</p>';
+        }
+      }
+      app.innerHTML = topbar(MODE_TITLE[s.mode]) +
+        '<div class="view"><div class="card" style="text-align:center;padding:30px 16px;">' +
+          '<div style="font-size:44px;">🏁</div>' +
+          '<div style="font-size:18px;font-weight:700;margin:10px 0;">训练完成！</div>' +
+          '<div class="settle-stats">' +
+            '<div class="settle-stat"><b>+' + (s.xpGain || 0) + '</b><span>获得XP</span></div>' +
+            '<div class="settle-stat"><b>' + (s.maxCombo || 0) + '</b><span>最高连对</span></div>' +
+            '<div class="settle-stat"><b>' + rate + '</b><span>正确率(' + right + '/' + total + ')</span></div>' +
+          '</div>' +
+          '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
+            '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
+            '<span class="lvl-num">' + lv.cur + '/' + lv.need + '</span></div>' +
+          (wrongIds.length ? '<p class="muted" style="font-size:12px;margin-top:10px;">💪 本组错了 ' +
+            Math.max(0, total - right) + ' 题，已进错题本；试试「易错点特训」针对性攻克</p>' : '') +
+          '<button class="btn btn-primary btn-block" data-act="restart" style="margin-top:18px;">' + againLabel + '</button>' +
+          lvCta +
+          '<a class="btn btn-ghost btn-block" href="#/" style="margin-top:10px;">返回首页</a>' +
+        '</div></div>';
+    }
+
+    /** 顺序刷题每 10 题一关：过关结算面板 */
+    function renderChunkDone(chunkNo) {
+      var s = session;
+      var start = (chunkNo - 1) * 10;
+      var seg = s.queue.slice(start, start + 10);
+      var total = 0, right = 0, maxCombo = 0, run = 0;
+      seg.forEach(function (q) {
+        var j = s.judged[q.id];
+        if (!j) return;
+        total++;
+        if (j.right) { right++; run++; if (run > maxCombo) maxCombo = run; }
+        else run = 0;
+      });
+      var rate = total ? Math.round(right / total * 100) + '%' : '--';
+      var lv = levelInfo();
+      app.innerHTML = topbar(MODE_TITLE[s.mode]) +
+        '<div class="view"><div class="card" style="text-align:center;padding:30px 16px;">' +
+          '<div style="font-size:44px;">🎉</div>' +
+          '<div style="font-size:18px;font-weight:700;margin:10px 0;">第 ' + chunkNo + ' 关完成！</div>' +
+          '<div class="settle-stats">' +
+            '<div class="settle-stat"><b>+' + (s.xpGain || 0) + '</b><span>累计XP</span></div>' +
+            '<div class="settle-stat"><b>' + maxCombo + '</b><span>本关最高连对</span></div>' +
+            '<div class="settle-stat"><b>' + rate + '</b><span>本关正确率(' + right + '/' + total + ')</span></div>' +
+          '</div>' +
+          '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
+            '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
+            '<span class="lvl-num">' + lv.cur + '/' + lv.need + '</span></div>' +
+          '<button class="btn btn-primary btn-block" data-act="chunknext" style="margin-top:18px;">继续下一关 →</button>' +
+          '<a class="btn btn-ghost btn-block" href="#/" style="margin-top:10px;">存档回首页</a>' +
+        '</div></div>';
+    }
+
+    /* ---------- 模拟考试 ---------- */
+    function renderExamRoute() {
+      if (!exam) newExam();
+      if (exam.submitted) renderExamResult();
+      else if (!exam.started) renderExamIntro();
+      else renderExam();
+    }
+
+    /** 新建一场模拟考（随机 30 道单选） */
+    function newExam() {
+      stopExamTimer();
+      var singles = QBANK.filter(function (q) { return q.type !== 'multi'; });
+      exam = {
+        queue: shuffle(singles).slice(0, Math.min(EXAM_COUNT, singles.length)),
+        idx: 0, picks: {},
+        started: false, submitted: false, result: null, endAt: 0
+      };
+    }
+
+    /* ---------- 晋级考试（复用考试流程，exam.lv 标记） ---------- */
+    function newLvExam() {
+      stopExamTimer();
+      var pool = lvPool(getRank().lv).filter(function (q) { return q.type !== 'multi'; });
+      if (pool.length < LV_EXAM_COUNT) pool = lvPool(getRank().lv); // 兜底
+      exam = {
+        lv: true,
+        queue: shuffle(pool).slice(0, Math.min(LV_EXAM_COUNT, pool.length)),
+        idx: 0, picks: {},
+        started: false, submitted: false, result: null, endAt: 0
+      };
+    }
+
+    function renderLvExamRoute() {
+      if (!exam || !exam.lv) newLvExam();
+      if (exam.submitted) renderExamResult();
+      else if (!exam.started) renderExamIntro();
+      else renderExam();
+    }
+
+    /** 考前说明页（点击“开始考试”才启动倒计时） */
+    function renderExamIntro() {
+      var isLv = !!exam.lv;
+      var title = isLv ? '晋级考试' : '模拟考试';
+      var secs = isLv ? LV_EXAM_SECONDS : EXAM_SECONDS;
+      var desc = isLv
+        ? '第 ' + getRank().lv + ' 级题库随机 ' + exam.queue.length + ' 题<br>限时 ' + (secs / 60) + ' 分钟<br>正确率 ≥ ' + LV_PASS + '% 晋级下一段位'
+        : '随机抽取 ' + exam.queue.length + ' 道单选题<br>限时 ' + (secs / 60) + ' 分钟，到时自动交卷';
+      app.innerHTML = topbar(title) +
+        '<div class="view"><div class="card" style="text-align:center;padding:28px 16px;">' +
+          '<div style="font-size:44px;">' + (isLv ? '🎯' : '📝') + '</div>' +
+          '<div style="font-size:18px;font-weight:700;margin:10px 0 6px;">' + title + '</div>' +
+          '<p class="muted">' + desc + '</p>' +
+          '<p class="muted" style="font-size:12px;margin-top:8px;">错题将自动并入错题本；中途退出将丢弃本次作答</p>' +
+          '<button class="btn btn-primary btn-block" data-act="examstart" style="margin-top:18px;">开始考试</button>' +
+        '</div></div>';
+    }
+
+    /** 停止倒计时 */
+    function stopExamTimer() {
+      if (examTimer) { clearInterval(examTimer); examTimer = null; }
+    }
+
+    /** 开始考试：设置截止时间并启动倒计时 */
+    function startExam() {
+      if (!exam) newExam();
+      exam.started = true;
+      exam.endAt = Date.now() + (exam.lv ? LV_EXAM_SECONDS : EXAM_SECONDS) * 1000;
+      stopExamTimer();
+      examTimer = setInterval(tickExam, 500);
+      renderExam();
+    }
+
+    /** 每次心跳：刷新倒计时显示，归零自动交卷 */
+    function tickExam() {
+      if (!exam || !exam.started || exam.submitted) { stopExamTimer(); return; }
+      var remain = Math.max(0, Math.ceil((exam.endAt - Date.now()) / 1000));
+      var clock = document.getElementById('examClock');
+      if (clock) {
+        clock.textContent = '⏱ ' + fmtTime(remain);
+        clock.className = 'clock' + (remain <= 300 ? ' danger' : '');
+      }
+      if (remain <= 0) submitExam(true);
+    }
+
+    /** 考试答题页 */
+    function renderExam() {
+      var q = exam.queue[exam.idx];
+      var answered = exam.queue.filter(function (x) { return exam.picks[x.id]; }).length;
+      var remain = Math.max(0, Math.ceil((exam.endAt - Date.now()) / 1000));
+      var html = '<div class="topbar"><a class="back" href="#/">‹ 退出</a>' +
+        '<div class="topbar-title">' + (exam.lv ? '晋级考试' : '模拟考试') + '</div>' +
+        '<span class="clock' + (remain <= 300 ? ' danger' : '') + '" id="examClock">⏱ ' + fmtTime(remain) + '</span></div>' +
+        '<div class="progress-wrap"><div class="bar"><i style="width:' +
+          Math.round(((exam.idx + 1) / exam.queue.length) * 100) + '%"></i></div>' +
+        '<span class="progress-text">' + (exam.idx + 1) + ' / ' + exam.queue.length + '</span></div>' +
+        '<div class="card">' +
+          '<div class="q-meta"><span class="chip chip-blue">单选题</span>' +
+          '<span class="chip">' + esc(q.cat || '未分类') + '</span></div>' +
+          '<div class="q-stem">' + (exam.idx + 1) + '. ' + esc(q.stem) + '</div>' +
+          '<div class="opts">';
+      LETTERS.forEach(function (L) {
+        if (!q[L]) return;
+        var cls = 'opt' + (exam.picks[q.id] === L ? ' picked' : '');
+        html += '<div class="' + cls + '" data-act="exampick" data-letter="' + L + '">' +
+          '<span class="letter">' + L + '</span>' +
+          '<span class="opt-text">' + esc(q[L]) + '</span></div>';
+      });
+      html += '</div></div>' +
+        '<div class="navbtns">' +
+          '<button class="btn btn-ghost" data-act="examprev"' + (exam.idx === 0 ? ' disabled' : '') + '>上一题</button>' +
+          '<button class="btn btn-ghost" data-act="examnext"' + (exam.idx === exam.queue.length - 1 ? ' disabled' : '') + '>下一题</button>' +
+        '</div>' +
+        '<div class="exam-foot">' +
+          '<p class="muted" style="text-align:center;">已答 ' + answered + ' / ' + exam.queue.length +
+          ' 题，交卷后错题自动并入错题本</p>' +
+          '<button class="btn btn-danger btn-block" data-act="examsubmit">交 卷</button>' +
+        '</div>';
+      app.innerHTML = html;
+    }
+
+    /** 交卷：自动（倒计时归零）或手动；评分并把错题并入错题本 */
+    function submitExam(auto) {
+      if (!exam || !exam.started || exam.submitted) return;
+      var un = exam.queue.filter(function (q) { return !exam.picks[q.id]; }).length;
+      if (!auto && un > 0 && !window.confirm('还有 ' + un + ' 题未作答，确定要交卷吗？')) return;
+      stopExamTimer();
+      var remain = Math.max(0, Math.ceil((exam.endAt - Date.now()) / 1000));
+      var correct = 0;
+      var wrongDetail = [];
+      exam.queue.forEach(function (q) {
+        var pick = exam.picks[q.id] || '';
+        var right = !!pick && pick === q.answer;
+        if (right) correct++;
+        else wrongDetail.push({ q: q, pick: pick || '未作答' });
+        comboNow = right ? 1 : 0; // 考试无连击概念，按单题对错同步任务统计
+        recordAnswer(q, right); // 计入进度统计；错题并入错题本、答对移出
+      });
+      comboNow = 0;
+      exam.submitted = true;
+      exam.result = {
+        correct: correct,
+        total: exam.queue.length,
+        score: Math.round(correct * 100 / exam.queue.length), // 百分制
+        used: (exam.lv ? LV_EXAM_SECONDS : EXAM_SECONDS) - remain,
+        wrong: wrongDetail
+      };
+      if (exam.lv) {
+        // —— 晋级判定：正确率 ≥ LV_PASS% 通过，晋级 +100XP ——
+        var rk = getRank();
+        var pass = exam.result.score >= LV_PASS;
+        exam.result.verdict = pass ? 'pass' : 'fail';
+        exam.result.lvNo = rk.lv;
+        if (pass) {
+          rk.passed[rk.lv] = true;
+          rk.lv = Math.min(LV_COUNT, rk.lv + 1);
+          saveRank(rk);
+          addXp(100);
+          exam.result.newLv = rk.lv;
+        }
+      } else if (exam.result.score > lsGet(KEY_EXAMBEST, 0)) {
+        lsSet(KEY_EXAMBEST, exam.result.score); // 个人主页·模考最佳（晋级考试不计入）
+      }
+      renderExamResult();
+    }
+
+    /** 评分结果页：得分 + 正确率 + 错题回顾（晋级考试附通过/未通过判定） */
+    function renderExamResult() {
+      var r = exam.result;
+      var html = topbar(exam.lv ? '晋级结果' : '考试评分') +
+        '<div class="view">' +
+        '<div class="card" style="text-align:center;">' +
+          '<div class="score-circle"><b>' + r.score + '</b><span>得分</span></div>' +
+          '<div class="stat-row">' +
+            stat(Math.round(r.correct / r.total * 100) + '%', '正确率') +
+            stat(r.correct + ' / ' + r.total, '答对题数') +
+            stat(fmtTime(r.used), '用时') +
+          '</div>' +
+          (exam.lv && r.verdict === 'pass'
+            ? '<div class="rank-verdict pass">🎉 晋级成功！第 ' + r.lvNo + ' 级考试 ' + r.score + '% ≥ ' + LV_PASS + '%<br>晋升 <b>' + (RANKS[r.newLv - 1] || {}).icon + ' Lv.' + r.newLv + ' ' + esc((RANKS[r.newLv - 1] || {}).name || '') + '</b>，奖励 +100 XP！</div>'
+            : (exam.lv
+              ? '<div class="rank-verdict fail">💔 未通过：正确率需 ≥ ' + LV_PASS + '%（本次 ' + r.score + '%）<br>错题已进错题本，回去刷题后再来挑战！</div>'
+              : '')) +
+        '</div>';
+      html += '<h3 class="sec-title">错题回顾（' + r.wrong.length + '）</h3>';
+      if (!r.wrong.length) {
+        html += '<div class="empty"><div class="big">🎉</div><p>全部答对，太棒了！</p></div>';
+      } else {
+        html += r.wrong.map(function (w) {
+          return '<div class="bk-item">' +
+            '<div class="q-meta"><span class="chip">' + esc(w.q.cat || '未分类') + '</span></div>' +
+            '<div class="bk-stem">' + esc(w.q.stem) + '</div>' +
+            '<div class="rv-line bad">你的答案：' + esc(w.pick) + '</div>' +
+            '<div class="rv-line good">正确答案：' + esc(w.q.answer) + '</div>' +
+            (w.q.exp ? '<div class="exp-box">💡 解析：' + esc(w.q.exp) + '</div>' : '') +
+            '</div>';
+        }).join('');
+      }
+      html += '<div class="navbtns">' +
+        (exam.lv
+          ? (r.verdict === 'pass'
+            ? '<a class="btn btn-primary" href="#/practice/lv">挑战下一级 →</a>'
+            : '<button class="btn btn-primary" data-act="lvretry">再考一次</button>') +
+            '<a class="btn btn-ghost" href="#/">返回首页</a>'
+          : '<button class="btn btn-primary" data-act="examrestart">再考一次</button>' +
+            '<a class="btn btn-ghost" href="#/">返回首页</a>') +
+        '</div></div>';
+      app.innerHTML = html;
+    }
+
+    /* ---------- 错题本 / 我的收藏 ---------- */
+    /**
+     * @param isFav true → 收藏视图；false → 错题本视图
+     */
+    function renderBook(isFav) {
+      var ids = isFav ? favIds : wrongIds;
+      var list = ids.map(function (id) { return qById[id]; }).filter(Boolean);
+      var title = isFav ? '我的收藏' : '错题本';
+      var html = topbar(title + '（' + list.length + '）');
+      if (!list.length) {
+        html += '<div class="empty"><div class="big">' + (isFav ? '⭐' : '🎉') + '</div>' +
+          '<p>' + (isFav ? '还没有收藏任何题目' : '错题本是空的，太棒了！') + '</p>' +
+          '<a class="btn btn-primary" href="#/" style="margin-top:16px;">去刷题</a></div>';
+      } else {
+        var prMode = isFav ? 'fav' : 'wrong';
+        html += '<div class="view"><a class="btn btn-primary btn-block" href="#/practice/' + prMode + '">' +
+          '▶ 重练本组（' + list.length + ' 题）</a></div>';
+        html += list.map(function (q) {
+          return '<div class="bk-item">' +
+            '<div class="q-meta">' +
+              '<span class="chip chip-blue">' + (q.type === 'multi' ? '多选题' : '单选题') + '</span>' +
+              '<span class="chip">' + esc(q.cat || '未分类') + '</span>' +
+            '</div>' +
+            '<div class="bk-stem">' + esc(q.stem) + '</div>' +
+            '<div class="bk-ans">✔ 正确答案：' + esc(q.answer) + '</div>' +
+            '<div class="bk-actions">' +
+              '<button class="btn btn-ghost-red" data-act="' + (isFav ? 'delfav' : 'delwrong') +
+                '" data-id="' + q.id + '">' + (isFav ? '取消收藏' : '移除') + '</button>' +
+            '</div></div>';
+        }).join('');
+      }
+      app.innerHTML = html;
+    }
+
+    /* =====================================================================
+     * 六、交互动作（事件委托：统一在 #app 上监听点击）
+     * ===================================================================== */
+
+    /** 判定当前题（单选点击即判 / 多选确认后判），并记录进度与错题 */
+    function judge(q, picks) {
+      var right = isRight(q, picks);
+      session.judged[q.id] = { picks: picks.slice().sort().join(''), right: right };
+      // —— 连击：答对 +1，答错清零；同步历史最高与每日任务 ——
+      session.combo = right ? (session.combo || 0) + 1 : 0;
+      if (session.combo > (session.maxCombo || 0)) session.maxCombo = session.combo;
+      if (session.combo > (game.bestCombo || 0)) { game.bestCombo = session.combo; lsSet(KEY_GAME, game); }
+      comboNow = session.combo;
+      recordAnswer(q, right);
+      session.xpGain = (session.xpGain || 0) + (right ? 10 : 0);
+      comboNow = 0;
+      renderPractice();
+      // —— 小飞情绪反应：答错安慰，连对喝彩 ——
+      if (!right) {
+        var petCheer = ['没关系，错题小飞已经帮你收好了📝 再试下一题！', '错一次很正常，错题本会陪你练到会为止💪', '哎呀，就差一点点！看看解析记住它～'];
+        petPeek(petCheer[Math.floor(Math.random() * petCheer.length)], 4500);
+      } else if (session.combo === 5) {
+        petPeek('🔥 连对 5 题！手感热起来了，继续冲！', 4500);
+      } else if (session.combo === 10) {
+        petPeek('🎉 连对 10 题！你就是题库里的王牌飞手！', 5000);
+      }
+    }
+
+    /** 切换当前题的收藏状态 */
+    function toggleFav() {
+      if (!session) return;
+      var q = session.queue[session.idx];
+      if (!q) return;
+      var i = favIds.indexOf(q.id);
+      if (i >= 0) favIds.splice(i, 1); else favIds.push(q.id);
+      saveFav();
+      renderPractice();
+    }
+
+    /** 从列表（错题/收藏）中移除一项并刷新当前视图 */
+    function removeId(arr, id, save, rerender) {
+      var i = arr.indexOf(id);
+      if (i >= 0) { arr.splice(i, 1); save(); }
+      rerender();
+    }
+
+    app.addEventListener('click', function (ev) {
+      var el = ev.target.closest('[data-act]');
+      if (!el) return;
+      var act = el.getAttribute('data-act');
+      var id = Number(el.getAttribute('data-id'));
+
+      switch (act) {
+        /* --- 刷题 --- */
+        case 'opt': { // 点击选项
+          if (!session) return;
+          var q = session.queue[session.idx];
+          if (!q || session.judged[q.id]) return; // 已判定，不可修改
+          var letter = el.getAttribute('data-letter');
+          if (q.type === 'single') {
+            judge(q, [letter]); // 单选：点击即判定
+          } else {
+            // 多选：仅切换勾选状态，待确认
+            var picks = session.picks[q.id] || (session.picks[q.id] = []);
+            var i = picks.indexOf(letter);
+            if (i >= 0) picks.splice(i, 1); else picks.push(letter);
+            renderPractice();
+          }
+          break;
+        }
+        case 'confirm': { // 多选确认
+          if (!session) return;
+          var qc = session.queue[session.idx];
+          var pc = session.picks[qc.id] || [];
+          if (pc.length) judge(qc, pc);
+          break;
+        }
+        case 'fav': toggleFav(); break;
+        case 'prev':
+          if (session && session.idx > 0) { session.idx--; renderPractice(); }
+          break;
+        case 'next':
+          if (session && session.idx < session.queue.length) {
+            session.idx++;
+            // 关卡制：跨过 10 题关卡边界（且后面还有题）→ 先弹本关结算
+            if (session.idx % 10 === 0 && session.idx < session.queue.length) {
+              renderChunkDone(session.idx / 10);
+            } else {
+              renderPractice();
+            }
+          }
+          break;
+        case 'chunknext':
+          if (session) {
+            // 首次完成本关：计入关卡数
+            var cno = Math.ceil(session.idx / 10);
+            session.chunksDone = session.chunksDone || {};
+            if (!session.chunksDone[cno]) {
+              session.chunksDone[cno] = 1;
+              game.levels = (game.levels || 0) + 1;
+              lsSet(KEY_GAME, game);
+            }
+            renderPractice();
+          }
+          break;
+        case 'restart':
+          if (session) { session = buildSession(session.mode); renderPractice(); }
+          break;
+
+        /* --- 模拟考 --- */
+        case 'exampick': {
+          if (!exam || exam.submitted) return;
+          var qe = exam.queue[exam.idx];
+          var le = el.getAttribute('data-letter');
+          // 单选可改选；再次点击同一项取消选择
+          if (exam.picks[qe.id] === le) delete exam.picks[qe.id];
+          else exam.picks[qe.id] = le;
+          renderExam();
+          break;
+        }
+        case 'examprev':
+          if (exam && exam.idx > 0) { exam.idx--; renderExam(); }
+          break;
+        case 'examnext':
+          if (exam && exam.idx < exam.queue.length - 1) { exam.idx++; renderExam(); }
+          break;
+        case 'examstart': startExam(); break;
+        case 'examsubmit': submitExam(false); break;
+        case 'examrestart': newExam(); renderExamIntro(); break;
+        case 'lvretry':     newLvExam(); renderExamIntro(); break;
+
+        /* --- 错题本 / 收藏 --- */
+        case 'dopt': { // 每日一题作答
+          dailyPick(el.getAttribute('data-letter'));
+          break;
+        }
+        case 'delwrong':
+          removeId(wrongIds, id, saveWrong, function () { renderBook(false); syncTabbar('wrong'); });
+          break;
+        case 'delfav':
+          removeId(favIds, id, saveFav, function () { renderBook(true); syncTabbar('fav'); });
+          break;
+      }
+    });
+
+    /* =====================================================================
+     * 七、启动
+     * ===================================================================== */
+
+    /* =====================================================================
+     * 三·六、宠物伙伴「小飞」：情绪价值 + 情境提醒 + 新手引导
+     * ===================================================================== */
+    var KEY_TUTORIAL = 'wrh5_tutorial';
+    var petPrevWrong = null;   // 上次回家时的错题数（检测新增错题）
+    var petPrevLv = null;      // 上次检测时的等级（检测升级）
+    var petLineIdx = 0;        // 点击轮播下标
+
+    /** 宠物气泡说话（默认 6 秒后自动消失） */
+    function petSay(msg, ms) {
+      var b = document.getElementById('petBubble');
+      var p = document.getElementById('pet');
+      if (!b || !p) return;
+      b.innerHTML = msg;
+      p.classList.remove('off');
+      b.classList.add('show');
+      clearTimeout(petSay._t);
+      petSay._t = setTimeout(function () { b.classList.remove('show'); }, ms || 6000);
+    }
+
+    /** 刷题页等隐藏视图里的"探头"说话：说完自动缩回去 */
+    function petPeek(msg, ms) {
+      var p = document.getElementById('pet');
+      petSay(msg, ms);
+      clearTimeout(petPeek._t);
+      petPeek._t = setTimeout(function () {
+        if (!p) return;
+        var v = (location.hash || '').replace(/^#\//, '').split('/')[0];
+        var show = v === '' || v === 'home' || v === 'wrong' || v === 'fav' || v === 'me';
+        if (!show) p.classList.add('off');
+      }, (ms || 6000) + 400);
+    }
+
+    /** 点击小飞：快速连点=痒痒彩蛋；否则弹气泡+互动按钮（摸摸头/喂零食） */
+    var KEY_PETBOND = 'wrh5_pet'; // { bond, lastPet, lastFeed, fxDay, fxN }
+    var BOND_TIERS = [
+      { min: 0,   name: '初识' },
+      { min: 20,  name: '熟识' },
+      { min: 50,  name: '好友' },
+      { min: 100, name: '挚友' },
+      { min: 200, name: '灵魂伴侣' }
+    ];
+    function petState() {
+      var s = {};
+      try { s = JSON.parse(localStorage.getItem(KEY_PETBOND) || '{}') || {}; } catch (e) { s = {}; }
+      s.bond = s.bond || 0;
+      s.fxN = s.fxN || 0;
+      return s;
+    }
+    function savePetState(s) { localStorage.setItem(KEY_PETBOND, JSON.stringify(s)); }
+    function bondName(bond) {
+      var n = BOND_TIERS[0].name;
+      for (var i = 0; i < BOND_TIERS.length; i++) { if (bond >= BOND_TIERS[i].min) n = BOND_TIERS[i].name; }
+      return n;
+    }
+    /** 撒爱心粒子 */
+    function petHearts(n) {
+      var p = document.getElementById('pet');
+      if (!p) return;
+      for (var i = 0; i < (n || 2); i++) {
+        var h = document.createElement('span');
+        h.className = 'pet-heart';
+        h.textContent = i % 2 === 0 ? '❤️' : '💛';
+        h.style.setProperty('--dx', (Math.round(Math.random() * 44) - 22) + 'px');
+        h.style.animationDelay = (i * 0.16) + 's';
+        p.appendChild(h);
+        (function (el) { setTimeout(function () { el.remove(); }, 1500); })(h);
+      }
+    }
+    /** 小飞表情临时变化 */
+    function petFace(emoji, ms) {
+      var b = document.querySelector('#pet .pet-body');
+      if (!b) return;
+      var old = b.textContent;
+      b.textContent = emoji;
+      setTimeout(function () { b.textContent = old; }, ms || 1500);
+    }
+
+    function petClick() {
+      var now = Date.now();
+      // 快速连点 → 痒痒彩蛋
+      if (petClick._last && now - petClick._last < 400) {
+        petClick._last = now;
+        var el = document.getElementById('pet');
+        if (el) { el.classList.remove('excited'); void el.offsetWidth; el.classList.add('excited'); }
+        petSay('哈哈哈哈好痒～别戳啦🤣', 2600);
+        petHearts(1);
+        return;
+      }
+      petClick._last = now;
+
+      var s = petState();
+      var tips = [];
+      var done = progress.doneId.length;
+      var ri = (typeof rankInfo === 'function') && rankInfo();
+      if (wrongIds.length > 0) tips.push('错题本里有 <b>' + wrongIds.length + '</b> 道题等你消灭，去刷一道试试？');
+      var t = tasks && tasks.date === todayStr() ? tasks : { answers: 0, corrects: 0, maxCombo: 0, awarded: {} };
+      if (!t.awarded || !t.awarded.a1) tips.push('今天的 <b>刷10道题</b> 任务还没完成哦，+20XP 等着你！');
+      if (ri && !ri.examUnlocked && ri.remain > 0) tips.push('「' + ri.rank.name + '」还差 <b>' + ri.remain + '</b> 题就能考晋级啦，加油！');
+      if (ri && ri.examUnlocked) tips.push('晋级考试已解锁！考过就是「' + (ri.next ? ri.next.name : '') + '」了！');
+      var c = weakCats();
+      if (c.length) tips.push('你的弱点是 <b>' + esc(c[0].cat) + '</b>，要不要来一组特训？');
+      if (done === 0) tips.push('你好呀，我是小飞🚁 点「顺序刷题」开始你的第一题吧！');
+      tips.push('已刷 <b>' + done + '</b> 题，每天进步一点点～');
+      tips.push('连续刷题会有🔥连击加成，别停下来！');
+      var msg = tips[petLineIdx % tips.length];
+      petLineIdx++;
+      petSay(
+        msg +
+        '<div class="pet-acts">' +
+          '<button class="pet-act" data-act="petCaress">👋 摸摸头</button>' +
+          '<button class="pet-act" data-act="petFeed">🍪 喂零食</button>' +
+        '</div>' +
+        '<div style="margin-top:7px;font-size:11px;color:#94a3b8">和你的亲密度：' + s.bond + '（' + bondName(s.bond) + '）</div>'
+      );
+    }
+
+    /** 摸摸头：+1 亲密度（30 秒冷却），冒爱心 */
+    function petCaress() {
+      var s = petState();
+      var now = Date.now();
+      if (s.lastPet && now - s.lastPet < 30000) {
+        petSay('刚刚摸过头啦，先去刷两题，回头再来找我玩～', 3000);
+        return;
+      }
+      var before = bondName(s.bond);
+      s.bond += 1;
+      s.lastPet = now;
+      savePetState(s);
+      petHearts(3);
+      petFace('😊', 1400);
+      if (bondName(s.bond) !== before) {
+        petSay('💕 亲密度达到 <b>' + s.bond + '</b>，我们现在是「' + bondName(s.bond) + '」啦！');
+      } else {
+        var petWords = ['好舒服呀～你也要加油刷题哦！', '嘿嘿，最喜欢你啦！', '摸完头充满干劲，去刷一道题吧！'];
+        petSay(petWords[Math.floor(Math.random() * petWords.length)], 3600);
+      }
+    }
+
+    /** 喂零食：+2 亲密度（10 分钟冷却），20% 概率掉 +5XP（每天 3 次掉落上限） */
+    function petFeed() {
+      var s = petState();
+      var now = Date.now();
+      if (s.lastFeed && now - s.lastFeed < 600000) {
+        petSay('刚吃过啦，吃太多会飞不动的～先去刷题吧！', 3000);
+        return;
+      }
+      var today = todayStr();
+      if (s.fxDay !== today) { s.fxDay = today; s.fxN = 0; }
+      var before = bondName(s.bond);
+      s.bond += 2;
+      s.lastFeed = now;
+      var msg = '🍪 好吃！谢谢投喂～亲密度 +2（' + s.bond + ' ' + bondName(s.bond) + '）';
+      if (Math.random() < 0.2 && s.fxN < 3) {
+        s.fxN += 1;
+        addXp(5);
+        msg = '🍪 哇！小飞从口袋里翻出了 <b>+5 XP</b> 送给你！（今日彩蛋 ' + s.fxN + '/3）';
+      }
+      savePetState(s);
+      petHearts(2);
+      petFace('😋', 1600);
+      var el = document.getElementById('pet');
+      if (el) { el.classList.remove('excited'); void el.offsetWidth; el.classList.add('excited'); }
+      if (bondName(s.bond) !== before) {
+        petSay('💕 亲密度达到 <b>' + s.bond + '</b>，我们升级成「' + bondName(s.bond) + '」了！', 5000);
+      } else {
+        petSay(msg, 4200);
+      }
+    }
+
+    /** 每次路由后同步宠物显隐 + 环境情绪检测 */
+    function petSync(view) {
+      var p = document.getElementById('pet');
+      if (!p) return;
+      var show = view === '' || view === 'home' || view === 'wrong' || view === 'fav' || view === 'me';
+      p.classList.toggle('off', !show);
+      if (!show) return;
+
+      // ① 新增错题 → 温柔提醒（非说教）
+      if (petPrevWrong !== null && wrongIds.length > petPrevWrong) {
+        var d = wrongIds.length - petPrevWrong;
+        petSay(d === 1 ? '哎呀错了一题，没关系，我已经帮你收进错题本了📝' : '有 <b>' + d + '</b> 道题进了错题本，我陪你一起收拾它们！');
+      }
+      petPrevWrong = wrongIds.length;
+
+      // ② 每日任务全部完成 → 表扬（每天最多一次）
+      var t = tasks && tasks.date === todayStr() ? tasks : null;
+      if (t && t.awarded && t.awarded.a1 && t.awarded.a2 && t.awarded.a3) {
+        var cheer = localStorage.getItem('wrh5_petCheer');
+        if (cheer !== todayStr()) {
+          localStorage.setItem('wrh5_petCheer', todayStr());
+          petSay('🎉 今天的任务全部完成！你就是最自律的飞手！');
+        }
+      }
+
+      // ③ 段位/等级变化 → 庆祝
+      var lv = levelInfo().lv;
+      if (petPrevLv !== null && lv > petPrevLv) {
+        petSay('🎊 升级到 Lv.' + lv + ' 了！小飞为你骄傲～');
+      }
+      petPrevLv = lv;
+
+      // ④ 晋级考试解锁 → 提醒一次（每次会话只说一次）
+      if (!petSync.examReminded && typeof rankInfo === 'function') {
+        var ri = rankInfo();
+        if (ri.examUnlocked) {
+          petSync.examReminded = true;
+          petSay('📝 晋级考试解锁啦！通过就能晋升「' + (ri.next ? ri.next.name : '') + '」～');
+        }
+      }
+    }
+
+    /* ---------- 新手引导（首次访问 4 步卡片） ---------- */
+    var TUT_STEPS = [
+      { ico: '📖', t: '顺序刷题，由易到难', d: '从第 1 级「见习飞手」开始，10 题一关，答对得 XP 升级，答错自动进错题本。' },
+      { ico: '🎯', t: '今日任务 + 每日一题', d: '首页每天 3 个小任务（自动发 XP），别忘了每日一题打卡，连续打卡有记录！' },
+      { ico: '🩺', t: '错题本 + 易错点特训', d: '答对错题会自动移出；刷 10 题后小飞会为你生成「弱点画像」，一键特训薄弱分类。' },
+      { ico: '📝', t: '段位晋级考试', d: '本级题库练满 60% 解锁晋级考试（20 题/15 分钟），≥75% 通过即晋升段位！' }
+    ];
+    function renderTutorial() {
+      var old = document.getElementById('tutMask');
+      if (old) old.remove();
+      var step = 0;
+      var mask = document.createElement('div');
+      mask.id = 'tutMask';
+      mask.className = 'tut-mask';
+      function paint() {
+        var s = TUT_STEPS[step];
+        mask.innerHTML =
+          '<div class="tut-card">' +
+            '<div class="tut-ico">🚁</div>' +
+            '<div class="tut-title">你好，我是小飞！</div>' +
+            '<div class="tut-ico" style="font-size:34px">' + s.ico + '</div>' +
+            '<div class="tut-title" style="margin-top:2px;font-size:15px">' + s.t + '</div>' +
+            '<div class="tut-desc">' + s.d + '</div>' +
+            '<div class="tut-dots">' + TUT_STEPS.map(function (_, i) {
+              return '<span class="tut-dot' + (i === step ? ' on' : '') + '"></span>';
+            }).join('') + '</div>' +
+            '<div class="tut-btns">' +
+              '<button class="tut-skip" id="tutSkip">跳过</button>' +
+              '<button class="tut-next" id="tutNext">' + (step === TUT_STEPS.length - 1 ? '开始刷题，出发！' : '下一步') + '</button>' +
+            '</div>' +
+          '</div>';
+      }
+      function finish() {
+        localStorage.setItem(KEY_TUTORIAL, '1');
+        mask.remove();
+        petSay('出发吧！遇到不懂的随时点我～', 5000);
+      }
+      mask.addEventListener('click', function (e) {
+        if (e.target.id === 'tutSkip') { finish(); return; }
+        if (e.target.id === 'tutNext') {
+          if (step === TUT_STEPS.length - 1) { finish(); } else { step++; paint(); }
+        }
+      });
+      document.body.appendChild(mask);
+      paint();
+    }
+
+    window.addEventListener('hashchange', route);
+    route(); // 首次进入按当前 hash 渲染
+    // 宠物事件绑定（#pet 在 #app 外，不会被重绘冲掉）
+    (function () {
+      var p = document.getElementById('pet');
+      if (p) p.addEventListener('click', petClick);
+      // 气泡内互动按钮（摸摸头 / 喂零食）用委托；阻止冒泡避免触发宠物点击/连点彩蛋
+      var b = document.getElementById('petBubble');
+      if (b) b.addEventListener('click', function (e) {
+        var act = e.target.getAttribute && e.target.getAttribute('data-act');
+        if (act === 'petCaress' || act === 'petFeed') {
+          e.stopPropagation();
+          if (act === 'petCaress') petCaress();
+          else petFeed();
+        }
+      });
+    })();
+    // 新手引导：首次访问弹出
+    if (!localStorage.getItem(KEY_TUTORIAL)) {
+      renderTutorial();
+      petPrevWrong = wrongIds.length; // 引导期间不报"新增错题"
+    }
+  })();
+  </script>
+  <script>
+    /* PWA：https/localhost 下注册离线ServiceWorker */
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      navigator.serviceWorker.register('./sw.js').catch(function(){});
+    }
+  </script>
+</body>
+</html>
