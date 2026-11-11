@@ -1,5 +1,5 @@
 // sw.js — 离线缓存（题目应用零外部依赖，缓存首页与图标即可全离线）
-const CACHE = 'wrh5-v13';
+const CACHE = 'wrh5-v14';
 const ASSETS = ['./', './index.html', './data.js', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
