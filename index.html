@@ -2,49 +2,49 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <!-- 绉诲姩绔紭鍏堬細瑙嗗彛瀹藉害 = 璁惧瀹藉害锛屽垵濮嬬缉鏀?1 鍊嶏紝閫傞厤鍒樻捣灞忓畨鍏ㄥ尯 -->
+  <!-- 移动端优先：视口宽度 = 设备宽度，初始缩放 1 倍，适配刘海屏安全区 -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <!-- 娴忚鍣ㄥ湴鍧€鏍?/ 鐘舵€佹爮涓婚鑹?-->
+  <!-- 浏览器地址栏 / 状态栏主题色 -->
   <meta name="theme-color" content="#2563EB">
-  <title>鏃犱汉鏈洪搴撳疂鍏?- CAAC鐞嗚鍒烽</title>
+  <title>无人机题库宝典 - CAAC理论刷题</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="棰樺簱瀹濆吀">
+  <meta name="apple-mobile-web-app-title" content="题库宝典">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="description" content="CAAC鏃犱汉鏈虹悊璁鸿€冭瘯1428棰樺厤璐瑰湪绾垮埛棰橈細椤哄簭/闅忔満缁冧範銆佸閫変笓缁冦€?0鍒嗛挓妯℃嫙鑰冦€侀敊棰樻湰銆佹敹钘忥紝鍏ㄧ绾垮彲鐢ㄣ€?>
+  <meta name="description" content="CAAC无人机理论考试1428题免费在线刷题：顺序/随机练习、多选专练、20分钟模拟考、错题本、收藏，全离线可用。">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="鏃犱汉鏈洪搴撳疂鍏?- 1428棰樺厤璐瑰埛">
-  <meta property="og:description" content="CAAC鐞嗚鑰冭瘯1428棰樺厤璐瑰湪绾垮埛锛氭ā鎷熻€?閿欓鏈紝鎵嬫満鐩存帴鐢ㄣ€?>
+  <meta property="og:title" content="无人机题库宝典 - 1428题免费刷">
+  <meta property="og:description" content="CAAC理论考试1428题免费在线刷：模拟考+错题本，手机直接用。">
 
   <style>
-    /* ================= 鍏ㄥ眬涓庡竷灞€ ================= */
+    /* ================= 全局与布局 ================= */
     :root {
-      --primary: #2563EB;        /* 涓昏壊 */
+      --primary: #2563EB;        /* 主色 */
       --primary-dark: #1D4ED8;
-      --primary-light: #EFF6FF;  /* 涓昏壊娴呭簳 */
-      --green: #16A34A;          /* 姝ｇ‘ */
+      --primary-light: #EFF6FF;  /* 主色浅底 */
+      --green: #16A34A;          /* 正确 */
       --green-bg: #F0FDF4;
-      --red: #DC2626;            /* 閿欒 */
+      --red: #DC2626;            /* 错误 */
       --red-bg: #FEF2F2;
       --text: #0F172A;
-      --muted: #64748B;          /* 娆¤鏂囧瓧 */
-      --line: #E2E8F0;           /* 鍒嗛殧绾?杈规 */
-      --bg: #F1F5F9;             /* 椤甸潰搴曡壊 */
+      --muted: #64748B;          /* 次要文字 */
+      --line: #E2E8F0;           /* 分隔线/边框 */
+      --bg: #F1F5F9;             /* 页面底色 */
       --card: #FFFFFF;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      background: #DBEAFE; /* 妗岄潰绔ぇ灞忔椂闇插嚭鐨勫簳鑹?*/
+      background: #DBEAFE; /* 桌面端大屏时露出的底色 */
       color: var(--text);
       font-size: 15px;
       line-height: 1.65;
     }
-    /* 绉诲姩绔紭鍏堬細鍐呭鍒楁渶澶?480px 灞呬腑锛屾闈㈢鍚屾牱姝ｅ父鏄剧ず */
+    /* 移动端优先：内容列最大 480px 居中，桌面端同样正常显示 */
     #wrap {
       max-width: 480px;
       margin: 0 auto;
@@ -56,7 +56,7 @@
     .view { padding: 14px 14px 40px; }
     .muted { color: var(--muted); font-size: 14px; }
 
-    /* ================= 棣栭〉 ================= */
+    /* ================= 首页 ================= */
     .hero {
       position: relative;
       overflow: hidden;
@@ -85,7 +85,7 @@
       margin: 12px 14px;
       box-shadow: 0 4px 14px rgba(15, 23, 42, .06);
     }
-    /* 缁熻鍗′笂鎻愶紝鍘嬩綇澶村浘褰㈡垚灞傛 */
+    /* 统计卡上提，压住头图形成层次 */
     .card.stat-card { position: relative; z-index: 2; margin-top: -30px; box-shadow: 0 6px 20px rgba(30, 58, 138, .12); }
     .card.daily { position: relative; overflow: hidden; }
     .card.daily::before {
@@ -113,7 +113,7 @@
       width: 46px; height: 46px; border-radius: 14px; font-size: 24px;
       background: var(--primary-light);
     }
-    /* 姣忎釜鍏ュ彛涓€涓笓灞炶壊 */
+    /* 每个入口一个专属色 */
     .entries .tile:nth-child(1) .tile-ico { background: #EFF6FF; }
     .entries .tile:nth-child(2) .tile-ico { background: #F5F3FF; }
     .entries .tile:nth-child(3) .tile-ico { background: #F0FDF4; }
@@ -131,7 +131,7 @@
     }
     .footer-note { text-align: center; color: var(--muted); font-size: 12px; margin: 22px 0 28px; }
 
-    /* ================= 椤舵爮 ================= */
+    /* ================= 顶栏 ================= */
     .topbar {
       position: sticky; top: 0; z-index: 10;
       display: flex; align-items: center; gap: 8px;
@@ -148,12 +148,12 @@
     }
     .clock.danger { background: var(--red); }
 
-    /* ================= 鎸夐挳 ================= */
+    /* ================= 按钮 ================= */
     .btn {
       display: inline-block; border: none; border-radius: 12px;
       padding: 12px 18px; font-size: 16px; font-weight: 600;
       cursor: pointer; text-align: center; text-decoration: none;
-      transition: opacity .15s, transform .1s; min-height: 44px; /* 瑙︽帶鍙嬪ソ */
+      transition: opacity .15s, transform .1s; min-height: 44px; /* 触控友好 */
     }
     .btn:active { opacity: .85; transform: scale(.98); }
     .btn:disabled { opacity: .45; cursor: default; transform: none; }
@@ -163,7 +163,7 @@
     .btn-ghost-red { background: var(--card); color: var(--red); border: 1.5px solid var(--red); }
     .btn-block { display: block; width: 100%; }
 
-    /* ================= 鍒烽 ================= */
+    /* ================= 刷题 ================= */
     .progress-wrap { display: flex; align-items: center; gap: 10px; margin: 12px 14px 0; }
     .bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
     .bar i { display: block; height: 100%; background: var(--primary); border-radius: 4px; transition: width .2s; }
@@ -205,7 +205,7 @@
     .exam-foot { margin: 0 14px 20px; }
     .exam-foot p { margin-bottom: 10px; }
 
-    /* ================= 鍒楄〃锛堥敊棰樻湰/鏀惰棌/閿欓鍥為【锛?================= */
+    /* ================= 列表（错题本/收藏/错题回顾） ================= */
     .bk-item {
       background: var(--card); border-radius: 14px; padding: 14px;
       margin: 0 14px 12px; box-shadow: 0 1px 3px rgba(15, 23, 42, .06);
@@ -219,7 +219,7 @@
     .bk-actions .btn { flex: 1; padding: 9px 0; font-size: 14px; border-radius: 10px; min-height: 38px; }
     .sec-title { margin: 18px 16px 12px; font-size: 16px; }
 
-    /* ================= 妯℃嫙鑰冭瘎鍒?================= */
+    /* ================= 模拟考评分 ================= */
     .score-circle {
       width: 120px; height: 120px; border-radius: 50%;
       border: 6px solid var(--primary);
@@ -229,7 +229,7 @@
     .score-circle b { font-size: 40px; color: var(--primary); line-height: 1.1; }
     .score-circle span { font-size: 13px; color: var(--muted); }
 
-    /* ================= 绌虹姸鎬?================= */
+    /* ================= 空状态 ================= */
     .empty { text-align: center; color: var(--muted); padding: 56px 20px; }
     .empty .big { font-size: 44px; margin-bottom: 10px; }
     .empty p { margin-bottom: 4px; }
@@ -240,7 +240,7 @@
     .daily-result.ok{background:#EAF9EF;color:#15803D}
     .daily-result.bad{background:#FDEBEB;color:#B91C1C}
   
-    /* ---------- 涓汉涓婚〉 ---------- */
+    /* ---------- 个人主页 ---------- */
     .hero { position: relative; }
     .hero-me {
       position: absolute; top: 14px; right: 14px;
@@ -313,7 +313,7 @@
     }
     .me-tip { font-size: 12px; color: #DC2626; margin-top: 8px; min-height: 14px; }
     .me-foot { font-size: 11px; color: var(--muted); text-align: center; margin: 4px 0 20px; }
-    /* ---------- 搴曢儴瀵艰埅鏍?---------- */
+    /* ---------- 底部导航栏 ---------- */
     .tabbar {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
       display: flex; background: #fff;
@@ -338,7 +338,7 @@
     }
     body.tabbed .view { padding-bottom: 96px; }
 
-    /* ---------- 娓告垙鍖栵細XP / 绛夌骇 / 浠诲姟 / 杩炲嚮 / 缁撶畻 / 寮辩偣 ---------- */
+    /* ---------- 游戏化：XP / 等级 / 任务 / 连击 / 结算 / 弱点 ---------- */
     .lvl-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
     .lvl-chip {
       background: rgba(255,255,255,.95); color: var(--brand);
@@ -394,7 +394,7 @@
       background: #FEE2E2; border-radius: 9px; padding: 3px 9px;
     }
 
-    /* ---------- 娈典綅鏅嬬骇鍗?---------- */
+    /* ---------- 段位晋级卡 ---------- */
     .rank-card {
       border: 2px solid rgba(37,99,235,.14);
       background: linear-gradient(160deg, #EFF6FF, #FFFFFF 55%);
@@ -412,7 +412,7 @@
     .rank-verdict.pass { background: #DCFCE7; color: #15803D; }
     .rank-verdict.fail { background: #FEE2E2; color: #B91C1C; }
 
-    /* ---------- 瀹犵墿浼欎即銆屽皬椋炪€?---------- */
+    /* ---------- 宠物伙伴「小飞」 ---------- */
     .pet {
       position: fixed; right: 14px; bottom: 100px; z-index: 70;
       width: 52px; height: 52px; border-radius: 50%;
@@ -440,7 +440,7 @@
     }
     .pet:active { transform: scale(.92); }
 
-    /* 瀹犵墿浜掑姩锛氭搷浣滄寜閽?/ 鐖卞績绮掑瓙 / 鎽囨憜绗?*/
+    /* 宠物互动：操作按钮 / 爱心粒子 / 摇摆笑 */
     .pet-acts { display: flex; gap: 8px; margin-top: 9px; }
     .pet-act {
       flex: 1; border: none; cursor: pointer;
@@ -467,7 +467,7 @@
       80% { transform: rotate(-6deg); }
     }
 
-    /* ---------- 鏂版墜寮曞閬僵 ---------- */
+    /* ---------- 新手引导遮罩 ---------- */
     .tut-mask {
       position: fixed; inset: 0; z-index: 90;
       background: rgba(15, 23, 42, .62);
@@ -500,8 +500,8 @@
       padding: 11px 0; cursor: pointer;
     }
 
-    /* ============ Duolingo 瑙嗚璇█瑕嗙洊灞?============
-       缁跨郴涓昏壊 / 鍘氱伆鎻忚竟鍗＄墖 / 3D搴曡竟鎸夐挳 / 鍦嗚儢瀛?/ 鍒ゅ畾绾㈢豢 */
+    /* ============ Duolingo 视觉语言覆盖层 ============
+       绿系主色 / 厚灰描边卡片 / 3D底边按钮 / 圆胖字 / 判定红绿 */
     :root {
       --brand: #58CC02;
       --brand-dark: #46A302;
@@ -564,46 +564,50 @@
   </style>
 </head>
 <body>
-  <!-- 鍗曢〉搴旂敤鎸傝浇鐐癸細鎵€鏈夎鍥剧敱 JS 娓叉煋杩?#app -->
+  <!-- 单页应用挂载点：所有视图由 JS 渲染进 #app -->
   <div id="wrap"><div id="app"></div></div>
-  <!-- 瀹犵墿浼欎即銆屽皬椋炪€嶏細鎯呯华浠峰€?+ 鎯呭鎻愰啋锛堝浐瀹氬彸涓嬭锛岄殢瑙嗗浘鏄鹃殣锛?-->
+  <!-- 宠物伙伴「小飞」：情绪价值 + 情境提醒（固定右下角，随视图显隐） -->
   <div id="pet" class="pet off" data-act="pet">
     <div class="pet-bubble" id="petBubble"></div>
-    <div class="pet-body">馃殎</div>
+    <div class="pet-body">🚁</div>
   </div>
 
-  <!-- 搴曢儴瀵艰埅鏍忥細棣栭〉 / 閿欓鏈?/ 鎴戠殑锛堝埛棰樹笌鑰冭瘯椤佃嚜鍔ㄩ殣钘忥級 -->
+  <!-- 底部导航栏：首页 / 错题本 / 我的（刷题与考试页自动隐藏） -->
   <nav class="tabbar off" id="tabbar">
-    <a href="#/" data-t="home"><span class="t-ico">馃彔</span><span>棣栭〉</span></a>
-    <a href="#/wrong" data-t="wrong"><span class="t-ico">馃摃</span><span>閿欓鏈?/span><i class="tab-badge" id="tabWrongBadge" style="display:none">0</i></a>
-    <a href="#/me" data-t="me"><span class="t-ico">馃懁</span><span>鎴戠殑</span></a>
+    <a href="#/" data-t="home"><span class="t-ico">🏠</span><span>首页</span></a>
+    <a href="#/wrong" data-t="wrong"><span class="t-ico">📕</span><span>错题本</span><i class="tab-badge" id="tabWrongBadge" style="display:none">0</i></a>
+    <a href="#/me" data-t="me"><span class="t-ico">👤</span><span>我的</span></a>
   </nav>
 
-  <!-- 棰樺簱鏁版嵁锛堢函闈欐€併€佺绾匡紱鍐呭涓庢簮 h5_data.js 瀹屽叏涓€鑷达級 -->
+  <!-- 题库数据（纯静态、离线；内容与源 h5_data.js 完全一致） -->
   <script src="data.js"></script>
 
   <script src="cloud-config.js"></script>
-  <!-- 搴旂敤閫昏緫 -->
+  <!-- 应用逻辑 -->
   <script>
   (function () {
     'use strict';
 
     /* =====================================================================
-     * 涓€銆佸父閲忎笌鏈湴瀛樺偍灞?     * ===================================================================== */
+     * 一、常量与本地存储层
+     * ===================================================================== */
 
-    // localStorage 閿悕锛氬涔犺繘搴?/ 閿欓 / 鏀惰棌
+    // localStorage 键名：学习进度 / 错题 / 收藏
     var KEY_PROGRESS = 'wrh5_progress';
     var KEY_WRONG    = 'wrh5_wrong';
     var KEY_FAV      = 'wrh5_fav';
 
-    // 妯℃嫙鑰冭瘯鍙傛暟锛氶殢鏈?30 閬撳崟閫夐锛岄檺鏃?20 鍒嗛挓
+    // 模拟考试参数：随机 30 道单选题，限时 20 分钟
     var EXAM_COUNT   = 30;
     var EXAM_SECONDS = 20 * 60;
 
-    // 閫夐」瀛楁瘝椤哄簭
+    // 单次训练题数上限：刷题一轮不超过 12 题（模拟考单独走 exam 流程，不受此限）
+    var SESSION_CAP = 12;
+
+    // 选项字母顺序
     var LETTERS = ['A', 'B', 'C', 'D'];
 
-    /** 瀹夊叏璇诲彇 JSON锛氶敭涓嶅瓨鍦ㄦ垨瑙ｆ瀽澶辫触鏃惰繑鍥為粯璁ゅ€?*/
+    /** 安全读取 JSON：键不存在或解析失败时返回默认值 */
     function lsGet(key, def) {
       try {
         var raw = localStorage.getItem(key);
@@ -612,17 +616,18 @@
         return (val === null || val === undefined) ? def : val;
       } catch (e) { return def; }
     }
-    /** 鍐欏叆 JSON锛堝け璐ラ潤榛樺鐞嗭紝渚嬪娴忚鍣ㄩ殣绉佹ā寮忓啓鍏ュ彈闄愶級 */
+    /** 写入 JSON（失败静默处理，例如浏览器隐私模式写入受限） */
     function lsSet(key, val) {
       try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
     }
 
-    // 搴旂敤鐘舵€侊紙鍐呭瓨缂撳瓨锛屾瘡娆″彉鏇村悗绔嬪嵆鍐欏洖 localStorage锛?    var progress = lsGet(KEY_PROGRESS, { doneId: [], correct: 0, total: 0 });
+    // 应用状态（内存缓存，每次变更后立即写回 localStorage）
+    var progress = lsGet(KEY_PROGRESS, { doneId: [], correct: 0, total: 0 });
     if (!Array.isArray(progress.doneId)) progress.doneId = [];
     if (typeof progress.correct !== 'number') progress.correct = 0;
     if (typeof progress.total  !== 'number') progress.total  = 0;
-    var wrongIds = lsGet(KEY_WRONG, []); // 绛旈敊棰樼洰鐨?id 鍒楄〃
-    var favIds   = lsGet(KEY_FAV, []);   // 鏀惰棌棰樼洰鐨?id 鍒楄〃
+    var wrongIds = lsGet(KEY_WRONG, []); // 答错题目的 id 列表
+    var favIds   = lsGet(KEY_FAV, []);   // 收藏题目的 id 列表
     if (!Array.isArray(wrongIds)) wrongIds = [];
     if (!Array.isArray(favIds))   favIds   = [];
 
@@ -631,12 +636,13 @@
     function saveFav()      { lsSet(KEY_FAV, favIds); }
 
     /* =====================================================================
-     * 浜屄蜂簲 娓告垙鍖栨牳蹇冿細XP缁忛獙 / 绛夌骇 / 姣忔棩浠诲姟 / 鏄撻敊鐐规帉鎻″害
+     * 二·五 游戏化核心：XP经验 / 等级 / 每日任务 / 易错点掌握度
      * ===================================================================== */
 
-    var KEY_XP      = 'wrh5_xp';       // 缁忛獙鍊兼€婚噺
-    var KEY_TASKS   = 'wrh5_tasks';    // 姣忔棩浠诲姟 {date,answers,corrects,maxCombo,awarded:{a1,a2,a3}}
-    var KEY_MASTERY = 'wrh5_mastery';  // 鎺屾彙搴?{qid:{w:閿欐,r:瀵规,s:杩炲}}锛岃繛瀵?娆?宸叉帉鎻?    var KEY_GAME    = 'wrh5_game';     // 娓告垙鍖栨。妗?{bestCombo:鍘嗗彶鏈€楂樿繛瀵?levels:宸插畬鎴愬叧鍗℃暟}
+    var KEY_XP      = 'wrh5_xp';       // 经验值总量
+    var KEY_TASKS   = 'wrh5_tasks';    // 每日任务 {date,answers,corrects,maxCombo,awarded:{a1,a2,a3}}
+    var KEY_MASTERY = 'wrh5_mastery';  // 掌握度 {qid:{w:错次,r:对次,s:连对}}，连对2次=已掌握
+    var KEY_GAME    = 'wrh5_game';     // 游戏化档案 {bestCombo:历史最高连对,levels:已完成关卡数}
 
     var xp     = lsGet(KEY_XP, 0);
     var tasks  = lsGet(KEY_TASKS, null);
@@ -648,10 +654,10 @@
     if (!mastery || typeof mastery !== 'object') mastery = {};
     if (!game || typeof game !== 'object') game = { bestCombo: 0, levels: 0 };
 
-    // 褰撳墠浼氳瘽杩炲鏁帮紙鐢卞埛棰樺垽瀹氬缁存姢锛宺ecordAnswer 鍐呰鍙栬鍏ユ瘡鏃ヤ换鍔★級
+    // 当前会话连对数（由刷题判定处维护，recordAnswer 内读取计入每日任务）
     var comboNow = 0;
 
-    /** 绛夌骇淇℃伅锛氭瘡 100 XP 鍗?1 绾?*/
+    /** 等级信息：每 100 XP 升 1 级 */
     function levelInfo() {
       return { lv: Math.floor(xp / 100) + 1, cur: xp % 100, need: 100 };
     }
@@ -661,7 +667,7 @@
       lsSet(KEY_XP, xp);
     }
 
-    /** 姣忔棩浠诲姟鎺ㄨ繘 + 鑷姩鍙戝锛堣法澶╄嚜鍔ㄩ噸缃級 */
+    /** 每日任务推进 + 自动发奖（跨天自动重置） */
     function bumpTasks(right) {
       var today = todayStr();
       if (tasks.date !== today) {
@@ -670,14 +676,14 @@
       tasks.answers++;
       if (right) tasks.corrects++;
       if (comboNow > tasks.maxCombo) tasks.maxCombo = comboNow;
-      // 涓変釜浠诲姟杈炬爣鑷姩鍙?XP锛堜竴娆★級
+      // 三个任务达标自动发 XP（一次）
       if (!tasks.awarded.a1 && tasks.answers >= 10) { tasks.awarded.a1 = 1; addXp(20); }
       if (!tasks.awarded.a2 && tasks.corrects >= 8) { tasks.awarded.a2 = 1; addXp(20); }
       if (!tasks.awarded.a3 && tasks.maxCombo >= 5) { tasks.awarded.a3 = 1; addXp(30); }
       lsSet(KEY_TASKS, tasks);
     }
 
-    /** 鎺屾彙搴︽帹杩涳細绛旈敊 s 娓呴浂锛涜繛瀵?2 娆¤涓?宸叉帉鎻?锛堟槗閿欑偣鐗硅瀹屾垚鏍囧噯锛?*/
+    /** 掌握度推进：答错 s 清零；连对 2 次视为"已掌握"（易错点特训完成标准） */
     function bumpMastery(q, right) {
       var m = mastery[q.id] || { w: 0, r: 0, s: 0 };
       if (right) { m.r++; m.s++; } else { m.w++; m.s = 0; }
@@ -692,19 +698,20 @@
       return Object.keys(mastery).filter(isMastered).length;
     }
 
-    /** 寮辩偣鐢诲儚锛氭寜鍒嗙被缁熻閿欓鍗犳瘮锛岃繑鍥為敊璇渶澶氱殑鍒嗙被锛堚墺2 閿欐墠璁″叆锛?*/
+    /** 弱点画像：按分类统计错题占比，返回错误最多的分类（≥2 错才计入） */
     function weakCats() {
       var byCat = {};
       function addWrong(cat) { if (!byCat[cat]) byCat[cat] = 0; byCat[cat]++; }
       wrongIds.forEach(function (id) {
         var q = qById[id];
-        if (q) addWrong(q.cat || '鏈垎绫?);
+        if (q) addWrong(q.cat || '未分类');
       });
       Object.keys(mastery).forEach(function (id) {
         var m = mastery[id];
-        // 鍘嗗彶閿?2 娆′互涓婁笖灏氭湭鎺屾彙鐨勶紝涔熻鍏ュ急鐐?        if (m.w >= 2 && !isMastered(Number(id))) {
+        // 历史错 2 次以上且尚未掌握的，也计入弱点
+        if (m.w >= 2 && !isMastered(Number(id))) {
           var q2 = qById[Number(id)];
-          if (q2) addWrong(q2.cat || '鏈垎绫?);
+          if (q2) addWrong(q2.cat || '未分类');
         }
       });
       return Object.keys(byCat)
@@ -715,7 +722,8 @@
     }
 
     /**
-     * 鏄撻敊鐐圭壒璁姹?= 鏈帉鎻＄殑閿欓 + 鍚屽垎绫荤殑鍏朵粬浣庢帉鎻″害棰橈紙寮哄寲鏄撻敊棰嗗煙锛?     */
+     * 易错点特训题池 = 未掌握的错题 + 同分类的其他低掌握度题（强化易错领域）
+     */
     function weakPool() {
       var pool = [];
       var seen = {};
@@ -723,10 +731,10 @@
         if (!isMastered(id) && qById[id]) { pool.push(qById[id]); seen[id] = 1; }
       });
       var cats = {};
-      pool.forEach(function (q) { cats[q.cat || '鏈垎绫?] = 1; });
+      pool.forEach(function (q) { cats[q.cat || '未分类'] = 1; });
       Object.keys(cats).forEach(function (c) {
         var extra = QBANK.filter(function (q) {
-          return (q.cat || '鏈垎绫?) === c && !seen[q.id];
+          return (q.cat || '未分类') === c && !seen[q.id];
         }).slice(0, 15);
         extra.forEach(function (q) { pool.push(q); seen[q.id] = 1; });
       });
@@ -734,16 +742,17 @@
     }
 
     /* =====================================================================
-     * 浜屻€侀搴撹緟鍔?     * ===================================================================== */
+     * 二、题库辅助
+     * ===================================================================== */
 
-    // 杩囨护鎺変笉瀹屾暣鐨勬暟鎹紝淇濊瘉娓叉煋瀹夊叏
+    // 过滤掉不完整的数据，保证渲染安全
     var QBANK = (window.QUESTIONS || []).filter(function (q) {
       return q && typeof q.id === 'number' && q.stem && q.answer;
     });
     var qById = {};
     QBANK.forEach(function (q) { qById[q.id] = q; });
 
-    /** Fisher-Yates 娲楃墝锛堣繑鍥炴柊鏁扮粍锛屼笉淇敼鍘熸暟缁勶級 */
+    /** Fisher-Yates 洗牌（返回新数组，不修改原数组） */
     function shuffle(arr) {
       var a = arr.slice();
       for (var i = a.length - 1; i > 0; i--) {
@@ -752,65 +761,73 @@
       }
       return a;
     }
-    /** HTML 杞箟锛岄槻姝㈤骞?閫夐」涓殑鐗规畩瀛楃鐮村潖椤甸潰缁撴瀯 */
+    /** HTML 转义，防止题干/选项中的特殊字符破坏页面结构 */
     function esc(s) {
       return String(s === null || s === undefined ? '' : s)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;')
         .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-    /** 鍒ゅ畾浣滅瓟鏄惁姝ｇ‘锛氬崟閫?澶氶€夌粺涓€澶勭悊锛屽閫夐渶涓庣瓟妗堝畬鍏ㄤ竴鑷达紙蹇界暐椤哄簭锛?*/
+    /** 判定作答是否正确：单选/多选统一处理，多选需与答案完全一致（忽略顺序） */
     function isRight(q, picks) {
       return picks.slice().sort().join('') === String(q.answer).split('').sort().join('');
     }
-    /** 绉掓暟 鈫?mm:ss */
+    /** 秒数 → mm:ss */
     function fmtTime(sec) {
       var m = Math.floor(sec / 60), s = sec % 60;
       return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
     }
 
     /* =====================================================================
-     * 涓夈€佽繍琛屾椂浼氳瘽鐘舵€?     * ===================================================================== */
+     * 三、运行时会话状态
+     * ===================================================================== */
 
     var app = document.getElementById('app');
-    var session = null;   // 鍒烽浼氳瘽 {mode, queue, idx, picks, judged}
-    var exam = null;      // 妯℃嫙鑰冧細璇?{queue, idx, picks, started, submitted, result, endAt}
-    var examTimer = null; // 妯℃嫙鑰冨€掕鏃跺彞鏌?
-    // 鍚勫埛棰樻ā寮忕殑鏍囬
+    var session = null;   // 刷题会话 {mode, queue, idx, picks, judged}
+    var exam = null;      // 模拟考会话 {queue, idx, picks, started, submitted, result, endAt}
+    var examTimer = null; // 模拟考倒计时句柄
+
+    // 各刷题模式的标题
     var MODE_TITLE = {
-      seq: '椤哄簭鍒烽', rand: '闅忔満鍒烽', multi: '澶氶€夐涓撶粌',
-      wrong: '閿欓鏈噸缁?, fav: '鏀惰棌閲嶇粌', weak: '鏄撻敊鐐圭壒璁?, lv: '绛夌骇鎸戞垬'
+      seq: '顺序刷题', rand: '随机刷题', multi: '多选题专练',
+      wrong: '错题本重练', fav: '收藏重练', weak: '易错点特训', lv: '等级挑战'
     };
 
     /**
-     * 鎸夋ā寮忔瀯寤哄埛棰橀槦鍒楋細
-     * seq   鈫?鍏ㄩ儴棰樼洰鎸?id 椤哄簭
-     * rand  鈫?鍏ㄩ儴棰樼洰闅忔満鎺掑簭
-     * multi 鈫?浠呭閫夐锛岄殢鏈烘帓搴?     * wrong 鈫?閿欓鏈腑鐨勯鐩紙鎸夊姞鍏ラ『搴忥級
-     * fav   鈫?鏀惰棌鐨勯鐩紙鎸夋敹钘忛『搴忥級
-     * weak  鈫?鏄撻敊鐐圭壒璁細鏈帉鎻￠敊棰?+ 鍚屽垎绫诲己鍖栭锛岄殢鏈烘帓搴?     */
+     * 按模式构建刷题队列：
+     * seq   → 全部题目按 id 顺序
+     * rand  → 全部题目随机排序
+     * multi → 仅多选题，随机排序
+     * wrong → 错题本中的题目（按加入顺序）
+     * fav   → 收藏的题目（按收藏顺序）
+     * weak  → 易错点特训：未掌握错题 + 同分类强化题，随机排序
+     */
     function buildSession(mode) {
       var pool;
       if (mode === 'seq') {
         pool = QBANK.slice().sort(function (a, b) { return a.id - b.id; });
+        // 断点续刷：从未答过的题继续；全部答完则从头开始
+        var un = pool.filter(function (q) { return progress.doneId.indexOf(q.id) < 0; });
+        pool = (un.length ? un : pool).slice(0, SESSION_CAP);
       } else if (mode === 'rand') {
-        pool = shuffle(QBANK);
+        pool = shuffle(QBANK).slice(0, SESSION_CAP);
       } else if (mode === 'multi') {
-        pool = shuffle(QBANK.filter(function (q) { return q.type === 'multi'; }));
+        pool = shuffle(QBANK.filter(function (q) { return q.type === 'multi'; })).slice(0, SESSION_CAP);
       } else if (mode === 'wrong') {
-        pool = wrongIds.map(function (id) { return qById[id]; }).filter(Boolean);
+        pool = wrongIds.map(function (id) { return qById[id]; }).filter(Boolean).slice(0, SESSION_CAP);
       } else if (mode === 'weak') {
-        pool = weakPool();
+        pool = weakPool().slice(0, SESSION_CAP);
       } else if (mode === 'lv') {
-        pool = lvPool(getRank().lv).slice(); // 褰撳墠娈典綅棰樻睜锛氭寜闅惧害浠庝綆鍒伴珮
+        pool = lvPool(getRank().lv).slice(0, SESSION_CAP); // 当前段位题池：按难度从低到高
       } else { // fav
-        pool = favIds.map(function (id) { return qById[id]; }).filter(Boolean);
+        pool = favIds.map(function (id) { return qById[id]; }).filter(Boolean).slice(0, SESSION_CAP);
       }
       return { mode: mode, queue: pool, idx: 0, picks: {}, judged: {}, combo: 0, xpGain: 0, maxCombo: 0 };
     }
 
     /**
-     * 璁板綍涓€娆′綔绛旓紙鍒烽涓庢ā鎷熻€冨叡鐢級锛?     * - 杩涘害锛歩d 璁板叆 doneId锛堝幓閲嶏級锛宼otal/correct 绱姞
-     * - 閿欓锛氱瓟閿欎笖涓嶅湪閿欓鏈?鈫?鏀跺叆锛涚瓟瀵?鈫?浠庨敊棰樻湰绉婚櫎
+     * 记录一次作答（刷题与模拟考共用）：
+     * - 进度：id 记入 doneId（去重），total/correct 累加
+     * - 错题：答错且不在错题本 → 收入；答对 → 从错题本移除
      */
     function recordAnswer(q, right) {
       if (progress.doneId.indexOf(q.id) < 0) progress.doneId.push(q.id);
@@ -823,13 +840,15 @@
         wrongIds.push(q.id); saveWrong();
       }
       saveProgress();
-      bumpActivity(); // 瀛︿範鏃ュ巻锛氳褰曚粖鏃ユ椿璺?      // 鈥斺€?娓告垙鍖栵細XP / 姣忔棩浠诲姟 / 鎺屾彙搴?鈥斺€?      bumpMastery(q, right);
+      bumpActivity(); // 学习日历：记录今日活跃
+      // —— 游戏化：XP / 每日任务 / 掌握度 ——
+      bumpMastery(q, right);
       if (right) addXp(10);
       bumpTasks(right);
     }
 
     /* =====================================================================
-     * 涓壜蜂簲 涓汉涓婚〉锛堣祫鏂?/ 鎴愬氨寰界珷 / 瀛︿範鏃ュ巻 / 澶囦唤 / 浜戝悓姝ワ級
+     * 三·五 个人主页（资料 / 成就徽章 / 学习日历 / 备份 / 云同步）
      * ===================================================================== */
 
     var KEY_PROFILE  = 'wrh5_profile';
@@ -837,36 +856,43 @@
     var KEY_EXAMBEST = 'wrh5_examBest';
     var KEY_SESSION  = 'wrh5_session';
     var KEY_RANK     = 'wrh5_rank';
-    var profile  = lsGet(KEY_PROFILE,  { nick: '', avatar: '馃' });
+    var profile  = lsGet(KEY_PROFILE,  { nick: '', avatar: '🦁' });
     var activity = lsGet(KEY_ACTIVITY, {});
-    if (!profile || typeof profile !== 'object') profile = { nick: '', avatar: '馃' };
+    if (!profile || typeof profile !== 'object') profile = { nick: '', avatar: '🦁' };
     if (!activity || typeof activity !== 'object') activity = {};
 
-    /* ---------- 娈典綅鏅嬬骇锛氶鐩毦搴﹀垎绾?+ 鏅嬬骇鑰冭瘯 ---------- */
-    var LV_COUNT = 5;               // 5 涓浣?    var LV_PASS = 75;               // 鏅嬬骇鑰冭瘯閫氳繃绾匡紙姝ｇ‘鐜?%锛?    var LV_EXAM_COUNT = 20;         // 鏅嬬骇鑰冭瘯棰樻暟
-    var LV_EXAM_SECONDS = 15 * 60;  // 鏅嬬骇鑰冭瘯闄愭椂
-    var LV_EXAM_UNLOCK_PCT = 60;    // 鏈骇棰樻睜缁冩弧 60% 瑙ｉ攣鏅嬬骇鑰冭瘯
+    /* ---------- 段位晋级：题目难度分级 + 晋级考试 ---------- */
+    var LV_COUNT = 5;               // 5 个段位
+    var LV_PASS = 75;               // 晋级考试通过线（正确率 %）
+    var LV_EXAM_COUNT = 20;         // 晋级考试题数
+    var LV_EXAM_SECONDS = 15 * 60;  // 晋级考试限时
+    var LV_EXAM_UNLOCK_PCT = 60;    // 本级题池练满 60% 解锁晋级考试
     var RANKS = [
-      { icon: '馃',  name: '瑙佷範椋炴墜' },
-      { icon: '馃帠锔?, name: '鍒濈骇椹鹃┒鍛? },
-      { icon: '馃洨锔?, name: '鍓┚椹? },
-      { icon: '鉁堬笍',  name: '鏈洪暱' },
-      { icon: '馃憫',  name: '浼犲鏁欏憳' }
+      { icon: '🥚',  name: '见习飞手' },
+      { icon: '🎖️', name: '初级驾驶员' },
+      { icon: '🛩️', name: '副驾驶' },
+      { icon: '✈️',  name: '机长' },
+      { icon: '👑',  name: '传奇教员' }
     ];
 
-    /** 棰樼洰闅惧害鍒嗭紙0~6锛岃秺楂樿秺闅撅紱浠呯敤浜庡垎灞傛帓搴忥級 */
+    /** 题目难度分（0~6，越高越难；仅用于分层排序） */
     function diffScore(q) {
       var s = 0, stem = q.stem || '';
-      if (q.type === 'multi') s += 2;                                              // 澶氶€夛細婕忛€夊嵆閿?      if (stem.length > 45) s++;                                                   // 闀块骞叉洿缁?      if (/[0-9]/.test(stem) && /(绫硘绉抾MHz|楂樺害|閫熷害|瑙掑害|姘斿帇|绾害|缁忓害|璺濈|璁＄畻|鐧惧垎|鍗犳瘮)/.test(stem)) s += 2; // 鏁板瓧璁＄畻绫?      if (/涓嶆纭畖閿欒鐨勬槸|涓嶅睘浜巪闄ゅ|涓嶈兘|绂佹/.test(stem)) s++;                  // 鍚﹀畾/鎺掗櫎绫?      if (q.cat === '棰嗚埅涓庝换鍔¤鍒? || q.cat === '鑸┖姘旇薄') s++;                  // 鍏紡/澶╂皵鍒ゆ柇绫?      return s;
+      if (q.type === 'multi') s += 2;                                              // 多选：漏选即错
+      if (stem.length > 45) s++;                                                   // 长题干更绕
+      if (/[0-9]/.test(stem) && /(米|秒|MHz|高度|速度|角度|气压|纬度|经度|距离|计算|百分|占比)/.test(stem)) s += 2; // 数字计算类
+      if (/不正确|错误的是|不属于|除外|不能|禁止/.test(stem)) s++;                  // 否定/排除类
+      if (q.cat === '领航与任务规划' || q.cat === '航空气象') s++;                  // 公式/天气判断类
+      return s;
     }
 
-    /** 鍏ㄥ簱闅惧害鍗囧簭瑙嗗浘锛堢ǔ瀹氭帓搴忥細鍚屽垎鎸?id锛?*/
+    /** 全库难度升序视图（稳定排序：同分按 id） */
     var SORTED_BANK = QBANK.slice().sort(function (a, b) {
       var d = diffScore(a) - diffScore(b);
       return d !== 0 ? d : a.id - b.id;
     });
 
-    /** 绗?lv 绾ч姹狅細鍏ㄥ簱绛夊垎鍒囧眰锛?=鏈€鏄?鈥?5=鏈€闅撅級 */
+    /** 第 lv 级题池：全库等分切层（1=最易 … 5=最难） */
     function lvPool(lv) {
       var size = Math.ceil(QBANK.length / LV_COUNT);
       return SORTED_BANK.slice((lv - 1) * size, lv * size);
@@ -875,7 +901,7 @@
     function getRank() { return lsGet(KEY_RANK, { lv: 1, passed: {} }); }
     function saveRank(r) { lsSet(KEY_RANK, r); }
 
-    /** 褰撳墠娈典綅淇℃伅锛氶姹?/ 缁冮杩涘害 / 鑰冭瘯瑙ｉ攣鐘舵€?*/
+    /** 当前段位信息：题池 / 练题进度 / 考试解锁状态 */
     function rankInfo() {
       var r = getRank();
       var pool = lvPool(r.lv);
@@ -890,9 +916,9 @@
       };
     }
 
-    var AVATARS = ['馃','馃惣','馃','馃惛','馃惃','馃','馃悪','馃','馃悵','馃惉','馃殎','鉁堬笍'];
+    var AVATARS = ['🦁','🐼','🦊','🐸','🐨','🦉','🐙','🦄','🐝','🐬','🚁','✈️'];
 
-    // 浠婃棩娲昏穬 +1锛堜緵瀛︿範鏃ュ巻鐑姏鏍硷級
+    // 今日活跃 +1（供学习日历热力格）
     function bumpActivity() {
       var d = new Date();
       var key = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
@@ -900,7 +926,7 @@
       lsSet(KEY_ACTIVITY, activity);
     }
 
-    // 瀛︿範蹇収锛氫釜浜轰富椤典笌鎴愬氨鍏辩敤
+    // 学习快照：个人主页与成就共用
     function studySnapshot() {
       var done = progress.doneId.length;
       var rate = progress.total > 0 ? Math.round(progress.correct / progress.total * 100) : 0;
@@ -915,24 +941,25 @@
       };
     }
 
-    // 鎴愬氨瀹氫箟锛歵est(蹇収) 涓?true 鍗崇偣浜?    var ACHIEVEMENTS = [
-      { icon: '馃幆', name: '鍒濇潵涔嶅埌', desc: '瀹屾垚绗?1 棰?,             test: function (s) { return s.done >= 1; } },
-      { icon: '馃摎', name: '灏忔湁绉疮', desc: '绱鍒?50 棰?,            test: function (s) { return s.done >= 50; } },
-      { icon: '馃挭', name: '棰樻捣鍐叉氮', desc: '绱鍒?200 棰?,           test: function (s) { return s.done >= 200; } },
-      { icon: '馃寠', name: '浜旂櫨鏂?,   desc: '绱鍒?500 棰?,           test: function (s) { return s.done >= 500; } },
-      { icon: '馃憫', name: '鍏ㄥ簱閫氬叧', desc: '1422 棰樺叏閮ㄥ埛杩?,         test: function (s) { return s.done >= s.all; } },
-      { icon: '馃帗', name: '绋冲噯鐙?,   desc: '姝ｇ‘鐜?鈮?0%锛堚墺50 棰橈級',   test: function (s) { return s.total >= 50 && s.rate >= 90; } },
-      { icon: '馃敟', name: '涓夋棩涔嬬害', desc: '杩炵画鎵撳崱 3 澶?,           test: function (s) { return s.streak >= 3; } },
-      { icon: '鈿?, name: '涓冩棩涓嶈緧', desc: '杩炵画鎵撳崱 7 澶?,           test: function (s) { return s.streak >= 7; } },
-      { icon: '馃摑', name: '妯℃嫙鍙婃牸', desc: '妯℃嫙鑰?鈮?0 鍒?,           test: function (s) { return s.examBest >= 60; } },
-      { icon: '馃弲', name: '妯℃嫙浼樼', desc: '妯℃嫙鑰?鈮?5 鍒?,           test: function (s) { return s.examBest >= 85; } },
-      { icon: '猸?, name: '鏀惰棌瀹?,   desc: '鏀惰棌 10 閬撻',            test: function (s) { return s.fav >= 10; } },
-      { icon: '馃Ч', name: '閿欓娓呴浂', desc: '鍒?50 棰樺悗娓呯┖閿欓鏈?,     test: function (s) { return s.done >= 50 && s.wrong === 0; } },
-      { icon: '馃敟', name: '杩炲嚮杈句汉', desc: '鍗曟杩炲 10 棰?,           test: function (s) { return s.bestCombo >= 10; } },
-      { icon: '馃弳', name: '闂叧鏂版墜', desc: '瀹屾垚 10 涓叧鍗?,           test: function (s) { return s.levelsDone >= 10; } },
-      { icon: '馃幆', name: '鐗硅澶у笀', desc: '鎺屾彙 50 閬撳急鐐归',         test: function (s) { return s.mastered >= 50; } },
-      { icon: '馃帠锔?, name: '鏅嬬骇瀛﹀憳', desc: '閫氳繃绗?1 娆℃檵绾ц€冭瘯',      test: function (s) { return s.passedLv >= 2; } },
-      { icon: '馃憫', name: '鐧婚《浼犲', desc: '杈惧埌鏈€楂樻浣?Lv.5',        test: function (s) { return s.passedLv >= 5; } }
+    // 成就定义：test(快照) 为 true 即点亮
+    var ACHIEVEMENTS = [
+      { icon: '🎯', name: '初来乍到', desc: '完成第 1 题',             test: function (s) { return s.done >= 1; } },
+      { icon: '📚', name: '小有积累', desc: '累计刷 50 题',            test: function (s) { return s.done >= 50; } },
+      { icon: '💪', name: '题海冲浪', desc: '累计刷 200 题',           test: function (s) { return s.done >= 200; } },
+      { icon: '🌊', name: '五百斩',   desc: '累计刷 500 题',           test: function (s) { return s.done >= 500; } },
+      { icon: '👑', name: '全库通关', desc: '1422 题全部刷过',         test: function (s) { return s.done >= s.all; } },
+      { icon: '🎓', name: '稳准狠',   desc: '正确率 ≥90%（≥50 题）',   test: function (s) { return s.total >= 50 && s.rate >= 90; } },
+      { icon: '🔥', name: '三日之约', desc: '连续打卡 3 天',           test: function (s) { return s.streak >= 3; } },
+      { icon: '⚡', name: '七日不辍', desc: '连续打卡 7 天',           test: function (s) { return s.streak >= 7; } },
+      { icon: '📝', name: '模拟及格', desc: '模拟考 ≥60 分',           test: function (s) { return s.examBest >= 60; } },
+      { icon: '🏅', name: '模拟优秀', desc: '模拟考 ≥85 分',           test: function (s) { return s.examBest >= 85; } },
+      { icon: '⭐', name: '收藏家',   desc: '收藏 10 道题',            test: function (s) { return s.fav >= 10; } },
+      { icon: '🧹', name: '错题清零', desc: '刷 50 题后清空错题本',     test: function (s) { return s.done >= 50 && s.wrong === 0; } },
+      { icon: '🔥', name: '连击达人', desc: '单次连对 10 题',           test: function (s) { return s.bestCombo >= 10; } },
+      { icon: '🏆', name: '闯关新手', desc: '完成 10 组训练',           test: function (s) { return s.levelsDone >= 10; } },
+      { icon: '🎯', name: '特训大师', desc: '掌握 50 道弱点题',         test: function (s) { return s.mastered >= 50; } },
+      { icon: '🎖️', name: '晋级学员', desc: '通过第 1 次晋级考试',      test: function (s) { return s.passedLv >= 2; } },
+      { icon: '👑', name: '登顶传奇', desc: '达到最高段位 Lv.5',        test: function (s) { return s.passedLv >= 5; } }
     ];
 
     function badgesOf(s) {
@@ -941,7 +968,7 @@
       });
     }
 
-    // 鏈€杩?28 澶╂棩鍘嗘牸
+    // 最近 28 天日历格
     function calendarCells() {
       var cells = [];
       for (var i = 27; i >= 0; i--) {
@@ -955,7 +982,7 @@
 
     function meStat(v, label) { return '<div class="me-stat"><b>' + v + '</b><span>' + label + '</span></div>'; }
 
-    // 鍏ㄩ噺鏁版嵁瀵煎嚭瀵硅薄锛堝浠?浜戝悓姝ュ叡鐢級
+    // 全量数据导出对象（备份/云同步共用）
     function exportAll() {
       return {
         version: 2,
@@ -968,10 +995,10 @@
       };
     }
 
-    // 瀵煎叆澶囦唤锛氭牎楠?+ 瑕嗙洊 + 鍒锋柊
+    // 导入备份：校验 + 覆盖 + 刷新
     function applyImport(obj) {
-      if (!obj || !obj.progress || !Array.isArray(obj.progress.doneId)) { alert('澶囦唤鏂囦欢鏍煎紡涓嶆纭?); return; }
-      if (!window.confirm('瀵煎叆灏嗚鐩栧綋鍓嶅叏閮ㄦ湰鍦版暟鎹紝纭畾缁х画锛?)) return;
+      if (!obj || !obj.progress || !Array.isArray(obj.progress.doneId)) { alert('备份文件格式不正确'); return; }
+      if (!window.confirm('导入将覆盖当前全部本地数据，确定继续？')) return;
       lsSet(KEY_PROGRESS, obj.progress);
       lsSet(KEY_WRONG, Array.isArray(obj.wrongIds) ? obj.wrongIds : []);
       lsSet(KEY_FAV, Array.isArray(obj.favIds) ? obj.favIds : []);
@@ -979,16 +1006,17 @@
       if (obj.profile) lsSet(KEY_PROFILE, obj.profile);
       if (typeof obj.examBest === 'number') lsSet(KEY_EXAMBEST, obj.examBest);
       if (obj.activity) lsSet(KEY_ACTIVITY, obj.activity);
-      // v2 澶囦唤鎼哄甫娓告垙鍖栨暟鎹?      if (typeof obj.xp === 'number') lsSet(KEY_XP, obj.xp);
+      // v2 备份携带游戏化数据
+      if (typeof obj.xp === 'number') lsSet(KEY_XP, obj.xp);
       if (obj.tasks) lsSet(KEY_TASKS, obj.tasks);
       if (obj.mastery) lsSet(KEY_MASTERY, obj.mastery);
       if (obj.game) lsSet(KEY_GAME, obj.game);
       if (obj.rank) lsSet(KEY_RANK, obj.rank);
-      alert('瀵煎叆鎴愬姛');
+      alert('导入成功');
       location.reload();
     }
 
-    /* ---------- 浜戝悓姝ワ紙LeanCloud REST 鐩磋繛锛岄浂渚濊禆锛?---------- */
+    /* ---------- 云同步（LeanCloud REST 直连，零依赖） ---------- */
     function cloudReady() {
       return !!(window.LEANCLOUD && window.LEANCLOUD.appId && window.LEANCLOUD.appKey);
     }
@@ -1016,65 +1044,65 @@
         return r.json().then(function (j) { return { ok: r.ok, j: j }; });
       }).then(function (res) {
         if (!res.ok) {
-          var map = { 202: '鐢ㄦ埛鍚嶅凡琚崰鐢?, 210: '鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒', 201: '缂哄皯瀵嗙爜', 200: '缂哄皯鐢ㄦ埛鍚?, 219: '鐧诲綍澶辫触娆℃暟杩囧锛岃绋嶅悗鍐嶈瘯' };
-          tipEl.textContent = '鉂?' + (map[res.j.code] || (res.j.error || '璇锋眰澶辫触') + '锛坈ode ' + res.j.code + '锛?);
+          var map = { 202: '用户名已被占用', 210: '用户名或密码错误', 201: '缺少密码', 200: '缺少用户名', 219: '登录失败次数过多，请稍后再试' };
+          tipEl.textContent = '❌ ' + (map[res.j.code] || (res.j.error || '请求失败') + '（code ' + res.j.code + '）');
           return;
         }
         lsSet(KEY_SESSION, { token: res.j.sessionToken, objectId: res.j.objectId, user: user });
-        window.alert(mode === 'login' ? '鐧诲綍鎴愬姛' : '娉ㄥ唽骞剁櫥褰曟垚鍔?);
+        window.alert(mode === 'login' ? '登录成功' : '注册并登录成功');
         renderMe();
-      }).catch(function () { tipEl.textContent = '鉂?缃戠粶璇锋眰澶辫触锛岃妫€鏌ョ綉缁滄垨 apiBase 閰嶇疆'; });
+      }).catch(function () { tipEl.textContent = '❌ 网络请求失败，请检查网络或 apiBase 配置'; });
     }
     function cloudUpload(tipEl) {
       var sess = lsGet(KEY_SESSION, null);
-      if (!sess) { tipEl.textContent = '鉂?璇峰厛鐧诲綍'; return; }
-      tipEl.textContent = '鈴?姝ｅ湪涓婁紶澶囦唤鈥?;
+      if (!sess) { tipEl.textContent = '❌ 请先登录'; return; }
+      tipEl.textContent = '⏳ 正在上传备份…';
       fetch(cloudBase() + '/1.1/classes/Backup', {
         method: 'POST',
         headers: cloudHeaders(true),
         body: JSON.stringify({ owner: sess.user, data: JSON.stringify(exportAll()) })
       }).then(function (r) { return r.json(); }).then(function (j) {
-        tipEl.textContent = (j.objectId) ? '鉁?宸蹭笂浼犱簯绔浠? : '鉂?涓婁紶澶辫触锛? + (j.error || '鏈煡閿欒');
-      }).catch(function () { tipEl.textContent = '鉂?缃戠粶璇锋眰澶辫触'; });
+        tipEl.textContent = (j.objectId) ? '✅ 已上传云端备份' : '❌ 上传失败：' + (j.error || '未知错误');
+      }).catch(function () { tipEl.textContent = '❌ 网络请求失败'; });
     }
     function cloudDownload(tipEl) {
       var sess = lsGet(KEY_SESSION, null);
-      if (!sess) { tipEl.textContent = '鉂?璇峰厛鐧诲綍'; return; }
-      tipEl.textContent = '鈴?姝ｅ湪鑾峰彇浜戠澶囦唤鈥?;
+      if (!sess) { tipEl.textContent = '❌ 请先登录'; return; }
+      tipEl.textContent = '⏳ 正在获取云端备份…';
       fetch(cloudBase() + '/1.1/classes/Backup?order=-createdAt&limit=1', {
         headers: cloudHeaders(true)
       }).then(function (r) { return r.json(); }).then(function (j) {
-        if (!j.results || !j.results.length) { tipEl.textContent = '鉂?浜戠鏆傛棤澶囦唤锛岃鍏堜笂浼?; return; }
+        if (!j.results || !j.results.length) { tipEl.textContent = '❌ 云端暂无备份，请先上传'; return; }
         try {
           var obj = JSON.parse(j.results[0].data);
           tipEl.textContent = '';
           applyImport(obj);
-        } catch (e) { tipEl.textContent = '鉂?浜戠澶囦唤瑙ｆ瀽澶辫触'; }
-      }).catch(function () { tipEl.textContent = '鉂?缃戠粶璇锋眰澶辫触'; });
+        } catch (e) { tipEl.textContent = '❌ 云端备份解析失败'; }
+      }).catch(function () { tipEl.textContent = '❌ 网络请求失败'; });
     }
 
     function accountSectionHTML() {
       if (!cloudReady()) {
-        return '<div class="card"><div class="me-sec-title">璐﹀彿涓庝簯鍚屾</div>' +
-          '<div class="cloud-note">馃敀 褰撳墠涓?b>鏈湴妯″紡</b>锛氭暟鎹粎淇濆瓨鍦ㄨ繖鍙拌澶囷紝璺ㄨ澶囧彲鐢?瀵煎嚭/瀵煎叆澶囦唤"杩佺Щ銆?br>' +
-          '鎯冲紑鍚敞鍐岀櫥褰?+ 浜戠鍚屾锛熸寜椤圭洰閲岀殑銆婁簯鍚屾寮€閫氭暀绋嬨€嬫敞鍐?LeanCloud 鍏嶈垂鐗堬紝' +
-          '鎶?AppID / AppKey 濉繘 <b>cloud-config.js</b>锛屽埛鏂版湰椤靛嵆鍙縺娲荤櫥褰曘€?/div></div>';
+        return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
+          '<div class="cloud-note">🔒 当前为<b>本地模式</b>：数据仅保存在这台设备，跨设备可用"导出/导入备份"迁移。<br>' +
+          '想开启注册登录 + 云端同步？按项目里的《云同步开通教程》注册 LeanCloud 免费版，' +
+          '把 AppID / AppKey 填进 <b>cloud-config.js</b>，刷新本页即可激活登录。</div></div>';
       }
       var sess = lsGet(KEY_SESSION, null);
       if (sess && sess.user) {
-        return '<div class="card"><div class="me-sec-title">璐﹀彿涓庝簯鍚屾</div>' +
-          '<div class="cloud-note">馃懁 宸茬櫥褰曪細<b>' + esc(sess.user) + '</b></div>' +
-          '<button class="me-btn" data-act="cloudup">鈽侊笍 涓婁紶澶囦唤鍒颁簯绔?/button>' +
-          '<button class="me-btn" data-act="clouddown">鈽侊笍 浠庝簯绔仮澶嶅浠?/button>' +
-          '<button class="me-btn danger" data-act="logout">閫€鍑虹櫥褰?/button>' +
+        return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
+          '<div class="cloud-note">👤 已登录：<b>' + esc(sess.user) + '</b></div>' +
+          '<button class="me-btn" data-act="cloudup">☁️ 上传备份到云端</button>' +
+          '<button class="me-btn" data-act="clouddown">☁️ 从云端恢复备份</button>' +
+          '<button class="me-btn danger" data-act="logout">退出登录</button>' +
           '<div class="me-tip" id="meCloudTip"></div></div>';
       }
-      return '<div class="card"><div class="me-sec-title">璐﹀彿涓庝簯鍚屾</div>' +
-        '<div class="cloud-note">娉ㄥ唽 / 鐧诲綍鍚庡彲灏嗗涔犳暟鎹悓姝ュ埌浜戠锛屾崲璁惧涓嶄涪澶便€?/div>' +
-        '<div class="auth-row"><input id="meAuthUser" class="me-input" maxlength="20" placeholder="鐢ㄦ埛鍚?>' +
-        '<input id="meAuthPass" class="me-input" type="password" maxlength="40" placeholder="瀵嗙爜锛堚墺6浣嶏級"></div>' +
-        '<div class="auth-row"><button class="me-btn primary" data-act="authlogin">鐧诲綍</button>' +
-        '<button class="me-btn primary" data-act="authreg">娉ㄥ唽鏂拌处鍙?/button></div>' +
+      return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
+        '<div class="cloud-note">注册 / 登录后可将学习数据同步到云端，换设备不丢失。</div>' +
+        '<div class="auth-row"><input id="meAuthUser" class="me-input" maxlength="20" placeholder="用户名">' +
+        '<input id="meAuthPass" class="me-input" type="password" maxlength="40" placeholder="密码（≥6位）"></div>' +
+        '<div class="auth-row"><button class="me-btn primary" data-act="authlogin">登录</button>' +
+        '<button class="me-btn primary" data-act="authreg">注册新账号</button></div>' +
         '<div class="me-tip" id="meAuthTip"></div></div>';
     }
 
@@ -1082,60 +1110,62 @@
       var s = studySnapshot();
       var badges = badgesOf(s);
       var lit = badges.filter(function (b) { return b.on; }).length;
-      var html = topbar('涓汉涓婚〉') + '<div class="view">';
-      // 璧勬枡鍗?      html += '<div class="card me-card">' +
-        '<div class="me-avatar">' + esc(profile.avatar || '馃') + '</div>' +
+      var html = topbar('个人主页') + '<div class="view">';
+      // 资料卡
+      html += '<div class="card me-card">' +
+        '<div class="me-avatar">' + esc(profile.avatar || '🦁') + '</div>' +
         '<div class="me-info">' +
-          '<input id="meNick" class="me-nick-input" maxlength="12" placeholder="鐐瑰嚮璁剧疆鏄电О" value="' + esc(profile.nick || '') + '">' +
-          '<div class="me-sub">宸插埛 ' + s.done + '/' + s.all + ' 路 姝ｇ‘鐜?' + (s.total ? s.rate + '%' : '--') + '</div>' +
+          '<input id="meNick" class="me-nick-input" maxlength="12" placeholder="点击设置昵称" value="' + esc(profile.nick || '') + '">' +
+          '<div class="me-sub">已刷 ' + s.done + '/' + s.all + ' · 正确率 ' + (s.total ? s.rate + '%' : '--') + '</div>' +
         '</div></div>';
-      // 澶村儚閫夋嫨
-      html += '<div class="card"><div class="me-sec-title">閫夋嫨澶村儚</div><div class="avatar-row">';
+      // 头像选择
+      html += '<div class="card"><div class="me-sec-title">选择头像</div><div class="avatar-row">';
       AVATARS.forEach(function (a) {
-        html += '<button class="avatar-opt' + (a === (profile.avatar || '馃') ? ' on' : '') + '" data-act="avatar" data-a="' + a + '">' + a + '</button>';
+        html += '<button class="avatar-opt' + (a === (profile.avatar || '🦁') ? ' on' : '') + '" data-act="avatar" data-a="' + a + '">' + a + '</button>';
       });
       html += '</div></div>';
-      // 鏁版嵁鐪嬫澘
-      html += '<div class="card"><div class="me-sec-title">鏁版嵁鐪嬫澘</div><div class="me-stat-grid">' +
-        meStat(s.done, '宸插埛棰?) + meStat(s.total ? s.rate + '%' : '--', '姝ｇ‘鐜?) +
-        meStat(s.streak + ' 澶?, '杩炵画鎵撳崱') + meStat(s.examBest || '--', '妯¤€冩渶浣?) +
-        meStat(s.wrong, '寰呮秷鐏敊棰?) + meStat(s.fav, '鏀惰棌') +
+      // 数据看板
+      html += '<div class="card"><div class="me-sec-title">数据看板</div><div class="me-stat-grid">' +
+        meStat(s.done, '已刷题') + meStat(s.total ? s.rate + '%' : '--', '正确率') +
+        meStat(s.streak + ' 天', '连续打卡') + meStat(s.examBest || '--', '模考最佳') +
+        meStat(s.wrong, '待消灭错题') + meStat(s.fav, '收藏') +
         '</div></div>';
-      // 鎴愬氨寰界珷
-      html += '<div class="card"><div class="me-sec-title">鎴愬氨寰界珷 <span class="me-lit">' + lit + '/' + badges.length + '</span></div><div class="badge-grid">';
+      // 成就徽章
+      html += '<div class="card"><div class="me-sec-title">成就徽章 <span class="me-lit">' + lit + '/' + badges.length + '</span></div><div class="badge-grid">';
       badges.forEach(function (b) {
         html += '<div class="badge' + (b.on ? ' on' : '') + '"><div class="badge-ico">' + b.icon + '</div>' +
           '<div class="badge-name">' + b.name + '</div><div class="badge-desc">' + b.desc + '</div></div>';
       });
       html += '</div></div>';
-      // 瀛︿範鏃ュ巻
-      html += '<div class="card"><div class="me-sec-title">鏈€杩?28 澶╁涔犳棩鍘?/div><div class="cal-grid">';
+      // 学习日历
+      html += '<div class="card"><div class="me-sec-title">最近 28 天学习日历</div><div class="cal-grid">';
       calendarCells().forEach(function (c) {
-        html += '<div class="cal-cell lv' + c.level + '" title="' + c.key + (c.count ? ' 路 鍒蜂簡 ' + c.count + ' 棰? : '') + '"></div>';
+        html += '<div class="cal-cell lv' + c.level + '" title="' + c.key + (c.count ? ' · 刷了 ' + c.count + ' 题' : '') + '"></div>';
       });
-      html += '</div><div class="cal-legend">棰滆壊瓒婃繁 = 褰撳ぉ鍒烽瓒婂</div></div>';
-      // 璐﹀彿涓庝簯鍚屾
+      html += '</div><div class="cal-legend">颜色越深 = 当天刷题越多</div></div>';
+      // 账号与云同步
       html += accountSectionHTML();
-      // 鏁版嵁绠＄悊
-      html += '<div class="card"><div class="me-sec-title">鏁版嵁绠＄悊</div>' +
-        '<button class="me-btn" data-act="export">猬囷笍 瀵煎嚭澶囦唤锛圝SON锛?/button>' +
-        '<button class="me-btn" data-act="importpick">猬嗭笍 瀵煎叆澶囦唤</button>' +
+      // 数据管理
+      html += '<div class="card"><div class="me-sec-title">数据管理</div>' +
+        '<button class="me-btn" data-act="export">⬇️ 导出备份（JSON）</button>' +
+        '<button class="me-btn" data-act="importpick">⬆️ 导入备份</button>' +
         '<input type="file" id="importFile" accept=".json,application/json" style="display:none">' +
-        '<button class="me-btn danger" data-act="wipe">馃棏 娓呯┖鏈湴鏁版嵁</button></div>';
-      html += '<div class="me-foot">鏁版嵁榛樿淇濆瓨鍦ㄦ湰鏈烘祻瑙堝櫒锛涙崲璁惧鐢ㄥ鍑?瀵煎叆锛屾垨鐧诲綍鍚庝簯鍚屾銆?/div></div>';
+        '<button class="me-btn danger" data-act="wipe">🗑 清空本地数据</button></div>';
+      html += '<div class="me-foot">数据默认保存在本机浏览器；换设备用导出/导入，或登录后云同步。</div></div>';
       app.innerHTML = html;
       bindMeEvents();
     }
 
     function bindMeEvents() {
-      // 鏄电О淇敼
+      // 昵称修改
       var nick = document.getElementById('meNick');
       if (nick) nick.addEventListener('change', function () {
         profile.nick = nick.value.trim();
         lsSet(KEY_PROFILE, profile);
         renderMe();
       });
-      // 澶村儚 / 鎸夐挳锛堟湰椤电嫭绔嬪鎵橈紝閬垮厤骞叉壈鍏ㄥ眬璺敱锛?      var view = document.querySelector('.view');
+      // 头像 / 按钮（本页独立委托，避免干扰全局路由）
+      var view = document.querySelector('.view');
       if (view) view.addEventListener('click', function (ev) {
         var el = ev.target.closest('[data-act]');
         if (!el) return;
@@ -1148,26 +1178,26 @@
           var blob = new Blob([JSON.stringify(exportAll())], { type: 'application/json' });
           var a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
-          a.download = '鏃犱汉鏈洪搴撳浠?' + new Date().toISOString().slice(0, 10) + '.json';
+          a.download = '无人机题库备份-' + new Date().toISOString().slice(0, 10) + '.json';
           document.body.appendChild(a); a.click(); a.remove();
         } else if (act === 'importpick') {
           var f = document.getElementById('importFile');
           if (f) f.click();
         } else if (act === 'wipe') {
-          if (window.confirm('纭畾娓呯┖鏈湴鍏ㄩ儴瀛︿範鏁版嵁锛熸鎿嶄綔涓嶅彲鎭㈠锛?) &&
-              window.confirm('鍐嶆纭锛氱湡鐨勮娓呯┖鍚楋紵')) {
+          if (window.confirm('确定清空本地全部学习数据？此操作不可恢复！') &&
+              window.confirm('再次确认：真的要清空吗？')) {
             lsSet(KEY_PROGRESS, { doneId: [], correct: 0, total: 0 });
             lsSet(KEY_WRONG, []); lsSet(KEY_FAV, []);
             lsSet(KEY_ACTIVITY, {}); lsSet(KEY_EXAMBEST, 0);
             lsSet('wrh5_daily', {});
-            window.alert('宸叉竻绌?);
+            window.alert('已清空');
             location.reload();
           }
         } else if (act === 'authlogin' || act === 'authreg') {
           var u = document.getElementById('meAuthUser'), p = document.getElementById('meAuthPass');
           var tip = document.getElementById('meAuthTip');
-          if (!u.value.trim() || p.value.length < 6) { tip.textContent = '璇峰～鍐欑敤鎴峰悕锛屽瘑鐮佽嚦灏?6 浣?; return; }
-          tip.textContent = '鈴?璇锋眰涓€?;
+          if (!u.value.trim() || p.value.length < 6) { tip.textContent = '请填写用户名，密码至少 6 位'; return; }
+          tip.textContent = '⏳ 请求中…';
           doAuth(act === 'authlogin' ? 'login' : 'register', u.value.trim(), p.value, tip);
         } else if (act === 'cloudup') {
           cloudUpload(document.getElementById('meCloudTip'));
@@ -1178,7 +1208,7 @@
           renderMe();
         }
       });
-      // 瀵煎叆鏂囦欢
+      // 导入文件
       var file = document.getElementById('importFile');
       if (file) file.addEventListener('change', function () {
         var f = file.files && file.files[0];
@@ -1186,20 +1216,21 @@
         var rd = new FileReader();
         rd.onload = function () {
           try { applyImport(JSON.parse(rd.result)); }
-          catch (e) { alert('鏂囦欢瑙ｆ瀽澶辫触锛氫笉鏄湁鏁堢殑 JSON 澶囦唤'); }
+          catch (e) { alert('文件解析失败：不是有效的 JSON 备份'); }
         };
         rd.readAsText(f);
       });
     }
 
     /* =====================================================================
-     * 鍥涖€佽矾鐢憋紙hash 璺敱锛?/ /practice/xxx /exam /wrong /fav锛?     * ===================================================================== */
+     * 四、路由（hash 路由：#/ /practice/xxx /exam /wrong /fav）
+     * ===================================================================== */
 
     function route() {
       var h = (location.hash || '').replace(/^#\/?/, '');
       var parts = h.split('/');
       var view = parts[0] || '';
-      // 绂诲紑妯℃嫙鑰冮〉闈㈠嵆涓㈠純鑰冭瘯浼氳瘽锛堝惈鏈氦鍗风殑浣滅瓟涓庡€掕鏃讹級
+      // 离开模拟考页面即丢弃考试会话（含未交卷的作答与倒计时）
       if (view !== 'exam' && view !== 'lvexam') { stopExamTimer(); exam = null; }
       window.scrollTo(0, 0);
       switch (view) {
@@ -1214,9 +1245,10 @@
         default:        renderHome();
       }
       syncTabbar(view);
-      if (typeof petSync === 'function') petSync(view); // 瀹犵墿鏄鹃殣 + 鎯呯华妫€娴?    }
+      if (typeof petSync === 'function') petSync(view); // 宠物显隐 + 情绪检测
+    }
 
-    /** 搴曢儴瀵艰埅鏍忥細鎸夊綋鍓嶈鍥炬樉绀?闅愯棌骞跺悓姝ラ珮浜鏍?*/
+    /** 底部导航栏：按当前视图显示/隐藏并同步高亮角标 */
     function syncTabbar(view) {
       var bar = document.getElementById('tabbar');
       if (!bar) return;
@@ -1228,7 +1260,7 @@
       for (var i = 0; i < links.length; i++) {
         links[i].classList.toggle('on', links[i].getAttribute('data-t') === active);
       }
-      // 閿欓瑙掓爣
+      // 错题角标
       var bd = document.getElementById('tabWrongBadge');
       if (bd) {
         var n = wrongIds.length;
@@ -1238,13 +1270,14 @@
     }
 
     /* =====================================================================
-     * 浜斻€佽鍥炬覆鏌?     * ===================================================================== */
+     * 五、视图渲染
+     * ===================================================================== */
 
-    /** 閫氱敤灏忛儴浠讹細缁熻椤?*/
+    /** 通用小部件：统计项 */
     function stat(v, label) {
       return '<div class="stat"><b>' + v + '</b><span>' + label + '</span></div>';
     }
-    /** 閫氱敤灏忛儴浠讹細棣栭〉鍔熻兘鍏ュ彛 */
+    /** 通用小部件：首页功能入口 */
     function tile(href, ico, name, desc, badge) {
       return '<a class="tile" href="' + href + '">' +
         '<span class="tile-ico">' + ico + '</span>' +
@@ -1253,69 +1286,69 @@
         (badge ? '<i class="badge">' + badge + '</i>' : '') +
         '</a>';
     }
-    /** 閫氱敤灏忛儴浠讹細瀛愰〉椤舵爮锛堝甫杩斿洖棣栭〉閾炬帴锛?*/
+    /** 通用小部件：子页顶栏（带返回首页链接） */
     function topbar(title, withStar) {
-      return '<div class="topbar"><a class="back" href="#/">鈥?杩斿洖</a>' +
+      return '<div class="topbar"><a class="back" href="#/">‹ 返回</a>' +
         '<div class="topbar-title">' + title + '</div>' +
         (withStar
-          ? '<button class="star" data-act="fav" title="鏀惰棌">鈽?/button>'
+          ? '<button class="star" data-act="fav" title="收藏">☆</button>'
           : '<span class="topbar-side"></span>') +
         '</div>';
     }
 
-    /* ---------- 棣栭〉 ---------- */
-    /** 姣忔棩浠诲姟鍗★紙3 椤癸紝杈炬爣鑷姩鍙?XP锛?*/
+    /* ---------- 首页 ---------- */
+    /** 每日任务卡（3 项，达标自动发 XP） */
     function tasksCardHTML() {
       var t = tasks && tasks.date === todayStr() ? tasks : { answers: 0, corrects: 0, maxCombo: 0, awarded: {} };
       var a1 = t.awarded && t.awarded.a1, a2 = t.awarded && t.awarded.a2, a3 = t.awarded && t.awarded.a3;
       function row(ico, name, done, cur, target, xp) {
         return '<div class="task-row' + (done ? ' done' : '') + '">' +
-          '<span class="task-ico">' + (done ? '鉁? : ico) + '</span>' +
+          '<span class="task-ico">' + (done ? '✅' : ico) + '</span>' +
           '<span class="task-name">' + name + '</span>' +
           '<span class="task-prog">' + Math.min(cur, target) + '/' + target + '</span>' +
           '<span class="task-xp">+' + xp + 'XP</span></div>';
       }
-      return '<div class="card tasks"><div class="sec-inline">馃幆 浠婃棩浠诲姟 <span class="muted" style="font-weight:400">瀹屾垚鑷姩棰哫P</span></div>' +
-        row('馃摉', '鍒?10 閬撻', a1, t.answers, 10, 20) +
-        row('鉁?, '绛斿 8 閬撻', a2, t.corrects, 8, 20) +
-        row('馃敟', '鍗曟杩炲 5 棰?, a3, t.maxCombo, 5, 30) +
+      return '<div class="card tasks"><div class="sec-inline">🎯 今日任务 <span class="muted" style="font-weight:400">完成自动领XP</span></div>' +
+        row('📖', '刷 10 道题', a1, t.answers, 10, 20) +
+        row('✅', '答对 8 道题', a2, t.corrects, 8, 20) +
+        row('🔥', '单次连对 5 题', a3, t.maxCombo, 5, 30) +
         '</div>';
     }
 
-    /** 寮辩偣璇婃柇鍗★細閿欒鏈€澶氱殑鍒嗙被 + 鏄撻敊鐐圭壒璁叆鍙?*/
+    /** 弱点诊断卡：错误最多的分类 + 易错点特训入口 */
     function weakCardHTML() {
       var weak = weakCats();
-      var h = '<div class="card weak-card"><div class="sec-inline">馃┖ 鏄撻敊鐐硅瘖鏂?/div>';
+      var h = '<div class="card weak-card"><div class="sec-inline">🩺 易错点诊断</div>';
       if (!weak.length) {
-        h += '<p class="muted" style="font-size:12.5px;line-height:1.7;">鍏堝埛 10 棰樹互涓婏紝杩欓噷浼氱敓鎴愪綘鐨?b>寮辩偣鍒嗙被鐢诲儚</b>锛屽苟涓轰綘缁勪竴濂?鏄撻敊鐐圭壒璁?鍗枫€?/p>';
+        h += '<p class="muted" style="font-size:12.5px;line-height:1.7;">先刷 10 题以上，这里会生成你的<b>弱点分类画像</b>，并为你组一套"易错点特训"卷。</p>';
       } else {
         h += '<div class="weak-chips">' + weak.map(function (w) {
-          return '<span class="weak-chip">' + esc(w.cat) + ' 路 閿? + w.wrong + '</span>';
+          return '<span class="weak-chip">' + esc(w.cat) + ' · 错' + w.wrong + '</span>';
         }).join('') + '</div>' +
-        '<a class="btn btn-primary btn-block" href="#/practice/weak" style="margin-top:12px;">馃幆 寮€濮嬫槗閿欑偣鐗硅</a>';
+        '<a class="btn btn-primary btn-block" href="#/practice/weak" style="margin-top:12px;">🎯 开始易错点特训</a>';
       }
       h += '</div>';
       return h;
     }
 
-    /** 棣栭〉娈典綅鍗★細褰撳墠娈典綅 + 棰樻睜杩涘害 + 鏅嬬骇鑰冭瘯鍏ュ彛 */
+    /** 首页段位卡：当前段位 + 题池进度 + 晋级考试入口 */
     function rankCardHTML() {
       var ri = rankInfo();
       var h = '<div class="card rank-card">' +
         '<div class="rank-head"><span class="rank-icon">' + ri.rank.icon + '</span>' +
-          '<div class="rank-info"><div class="rank-name">Lv.' + ri.lv + ' 路 ' + esc(ri.rank.name) + '</div>' +
-          '<div class="rank-sub muted">绗?' + ri.lv + ' 绾ч搴擄紙绠€鍗?鈫?鍥伴毦锛壜?宸茬粌 ' + ri.done + '/' + ri.pool.length + ' 棰?/div></div>' +
+          '<div class="rank-info"><div class="rank-name">Lv.' + ri.lv + ' · ' + esc(ri.rank.name) + '</div>' +
+          '<div class="rank-sub muted">第 ' + ri.lv + ' 级题库（简单 → 困难）· 已练 ' + ri.done + '/' + ri.pool.length + ' 题</div></div>' +
           '<span class="rank-pct">' + ri.pct + '%</span></div>' +
         '<div class="rank-bar"><i style="width:' + ri.pct + '%"></i></div>';
       if (ri.lv >= LV_COUNT) {
-        h += '<p class="muted" style="font-size:12px;margin-top:10px;">馃憫 鏈€楂樻浣嶏紒缁х画鍒烽淇濇寔鎵嬫劅</p>' +
-          '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:10px;">缁х画鍒风 ' + ri.lv + ' 绾ч搴?/a>';
+        h += '<p class="muted" style="font-size:12px;margin-top:10px;">👑 最高段位！继续刷题保持手感</p>' +
+          '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:10px;">继续刷第 ' + ri.lv + ' 级题库</a>';
       } else if (ri.examUnlocked) {
-        h += '<a class="btn btn-primary btn-block rank-exam-btn" href="#/lvexam" style="margin-top:12px;">馃摑 鍙傚姞鏅嬬骇鑰冭瘯 路 鈮? + LV_PASS + '% 鏅嬬骇 Lv.' + (ri.lv + 1) + '</a>' +
-          '<a class="btn btn-ghost btn-block" href="#/practice/lv" style="margin-top:8px;">缁х画鍒烽</a>';
+        h += '<a class="btn btn-primary btn-block rank-exam-btn" href="#/lvexam" style="margin-top:12px;">📝 参加晋级考试 · ≥' + LV_PASS + '% 晋级 Lv.' + (ri.lv + 1) + '</a>' +
+          '<a class="btn btn-ghost btn-block" href="#/practice/lv" style="margin-top:8px;">继续刷题</a>';
       } else {
-        h += '<p class="muted" style="font-size:12px;margin-top:10px;">缁冩弧 ' + LV_EXAM_UNLOCK_PCT + '% 瑙ｉ攣鏅嬬骇鑰冭瘯锛岃繕宸?' + ri.remain + ' 棰?路 閫氳繃鍚庢檵绾с€? + esc((ri.next || {}).name || '') + '銆?/p>' +
-          '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:8px;">鈻?绛夌骇鎸戞垬锛? + ri.pool.length + ' 棰樼敱鏄撳埌闅撅級</a>';
+        h += '<p class="muted" style="font-size:12px;margin-top:10px;">练满 ' + LV_EXAM_UNLOCK_PCT + '% 解锁晋级考试，还差 ' + ri.remain + ' 题 · 通过后晋级「' + esc((ri.next || {}).name || '') + '」</p>' +
+          '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:8px;">▶ 等级挑战（' + ri.pool.length + ' 题由易到难）</a>';
       }
       h += '</div>';
       return h;
@@ -1332,39 +1365,39 @@
       var lv = levelInfo();
       app.innerHTML =
         '<div class="hero">' +
-          '<div class="hero-title">馃殎 鏃犱汉鏈洪搴撳疂鍏?/div>' +
-          '<div class="hero-sub">CAAC 鏃犱汉鏈虹悊璁鸿€冭瘯 路 鍏ㄧ绾垮埛棰?/div>' +
-          '<div class="hero-chip">' + QBANK.length + ' 棰樺厤璐瑰埛 路 ' + expN + ' 棰樺甫瑙ｆ瀽</div>' +
-          '<a class="hero-me" href="#/me" title="涓汉涓婚〉"><span class="hero-me-emoji">' + esc(profile.avatar || '馃') + '</span><span class="hero-me-nick">' + (profile.nick ? esc(profile.nick) : '鎴戠殑') + '</span></a>' +
-          // 绛夌骇杩涘害鏉★紙Duolingo 寮忥級
+          '<div class="hero-title">🚁 无人机题库宝典</div>' +
+          '<div class="hero-sub">CAAC 无人机理论考试 · 全离线刷题</div>' +
+          '<div class="hero-chip">' + QBANK.length + ' 题免费刷 · ' + expN + ' 题带解析</div>' +
+          '<a class="hero-me" href="#/me" title="个人主页"><span class="hero-me-emoji">' + esc(profile.avatar || '🦁') + '</span><span class="hero-me-nick">' + (profile.nick ? esc(profile.nick) : '我的') + '</span></a>' +
+          // 等级进度条（Duolingo 式）
           '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
             '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
             '<span class="lvl-num">' + lv.cur + '/' + lv.need + ' XP</span></div>' +
         '</div>' +
         '<div class="card stat-card">' +
           '<div class="stat-row">' +
-            stat(QBANK.length, '鎬婚鏁?) + stat(singles, '鍗曢€夐') + stat(multis, '澶氶€夐') +
+            stat(QBANK.length, '总题数') + stat(singles, '单选题') + stat(multis, '多选题') +
           '</div>' +
-          '<div class="stat-row">' + stat(done, '宸插埛棰樻暟') + stat(rate, '姝ｇ‘鐜?) + '</div>' +
+          '<div class="stat-row">' + stat(done, '已刷题数') + stat(rate, '正确率') + '</div>' +
         '</div>' +
         '<div class="card daily">' + dailyCardHTML() + '</div>' +
         rankCardHTML() +
         tasksCardHTML() +
         weakCardHTML() +
         '<div class="entries">' +
-          tile('#/practice/seq', '馃摉', '椤哄簭鍒烽', '鎸夐搴撻『搴忛€愰缁?) +
-          tile('#/practice/weak', '馃幆', '鏄撻敊鐐圭壒璁?, '寮辩偣鍒嗙被寮哄寲璁粌', wrongIds.length) +
-          tile('#/practice/rand', '馃幉', '闅忔満鍒烽', '涔卞簭宸╁浐璁板繂') +
-          tile('#/practice/multi', '鉁?, '澶氶€変笓缁?, '194閬撴紡閫夊厠鏄?) +
-          tile('#/exam', '馃摑', '妯℃嫙鑰冭瘯', '30棰樹豢鐪熷嵎') +
-          tile('#/wrong', '鉂?, '閿欓鏈?, '绛斿鑷姩绉诲嚭', wrongIds.length) +
-          tile('#/fav', '猸?, '鎴戠殑鏀惰棌', '閲嶇偣棰橀殢鏃跺埛', favIds.length) +
+          tile('#/practice/seq', '📖', '顺序刷题', '按题库顺序逐题练') +
+          tile('#/practice/weak', '🎯', '易错点特训', '弱点分类强化训练', wrongIds.length) +
+          tile('#/practice/rand', '🎲', '随机刷题', '乱序巩固记忆') +
+          tile('#/practice/multi', '✅', '多选专练', '194道漏选克星') +
+          tile('#/exam', '📝', '模拟考试', '30题仿真卷') +
+          tile('#/wrong', '❌', '错题本', '答对自动移出', wrongIds.length) +
+          tile('#/fav', '⭐', '我的收藏', '重点题随时刷', favIds.length) +
         '</div>' +
-        '<a class="btn btn-ghost btn-block" style="margin-top:18px;" data-act="share" href="javascript:void(0)">馃摚 鍒嗕韩缁欐湅鍙嬶紝涓€璧峰厤璐瑰埛</a>' +
-        '<p class="footer-note">棰樺簱浠呬緵瀛︿範鍙傝€冿紝闈炲畼鏂归搴?/p>';
+        '<a class="btn btn-ghost btn-block" style="margin-top:18px;" data-act="share" href="javascript:void(0)">📣 分享给朋友，一起免费刷</a>' +
+        '<p class="footer-note">题库仅供学习参考，非官方题库</p>';
     }
 
-    /* ---------- 姣忔棩涓€棰?---------- */
+    /* ---------- 每日一题 ---------- */
     function todayStr() {
       var d = new Date();
       function p(n) { return (n < 10 ? '0' : '') + n; }
@@ -1392,14 +1425,14 @@
       var q = dailyQuestion();
       var st = dailyInfo();
       var doneToday = st.last === todayStr() && st.lastId === q.id;
-      var h = '<div class="daily-head"><b>馃搮 姣忔棩涓€棰?路 ' + todayStr() + '</b>' +
-        '<span class="daily-streak">馃敟 杩炵画鎵撳崱 ' + (st.streak || 0) + ' 澶?/span></div>' +
+      var h = '<div class="daily-head"><b>📅 每日一题 · ' + todayStr() + '</b>' +
+        '<span class="daily-streak">🔥 连续打卡 ' + (st.streak || 0) + ' 天</span></div>' +
         '<div class="daily-stem">' + q.stem + '</div>';
       if (doneToday) {
         var right = st.lastPick === q.answer;
         h += '<div class="daily-result ' + (right ? 'ok' : 'bad') + '">' +
-          (right ? '鉁?浠婃棩宸茬瓟瀵癸紝鏄庡ぉ鍐嶆潵锛? : '鉁?浠婃棩绛旈敊浜嗭紝姝ｇ‘绛旀 ' + q.answer) + '</div>';
-        if (q.exp) h += '<div class="exp-box">馃挕 瑙ｆ瀽锛? + esc(q.exp) + '</div>';
+          (right ? '✓ 今日已答对，明天再来！' : '✗ 今日答错了，正确答案 ' + q.answer) + '</div>';
+        if (q.exp) h += '<div class="exp-box">💡 解析：' + esc(q.exp) + '</div>';
       } else {
         h += ['A', 'B', 'C', 'D'].map(function (L) {
           return '<div class="opt" data-act="dopt" data-letter="' + L + '"><span class="letter">' + L + '</span><span class="opt-text">' + q[L] + '</span></div>';
@@ -1410,8 +1443,10 @@
     function dailyPick(letter) {
       var q = dailyQuestion();
       var st = dailyInfo();
-      if (st.last === todayStr()) return; // 浠婃棩宸插畬鎴?      var right = letter === q.answer;
-      comboNow = right ? 1 : 0; // 姣忔棩涓€棰樿鍏ユ瘡鏃ヤ换鍔★紙杩炲鎸?棰樿锛?      recordAnswer(q, right);             // 澶嶇敤鎬昏繘搴?閿欓鏈€昏緫
+      if (st.last === todayStr()) return; // 今日已完成
+      var right = letter === q.answer;
+      comboNow = right ? 1 : 0; // 每日一题计入每日任务（连对按1题计）
+      recordAnswer(q, right);             // 复用总进度+错题本逻辑
       comboNow = 0;
       st.streak = (st.last === yesterdayStr()) ? st.streak + 1 : 1;
       st.last = todayStr();
@@ -1420,17 +1455,18 @@
       localStorage.setItem('wrh5_daily', JSON.stringify(st));
       renderHome();
     }
-    /* ---------- 鍒烽 ---------- */
+    /* ---------- 刷题 ---------- */
     function renderPracticeRoute(mode) {
       if (!MODE_TITLE[mode]) mode = 'seq';
-      // 閿欓鏈?鏀惰棌閲嶇粌锛氭瘡娆¤繘鍏ラ兘鎸夋渶鏂板垪琛ㄩ噸寤猴紱
-      // 甯歌妯″紡锛氫腑閫旈€€鍑哄啀杩涘叆鍙部鐢ㄦ湭瀹屾垚鐨勪細璇?      if (!session || session.mode !== mode || mode === 'wrong' || mode === 'fav') {
+      // 错题本/收藏重练：每次进入都按最新列表重建；
+      // 常规模式：中途退出再进入可沿用未完成的会话
+      if (!session || session.mode !== mode || mode === 'wrong' || mode === 'fav') {
         session = buildSession(mode);
       }
       if (!session.queue.length) {
         app.innerHTML = topbar(MODE_TITLE[mode]) +
-          '<div class="empty"><div class="big">馃埑</div><p>鏈粍鏆傛椂娌℃湁棰樼洰</p>' +
-          '<a class="btn btn-primary" href="#/" style="margin-top:16px;">杩斿洖棣栭〉</a></div>';
+          '<div class="empty"><div class="big">🈳</div><p>本组暂时没有题目</p>' +
+          '<a class="btn btn-primary" href="#/" style="margin-top:16px;">返回首页</a></div>';
         return;
       }
       renderPractice();
@@ -1441,30 +1477,29 @@
       var q = s.queue[s.idx];
       if (!q) { renderSessionDone(); return; }
 
-      var judged = s.judged[q.id];   // 宸插垽瀹氾細{picks:'AB', right:true/false}锛屽惁鍒?undefined
-      var picks = s.picks[q.id] || []; // 澶氶€夋湭鍒ゅ畾鍓嶇殑宸插嬀閫夊瓧姣?      var isFav = favIds.indexOf(q.id) >= 0;
+      var judged = s.judged[q.id];   // 已判定：{picks:'AB', right:true/false}，否则 undefined
+      var picks = s.picks[q.id] || []; // 多选未判定前的已勾选字母
+      var isFav = favIds.indexOf(q.id) >= 0;
       var pct = Math.round(((s.idx + 1) / s.queue.length) * 100);
-      // 鍏冲崱鍒讹細椤哄簭鍒烽姣?10 棰樹负涓€鍏?      var CHUNK = 10;
-      var chunkNo = Math.floor(s.idx / CHUNK) + 1;
-      var titleText = MODE_TITLE[s.mode] + (s.mode === 'seq' ? ' 路 绗? + chunkNo + '鍏? : '');
+      var titleText = MODE_TITLE[s.mode];
 
-      var html = '<div class="topbar"><a class="back" href="#/">鈥?杩斿洖</a>' +
+      var html = '<div class="topbar"><a class="back" href="#/">‹ 返回</a>' +
         '<div class="topbar-title">' + titleText + '</div>' +
-        '<button class="star' + (isFav ? ' on' : '') + '" data-act="fav">' + (isFav ? '鈽? : '鈽?) + '</button></div>' +
-        // 杩涘害鏉?+ 杩炲嚮鎸囩ず
+        '<button class="star' + (isFav ? ' on' : '') + '" data-act="fav">' + (isFav ? '★' : '☆') + '</button></div>' +
+        // 进度条 + 连击指示
         '<div class="progress-wrap"><div class="bar"><i style="width:' + pct + '%"></i></div>' +
         '<span class="progress-text">' + (s.idx + 1) + ' / ' + s.queue.length +
-        (s.combo >= 2 ? ' 路 <b class="combo-chip">馃敟杩炲' + s.combo + '</b>' : '') +
-        (s.xpGain ? ' 路 <b class="xp-chip">+' + s.xpGain + 'XP</b>' : '') + '</span></div>' +
-        // 棰樼洰鍗＄墖
+        (s.combo >= 2 ? ' · <b class="combo-chip">🔥连对' + s.combo + '</b>' : '') +
+        (s.xpGain ? ' · <b class="xp-chip">+' + s.xpGain + 'XP</b>' : '') + '</span></div>' +
+        // 题目卡片
         '<div class="card">' +
           '<div class="q-meta">' +
-            '<span class="chip chip-blue">' + (q.type === 'multi' ? '澶氶€夐' : '鍗曢€夐') + '</span>' +
-            '<span class="chip">' + esc(q.cat || '鏈垎绫?) + '</span>' +
+            '<span class="chip chip-blue">' + (q.type === 'multi' ? '多选题' : '单选题') + '</span>' +
+            '<span class="chip">' + esc(q.cat || '未分类') + '</span>' +
           '</div>' +
           '<div class="q-stem">' + (s.idx + 1) + '. ' + esc(q.stem) + '</div>' +
           '<div class="opts">';
-      // 鍥涗釜閫夐」锛涘垽瀹氬悗锛氭纭€夐」缁裤€侀敊閫夌孩
+      // 四个选项；判定后：正确选项绿、错选红
       LETTERS.forEach(function (L) {
         if (!q[L]) return;
         var cls = 'opt';
@@ -1480,32 +1515,32 @@
           '<span class="opt-text">' + esc(q[L]) + '</span></div>';
       });
       html += '</div>';
-      // 澶氶€夛細鍕鹃€夊悗鐐瑰嚮鈥滅‘璁ょ瓟妗堚€濈粺涓€鍒ゅ畾
+      // 多选：勾选后点击“确认答案”统一判定
       if (q.type === 'multi' && !judged) {
         html += '<button class="btn btn-primary btn-block" data-act="confirm"' +
-          (picks.length ? '' : ' disabled') + '>纭绛旀锛堝凡閫?' + picks.length + ' 椤癸級</button>';
+          (picks.length ? '' : ' disabled') + '>确认答案（已选 ' + picks.length + ' 项）</button>';
       }
-      // 鍒ゅ畾缁撴灉鏉★紙甯?XP 椋樺瓧涓庤繛鍑绘彁绀猴級
+      // 判定结果条（带 XP 飘字与连击提示）
       if (judged) {
         html += judged.right
-          ? '<div class="judge-strip ok">鉁?鍥炵瓟姝ｇ‘锛岀户缁姞娌癸紒<small>姝ｇ‘绛旀锛? + esc(q.answer) + '</small>' +
-            (s.combo >= 2 ? '<small class="combo-hot">馃敟 杩炲 ' + s.combo + '</small>' : '') +
+          ? '<div class="judge-strip ok">✅ 回答正确，继续加油！<small>正确答案：' + esc(q.answer) + '</small>' +
+            (s.combo >= 2 ? '<small class="combo-hot">🔥 连对 ' + s.combo + '</small>' : '') +
             '<span class="xp-pop">+10 XP</span></div>'
-          : '<div class="judge-strip no">鉂?鍥炵瓟閿欒<small>浣犵殑绛旀锛? + esc(judged.picks) +
-            ' 路 姝ｇ‘绛旀锛? + esc(q.answer) + '</small></div>';
-        if (q.exp) html += '<div class="exp-box">馃挕 瑙ｆ瀽锛? + esc(q.exp) + '</div>';
+          : '<div class="judge-strip no">❌ 回答错误<small>你的答案：' + esc(judged.picks) +
+            ' · 正确答案：' + esc(q.answer) + '</small></div>';
+        if (q.exp) html += '<div class="exp-box">💡 解析：' + esc(q.exp) + '</div>';
       }
       html += '</div>';
-      // 涓婁竴棰?/ 涓嬩竴棰橈紙鏈€鍚庝竴棰樼殑鈥滀笅涓€棰樷€濆彉涓衡€滃畬鎴愭湰缁勨€濓級
+      // 上一题 / 下一题（最后一题的“下一题”变为“完成本组”）
       var last = s.idx === s.queue.length - 1;
       html += '<div class="navbtns">' +
-        '<button class="btn btn-ghost" data-act="prev"' + (s.idx === 0 ? ' disabled' : '') + '>涓婁竴棰?/button>' +
-        '<button class="btn btn-primary" data-act="next">' + (last ? '瀹屾垚鏈粍' : '涓嬩竴棰?) + '</button>' +
+        '<button class="btn btn-ghost" data-act="prev"' + (s.idx === 0 ? ' disabled' : '') + '>上一题</button>' +
+        '<button class="btn btn-primary" data-act="next">' + (last ? '完成本组' : '下一题') + '</button>' +
         '</div>';
       app.innerHTML = html;
     }
 
-    /** 鍒峰畬鏈粍鍚庣殑缁撶畻椤?*/
+    /** 刷完本组（≤12题）后的结算页 */
     function renderSessionDone() {
       var s = session;
       var total = 0, right = 0;
@@ -1513,74 +1548,52 @@
         total++;
         if (s.judged[k].right) right++;
       });
+      // 完整答完一组：闯关纪录 +1（闯关成就用，一组只计一次）
+      if (total > 0 && !s.levelsCounted) {
+        s.levelsCounted = 1;
+        game.levels = (game.levels || 0) + 1;
+        lsSet(KEY_GAME, game);
+      }
       var rate = total ? Math.round(right / total * 100) + '%' : '--';
       var lv = levelInfo();
-      var againLabel = s.mode === 'rand' ? '馃幉 鍐嶉殢鏈轰竴缁? : (s.mode === 'weak' ? '馃攣 鍐嶆潵涓€缁勭壒璁? : (s.mode === 'lv' ? '馃攣 缁х画鍒锋湰娈甸搴? : '馃攣 閲嶆柊鍒锋湰缁?));
-      // 绛夌骇鎸戞垬锛氱粨绠楅〉缁欏嚭鏅嬬骇鑰冭瘯鍏ュ彛
+      var againLabel = s.mode === 'rand' ? '🎲 再随机一组'
+        : (s.mode === 'weak' ? '🔁 再来一组特训'
+        : (s.mode === 'lv' ? '🔁 继续刷本段题库'
+        : (s.mode === 'seq' ? '▶ 继续刷下一组（接着没答过的题）' : '🔁 再刷一组')));
+      // 等级挑战：结算页给出晋级考试入口
       var lvCta = '';
       if (s.mode === 'lv') {
         var ri = rankInfo();
         if (ri.lv >= LV_COUNT) {
-          lvCta = '<p class="muted" style="font-size:12px;margin-top:10px;">馃憫 宸叉槸鏈€楂樻浣嶃€? + esc(ri.rank.name) + '銆嶏紝淇濇寔鎵嬫劅锛?/p>';
+          lvCta = '<p class="muted" style="font-size:12px;margin-top:10px;">👑 已是最高段位「' + esc(ri.rank.name) + '」，保持手感！</p>';
         } else if (ri.examUnlocked) {
-          lvCta = '<a class="btn btn-primary btn-block" href="#/lvexam" style="margin-top:18px;">馃摑 鍙傚姞鏅嬬骇鑰冭瘯锛堚墺' + LV_PASS + '% 鏅嬬骇 Lv.' + (ri.lv + 1) + '锛?/a>';
+          lvCta = '<a class="btn btn-primary btn-block" href="#/lvexam" style="margin-top:18px;">📝 参加晋级考试（≥' + LV_PASS + '% 晋级 Lv.' + (ri.lv + 1) + '）</a>';
         } else {
-          lvCta = '<p class="muted" style="font-size:12px;margin-top:10px;">缁冩弧 ' + LV_EXAM_UNLOCK_PCT + '% 瑙ｉ攣鏅嬬骇鑰冭瘯锛堝綋鍓?' + ri.pct + '%锛岃繕宸?' + ri.remain + ' 棰橈級</p>';
+          lvCta = '<p class="muted" style="font-size:12px;margin-top:10px;">练满 ' + LV_EXAM_UNLOCK_PCT + '% 解锁晋级考试（当前 ' + ri.pct + '%，还差 ' + ri.remain + ' 题）</p>';
         }
       }
       app.innerHTML = topbar(MODE_TITLE[s.mode]) +
         '<div class="view"><div class="card" style="text-align:center;padding:30px 16px;">' +
-          '<div style="font-size:44px;">馃弫</div>' +
-          '<div style="font-size:18px;font-weight:700;margin:10px 0;">璁粌瀹屾垚锛?/div>' +
+          '<div style="font-size:44px;">🏁</div>' +
+          '<div style="font-size:18px;font-weight:700;margin:10px 0;">本组训练完成！</div>' +
+          (s.mode === 'seq' ? '<p class="muted" style="font-size:12px;margin:-4px 0 8px;">每轮 12 题，下次自动接着没答过的题继续</p>' : '') +
           '<div class="settle-stats">' +
-            '<div class="settle-stat"><b>+' + (s.xpGain || 0) + '</b><span>鑾峰緱XP</span></div>' +
-            '<div class="settle-stat"><b>' + (s.maxCombo || 0) + '</b><span>鏈€楂樿繛瀵?/span></div>' +
-            '<div class="settle-stat"><b>' + rate + '</b><span>姝ｇ‘鐜?' + right + '/' + total + ')</span></div>' +
+            '<div class="settle-stat"><b>+' + (s.xpGain || 0) + '</b><span>获得XP</span></div>' +
+            '<div class="settle-stat"><b>' + (s.maxCombo || 0) + '</b><span>最高连对</span></div>' +
+            '<div class="settle-stat"><b>' + rate + '</b><span>正确率(' + right + '/' + total + ')</span></div>' +
           '</div>' +
           '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
             '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
             '<span class="lvl-num">' + lv.cur + '/' + lv.need + '</span></div>' +
-          (wrongIds.length ? '<p class="muted" style="font-size:12px;margin-top:10px;">馃挭 鏈粍閿欎簡 ' +
-            Math.max(0, total - right) + ' 棰橈紝宸茶繘閿欓鏈紱璇曡瘯銆屾槗閿欑偣鐗硅銆嶉拡瀵规€ф敾鍏?/p>' : '') +
+          (wrongIds.length ? '<p class="muted" style="font-size:12px;margin-top:10px;">💪 本组错了 ' +
+            Math.max(0, total - right) + ' 题，已进错题本；试试「易错点特训」针对性攻克</p>' : '') +
           '<button class="btn btn-primary btn-block" data-act="restart" style="margin-top:18px;">' + againLabel + '</button>' +
           lvCta +
-          '<a class="btn btn-ghost btn-block" href="#/" style="margin-top:10px;">杩斿洖棣栭〉</a>' +
+          '<a class="btn btn-ghost btn-block" href="#/" style="margin-top:10px;">返回首页</a>' +
         '</div></div>';
     }
 
-    /** 椤哄簭鍒烽姣?10 棰樹竴鍏筹細杩囧叧缁撶畻闈㈡澘 */
-    function renderChunkDone(chunkNo) {
-      var s = session;
-      var start = (chunkNo - 1) * 10;
-      var seg = s.queue.slice(start, start + 10);
-      var total = 0, right = 0, maxCombo = 0, run = 0;
-      seg.forEach(function (q) {
-        var j = s.judged[q.id];
-        if (!j) return;
-        total++;
-        if (j.right) { right++; run++; if (run > maxCombo) maxCombo = run; }
-        else run = 0;
-      });
-      var rate = total ? Math.round(right / total * 100) + '%' : '--';
-      var lv = levelInfo();
-      app.innerHTML = topbar(MODE_TITLE[s.mode]) +
-        '<div class="view"><div class="card" style="text-align:center;padding:30px 16px;">' +
-          '<div style="font-size:44px;">馃帀</div>' +
-          '<div style="font-size:18px;font-weight:700;margin:10px 0;">绗?' + chunkNo + ' 鍏冲畬鎴愶紒</div>' +
-          '<div class="settle-stats">' +
-            '<div class="settle-stat"><b>+' + (s.xpGain || 0) + '</b><span>绱XP</span></div>' +
-            '<div class="settle-stat"><b>' + maxCombo + '</b><span>鏈叧鏈€楂樿繛瀵?/span></div>' +
-            '<div class="settle-stat"><b>' + rate + '</b><span>鏈叧姝ｇ‘鐜?' + right + '/' + total + ')</span></div>' +
-          '</div>' +
-          '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
-            '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
-            '<span class="lvl-num">' + lv.cur + '/' + lv.need + '</span></div>' +
-          '<button class="btn btn-primary btn-block" data-act="chunknext" style="margin-top:18px;">缁х画涓嬩竴鍏?鈫?/button>' +
-          '<a class="btn btn-ghost btn-block" href="#/" style="margin-top:10px;">瀛樻。鍥為椤?/a>' +
-        '</div></div>';
-    }
-
-    /* ---------- 妯℃嫙鑰冭瘯 ---------- */
+    /* ---------- 模拟考试 ---------- */
     function renderExamRoute() {
       if (!exam) newExam();
       if (exam.submitted) renderExamResult();
@@ -1588,7 +1601,7 @@
       else renderExam();
     }
 
-    /** 鏂板缓涓€鍦烘ā鎷熻€冿紙闅忔満 30 閬撳崟閫夛級 */
+    /** 新建一场模拟考（随机 30 道单选） */
     function newExam() {
       stopExamTimer();
       var singles = QBANK.filter(function (q) { return q.type !== 'multi'; });
@@ -1599,11 +1612,11 @@
       };
     }
 
-    /* ---------- 鏅嬬骇鑰冭瘯锛堝鐢ㄨ€冭瘯娴佺▼锛宔xam.lv 鏍囪锛?---------- */
+    /* ---------- 晋级考试（复用考试流程，exam.lv 标记） ---------- */
     function newLvExam() {
       stopExamTimer();
       var pool = lvPool(getRank().lv).filter(function (q) { return q.type !== 'multi'; });
-      if (pool.length < LV_EXAM_COUNT) pool = lvPool(getRank().lv); // 鍏滃簳
+      if (pool.length < LV_EXAM_COUNT) pool = lvPool(getRank().lv); // 兜底
       exam = {
         lv: true,
         queue: shuffle(pool).slice(0, Math.min(LV_EXAM_COUNT, pool.length)),
@@ -1619,30 +1632,30 @@
       else renderExam();
     }
 
-    /** 鑰冨墠璇存槑椤碉紙鐐瑰嚮鈥滃紑濮嬭€冭瘯鈥濇墠鍚姩鍊掕鏃讹級 */
+    /** 考前说明页（点击“开始考试”才启动倒计时） */
     function renderExamIntro() {
       var isLv = !!exam.lv;
-      var title = isLv ? '鏅嬬骇鑰冭瘯' : '妯℃嫙鑰冭瘯';
+      var title = isLv ? '晋级考试' : '模拟考试';
       var secs = isLv ? LV_EXAM_SECONDS : EXAM_SECONDS;
       var desc = isLv
-        ? '绗?' + getRank().lv + ' 绾ч搴撻殢鏈?' + exam.queue.length + ' 棰?br>闄愭椂 ' + (secs / 60) + ' 鍒嗛挓<br>姝ｇ‘鐜?鈮?' + LV_PASS + '% 鏅嬬骇涓嬩竴娈典綅'
-        : '闅忔満鎶藉彇 ' + exam.queue.length + ' 閬撳崟閫夐<br>闄愭椂 ' + (secs / 60) + ' 鍒嗛挓锛屽埌鏃惰嚜鍔ㄤ氦鍗?;
+        ? '第 ' + getRank().lv + ' 级题库随机 ' + exam.queue.length + ' 题<br>限时 ' + (secs / 60) + ' 分钟<br>正确率 ≥ ' + LV_PASS + '% 晋级下一段位'
+        : '随机抽取 ' + exam.queue.length + ' 道单选题<br>限时 ' + (secs / 60) + ' 分钟，到时自动交卷';
       app.innerHTML = topbar(title) +
         '<div class="view"><div class="card" style="text-align:center;padding:28px 16px;">' +
-          '<div style="font-size:44px;">' + (isLv ? '馃幆' : '馃摑') + '</div>' +
+          '<div style="font-size:44px;">' + (isLv ? '🎯' : '📝') + '</div>' +
           '<div style="font-size:18px;font-weight:700;margin:10px 0 6px;">' + title + '</div>' +
           '<p class="muted">' + desc + '</p>' +
-          '<p class="muted" style="font-size:12px;margin-top:8px;">閿欓灏嗚嚜鍔ㄥ苟鍏ラ敊棰樻湰锛涗腑閫旈€€鍑哄皢涓㈠純鏈浣滅瓟</p>' +
-          '<button class="btn btn-primary btn-block" data-act="examstart" style="margin-top:18px;">寮€濮嬭€冭瘯</button>' +
+          '<p class="muted" style="font-size:12px;margin-top:8px;">错题将自动并入错题本；中途退出将丢弃本次作答</p>' +
+          '<button class="btn btn-primary btn-block" data-act="examstart" style="margin-top:18px;">开始考试</button>' +
         '</div></div>';
     }
 
-    /** 鍋滄鍊掕鏃?*/
+    /** 停止倒计时 */
     function stopExamTimer() {
       if (examTimer) { clearInterval(examTimer); examTimer = null; }
     }
 
-    /** 寮€濮嬭€冭瘯锛氳缃埅姝㈡椂闂村苟鍚姩鍊掕鏃?*/
+    /** 开始考试：设置截止时间并启动倒计时 */
     function startExam() {
       if (!exam) newExam();
       exam.started = true;
@@ -1652,32 +1665,32 @@
       renderExam();
     }
 
-    /** 姣忔蹇冭烦锛氬埛鏂板€掕鏃舵樉绀猴紝褰掗浂鑷姩浜ゅ嵎 */
+    /** 每次心跳：刷新倒计时显示，归零自动交卷 */
     function tickExam() {
       if (!exam || !exam.started || exam.submitted) { stopExamTimer(); return; }
       var remain = Math.max(0, Math.ceil((exam.endAt - Date.now()) / 1000));
       var clock = document.getElementById('examClock');
       if (clock) {
-        clock.textContent = '鈴?' + fmtTime(remain);
+        clock.textContent = '⏱ ' + fmtTime(remain);
         clock.className = 'clock' + (remain <= 300 ? ' danger' : '');
       }
       if (remain <= 0) submitExam(true);
     }
 
-    /** 鑰冭瘯绛旈椤?*/
+    /** 考试答题页 */
     function renderExam() {
       var q = exam.queue[exam.idx];
       var answered = exam.queue.filter(function (x) { return exam.picks[x.id]; }).length;
       var remain = Math.max(0, Math.ceil((exam.endAt - Date.now()) / 1000));
-      var html = '<div class="topbar"><a class="back" href="#/">鈥?閫€鍑?/a>' +
-        '<div class="topbar-title">' + (exam.lv ? '鏅嬬骇鑰冭瘯' : '妯℃嫙鑰冭瘯') + '</div>' +
-        '<span class="clock' + (remain <= 300 ? ' danger' : '') + '" id="examClock">鈴?' + fmtTime(remain) + '</span></div>' +
+      var html = '<div class="topbar"><a class="back" href="#/">‹ 退出</a>' +
+        '<div class="topbar-title">' + (exam.lv ? '晋级考试' : '模拟考试') + '</div>' +
+        '<span class="clock' + (remain <= 300 ? ' danger' : '') + '" id="examClock">⏱ ' + fmtTime(remain) + '</span></div>' +
         '<div class="progress-wrap"><div class="bar"><i style="width:' +
           Math.round(((exam.idx + 1) / exam.queue.length) * 100) + '%"></i></div>' +
         '<span class="progress-text">' + (exam.idx + 1) + ' / ' + exam.queue.length + '</span></div>' +
         '<div class="card">' +
-          '<div class="q-meta"><span class="chip chip-blue">鍗曢€夐</span>' +
-          '<span class="chip">' + esc(q.cat || '鏈垎绫?) + '</span></div>' +
+          '<div class="q-meta"><span class="chip chip-blue">单选题</span>' +
+          '<span class="chip">' + esc(q.cat || '未分类') + '</span></div>' +
           '<div class="q-stem">' + (exam.idx + 1) + '. ' + esc(q.stem) + '</div>' +
           '<div class="opts">';
       LETTERS.forEach(function (L) {
@@ -1689,22 +1702,22 @@
       });
       html += '</div></div>' +
         '<div class="navbtns">' +
-          '<button class="btn btn-ghost" data-act="examprev"' + (exam.idx === 0 ? ' disabled' : '') + '>涓婁竴棰?/button>' +
-          '<button class="btn btn-ghost" data-act="examnext"' + (exam.idx === exam.queue.length - 1 ? ' disabled' : '') + '>涓嬩竴棰?/button>' +
+          '<button class="btn btn-ghost" data-act="examprev"' + (exam.idx === 0 ? ' disabled' : '') + '>上一题</button>' +
+          '<button class="btn btn-ghost" data-act="examnext"' + (exam.idx === exam.queue.length - 1 ? ' disabled' : '') + '>下一题</button>' +
         '</div>' +
         '<div class="exam-foot">' +
-          '<p class="muted" style="text-align:center;">宸茬瓟 ' + answered + ' / ' + exam.queue.length +
-          ' 棰橈紝浜ゅ嵎鍚庨敊棰樿嚜鍔ㄥ苟鍏ラ敊棰樻湰</p>' +
-          '<button class="btn btn-danger btn-block" data-act="examsubmit">浜?鍗?/button>' +
+          '<p class="muted" style="text-align:center;">已答 ' + answered + ' / ' + exam.queue.length +
+          ' 题，交卷后错题自动并入错题本</p>' +
+          '<button class="btn btn-danger btn-block" data-act="examsubmit">交 卷</button>' +
         '</div>';
       app.innerHTML = html;
     }
 
-    /** 浜ゅ嵎锛氳嚜鍔紙鍊掕鏃跺綊闆讹級鎴栨墜鍔紱璇勫垎骞舵妸閿欓骞跺叆閿欓鏈?*/
+    /** 交卷：自动（倒计时归零）或手动；评分并把错题并入错题本 */
     function submitExam(auto) {
       if (!exam || !exam.started || exam.submitted) return;
       var un = exam.queue.filter(function (q) { return !exam.picks[q.id]; }).length;
-      if (!auto && un > 0 && !window.confirm('杩樻湁 ' + un + ' 棰樻湭浣滅瓟锛岀‘瀹氳浜ゅ嵎鍚楋紵')) return;
+      if (!auto && un > 0 && !window.confirm('还有 ' + un + ' 题未作答，确定要交卷吗？')) return;
       stopExamTimer();
       var remain = Math.max(0, Math.ceil((exam.endAt - Date.now()) / 1000));
       var correct = 0;
@@ -1713,18 +1726,22 @@
         var pick = exam.picks[q.id] || '';
         var right = !!pick && pick === q.answer;
         if (right) correct++;
-        else wrongDetail.push({ q: q, pick: pick || '鏈綔绛? });
-        comboNow = right ? 1 : 0; // 鑰冭瘯鏃犺繛鍑绘蹇碉紝鎸夊崟棰樺閿欏悓姝ヤ换鍔＄粺璁?        recordAnswer(q, right); // 璁″叆杩涘害缁熻锛涢敊棰樺苟鍏ラ敊棰樻湰銆佺瓟瀵圭Щ鍑?      });
+        else wrongDetail.push({ q: q, pick: pick || '未作答' });
+        comboNow = right ? 1 : 0; // 考试无连击概念，按单题对错同步任务统计
+        recordAnswer(q, right); // 计入进度统计；错题并入错题本、答对移出
+      });
       comboNow = 0;
       exam.submitted = true;
       exam.result = {
         correct: correct,
         total: exam.queue.length,
-        score: Math.round(correct * 100 / exam.queue.length), // 鐧惧垎鍒?        used: (exam.lv ? LV_EXAM_SECONDS : EXAM_SECONDS) - remain,
+        score: Math.round(correct * 100 / exam.queue.length), // 百分制
+        used: (exam.lv ? LV_EXAM_SECONDS : EXAM_SECONDS) - remain,
         wrong: wrongDetail
       };
       if (exam.lv) {
-        // 鈥斺€?鏅嬬骇鍒ゅ畾锛氭纭巼 鈮?LV_PASS% 閫氳繃锛屾檵绾?+100XP 鈥斺€?        var rk = getRank();
+        // —— 晋级判定：正确率 ≥ LV_PASS% 通过，晋级 +100XP ——
+        var rk = getRank();
         var pass = exam.result.score >= LV_PASS;
         exam.result.verdict = pass ? 'pass' : 'fail';
         exam.result.lvNo = rk.lv;
@@ -1736,82 +1753,83 @@
           exam.result.newLv = rk.lv;
         }
       } else if (exam.result.score > lsGet(KEY_EXAMBEST, 0)) {
-        lsSet(KEY_EXAMBEST, exam.result.score); // 涓汉涓婚〉路妯¤€冩渶浣筹紙鏅嬬骇鑰冭瘯涓嶈鍏ワ級
+        lsSet(KEY_EXAMBEST, exam.result.score); // 个人主页·模考最佳（晋级考试不计入）
       }
       renderExamResult();
     }
 
-    /** 璇勫垎缁撴灉椤碉細寰楀垎 + 姝ｇ‘鐜?+ 閿欓鍥為【锛堟檵绾ц€冭瘯闄勯€氳繃/鏈€氳繃鍒ゅ畾锛?*/
+    /** 评分结果页：得分 + 正确率 + 错题回顾（晋级考试附通过/未通过判定） */
     function renderExamResult() {
       var r = exam.result;
-      var html = topbar(exam.lv ? '鏅嬬骇缁撴灉' : '鑰冭瘯璇勫垎') +
+      var html = topbar(exam.lv ? '晋级结果' : '考试评分') +
         '<div class="view">' +
         '<div class="card" style="text-align:center;">' +
-          '<div class="score-circle"><b>' + r.score + '</b><span>寰楀垎</span></div>' +
+          '<div class="score-circle"><b>' + r.score + '</b><span>得分</span></div>' +
           '<div class="stat-row">' +
-            stat(Math.round(r.correct / r.total * 100) + '%', '姝ｇ‘鐜?) +
-            stat(r.correct + ' / ' + r.total, '绛斿棰樻暟') +
-            stat(fmtTime(r.used), '鐢ㄦ椂') +
+            stat(Math.round(r.correct / r.total * 100) + '%', '正确率') +
+            stat(r.correct + ' / ' + r.total, '答对题数') +
+            stat(fmtTime(r.used), '用时') +
           '</div>' +
           (exam.lv && r.verdict === 'pass'
-            ? '<div class="rank-verdict pass">馃帀 鏅嬬骇鎴愬姛锛佺 ' + r.lvNo + ' 绾ц€冭瘯 ' + r.score + '% 鈮?' + LV_PASS + '%<br>鏅嬪崌 <b>' + (RANKS[r.newLv - 1] || {}).icon + ' Lv.' + r.newLv + ' ' + esc((RANKS[r.newLv - 1] || {}).name || '') + '</b>锛屽鍔?+100 XP锛?/div>'
+            ? '<div class="rank-verdict pass">🎉 晋级成功！第 ' + r.lvNo + ' 级考试 ' + r.score + '% ≥ ' + LV_PASS + '%<br>晋升 <b>' + (RANKS[r.newLv - 1] || {}).icon + ' Lv.' + r.newLv + ' ' + esc((RANKS[r.newLv - 1] || {}).name || '') + '</b>，奖励 +100 XP！</div>'
             : (exam.lv
-              ? '<div class="rank-verdict fail">馃挃 鏈€氳繃锛氭纭巼闇€ 鈮?' + LV_PASS + '%锛堟湰娆?' + r.score + '%锛?br>閿欓宸茶繘閿欓鏈紝鍥炲幓鍒烽鍚庡啀鏉ユ寫鎴橈紒</div>'
+              ? '<div class="rank-verdict fail">💔 未通过：正确率需 ≥ ' + LV_PASS + '%（本次 ' + r.score + '%）<br>错题已进错题本，回去刷题后再来挑战！</div>'
               : '')) +
         '</div>';
-      html += '<h3 class="sec-title">閿欓鍥為【锛? + r.wrong.length + '锛?/h3>';
+      html += '<h3 class="sec-title">错题回顾（' + r.wrong.length + '）</h3>';
       if (!r.wrong.length) {
-        html += '<div class="empty"><div class="big">馃帀</div><p>鍏ㄩ儴绛斿锛屽お妫掍簡锛?/p></div>';
+        html += '<div class="empty"><div class="big">🎉</div><p>全部答对，太棒了！</p></div>';
       } else {
         html += r.wrong.map(function (w) {
           return '<div class="bk-item">' +
-            '<div class="q-meta"><span class="chip">' + esc(w.q.cat || '鏈垎绫?) + '</span></div>' +
+            '<div class="q-meta"><span class="chip">' + esc(w.q.cat || '未分类') + '</span></div>' +
             '<div class="bk-stem">' + esc(w.q.stem) + '</div>' +
-            '<div class="rv-line bad">浣犵殑绛旀锛? + esc(w.pick) + '</div>' +
-            '<div class="rv-line good">姝ｇ‘绛旀锛? + esc(w.q.answer) + '</div>' +
-            (w.q.exp ? '<div class="exp-box">馃挕 瑙ｆ瀽锛? + esc(w.q.exp) + '</div>' : '') +
+            '<div class="rv-line bad">你的答案：' + esc(w.pick) + '</div>' +
+            '<div class="rv-line good">正确答案：' + esc(w.q.answer) + '</div>' +
+            (w.q.exp ? '<div class="exp-box">💡 解析：' + esc(w.q.exp) + '</div>' : '') +
             '</div>';
         }).join('');
       }
       html += '<div class="navbtns">' +
         (exam.lv
           ? (r.verdict === 'pass'
-            ? '<a class="btn btn-primary" href="#/practice/lv">鎸戞垬涓嬩竴绾?鈫?/a>'
-            : '<button class="btn btn-primary" data-act="lvretry">鍐嶈€冧竴娆?/button>') +
-            '<a class="btn btn-ghost" href="#/">杩斿洖棣栭〉</a>'
-          : '<button class="btn btn-primary" data-act="examrestart">鍐嶈€冧竴娆?/button>' +
-            '<a class="btn btn-ghost" href="#/">杩斿洖棣栭〉</a>') +
+            ? '<a class="btn btn-primary" href="#/practice/lv">挑战下一级 →</a>'
+            : '<button class="btn btn-primary" data-act="lvretry">再考一次</button>') +
+            '<a class="btn btn-ghost" href="#/">返回首页</a>'
+          : '<button class="btn btn-primary" data-act="examrestart">再考一次</button>' +
+            '<a class="btn btn-ghost" href="#/">返回首页</a>') +
         '</div></div>';
       app.innerHTML = html;
     }
 
-    /* ---------- 閿欓鏈?/ 鎴戠殑鏀惰棌 ---------- */
+    /* ---------- 错题本 / 我的收藏 ---------- */
     /**
-     * @param isFav true 鈫?鏀惰棌瑙嗗浘锛沠alse 鈫?閿欓鏈鍥?     */
+     * @param isFav true → 收藏视图；false → 错题本视图
+     */
     function renderBook(isFav) {
       var ids = isFav ? favIds : wrongIds;
       var list = ids.map(function (id) { return qById[id]; }).filter(Boolean);
-      var title = isFav ? '鎴戠殑鏀惰棌' : '閿欓鏈?;
-      var html = topbar(title + '锛? + list.length + '锛?);
+      var title = isFav ? '我的收藏' : '错题本';
+      var html = topbar(title + '（' + list.length + '）');
       if (!list.length) {
-        html += '<div class="empty"><div class="big">' + (isFav ? '猸? : '馃帀') + '</div>' +
-          '<p>' + (isFav ? '杩樻病鏈夋敹钘忎换浣曢鐩? : '閿欓鏈槸绌虹殑锛屽お妫掍簡锛?) + '</p>' +
-          '<a class="btn btn-primary" href="#/" style="margin-top:16px;">鍘诲埛棰?/a></div>';
+        html += '<div class="empty"><div class="big">' + (isFav ? '⭐' : '🎉') + '</div>' +
+          '<p>' + (isFav ? '还没有收藏任何题目' : '错题本是空的，太棒了！') + '</p>' +
+          '<a class="btn btn-primary" href="#/" style="margin-top:16px;">去刷题</a></div>';
       } else {
         var prMode = isFav ? 'fav' : 'wrong';
         html += '<div class="view"><a class="btn btn-primary btn-block" href="#/practice/' + prMode + '">' +
-          '鈻?閲嶇粌鏈粍锛? + list.length + ' 棰橈級</a></div>';
+          '▶ 重练本组（' + list.length + ' 题）</a></div>';
         html += list.map(function (q) {
           return '<div class="bk-item">' +
             '<div class="q-meta">' +
-              '<span class="chip chip-blue">' + (q.type === 'multi' ? '澶氶€夐' : '鍗曢€夐') + '</span>' +
-              '<span class="chip">' + esc(q.cat || '鏈垎绫?) + '</span>' +
+              '<span class="chip chip-blue">' + (q.type === 'multi' ? '多选题' : '单选题') + '</span>' +
+              '<span class="chip">' + esc(q.cat || '未分类') + '</span>' +
             '</div>' +
             '<div class="bk-stem">' + esc(q.stem) + '</div>' +
-            '<div class="bk-ans">鉁?姝ｇ‘绛旀锛? + esc(q.answer) + '</div>' +
+            '<div class="bk-ans">✔ 正确答案：' + esc(q.answer) + '</div>' +
             '<div class="bk-actions">' +
               '<button class="btn btn-ghost-red" data-act="' + (isFav ? 'delfav' : 'delwrong') +
-                '" data-id="' + q.id + '">' + (isFav ? '鍙栨秷鏀惰棌' : '绉婚櫎') + '</button>' +
+                '" data-id="' + q.id + '">' + (isFav ? '取消收藏' : '移除') + '</button>' +
             '</div></div>';
         }).join('');
       }
@@ -1819,14 +1837,15 @@
     }
 
     /* =====================================================================
-     * 鍏€佷氦浜掑姩浣滐紙浜嬩欢濮旀墭锛氱粺涓€鍦?#app 涓婄洃鍚偣鍑伙級
+     * 六、交互动作（事件委托：统一在 #app 上监听点击）
      * ===================================================================== */
 
-    /** 鍒ゅ畾褰撳墠棰橈紙鍗曢€夌偣鍑诲嵆鍒?/ 澶氶€夌‘璁ゅ悗鍒わ級锛屽苟璁板綍杩涘害涓庨敊棰?*/
+    /** 判定当前题（单选点击即判 / 多选确认后判），并记录进度与错题 */
     function judge(q, picks) {
       var right = isRight(q, picks);
       session.judged[q.id] = { picks: picks.slice().sort().join(''), right: right };
-      // 鈥斺€?杩炲嚮锛氱瓟瀵?+1锛岀瓟閿欐竻闆讹紱鍚屾鍘嗗彶鏈€楂樹笌姣忔棩浠诲姟 鈥斺€?      session.combo = right ? (session.combo || 0) + 1 : 0;
+      // —— 连击：答对 +1，答错清零；同步历史最高与每日任务 ——
+      session.combo = right ? (session.combo || 0) + 1 : 0;
       if (session.combo > (session.maxCombo || 0)) session.maxCombo = session.combo;
       if (session.combo > (game.bestCombo || 0)) { game.bestCombo = session.combo; lsSet(KEY_GAME, game); }
       comboNow = session.combo;
@@ -1834,17 +1853,18 @@
       session.xpGain = (session.xpGain || 0) + (right ? 10 : 0);
       comboNow = 0;
       renderPractice();
-      // 鈥斺€?灏忛鎯呯华鍙嶅簲锛氱瓟閿欏畨鎱帮紝杩炲鍠濆僵 鈥斺€?      if (!right) {
-        var petCheer = ['娌″叧绯伙紝閿欓灏忛宸茬粡甯綘鏀跺ソ浜嗮煋?鍐嶈瘯涓嬩竴棰橈紒', '閿欎竴娆″緢姝ｅ父锛岄敊棰樻湰浼氶櫔浣犵粌鍒颁細涓烘馃挭', '鍝庡憖锛屽氨宸竴鐐圭偣锛佺湅鐪嬭В鏋愯浣忓畠锝?];
+      // —— 小飞情绪反应：答错安慰，连对喝彩 ——
+      if (!right) {
+        var petCheer = ['没关系，错题小飞已经帮你收好了📝 再试下一题！', '错一次很正常，错题本会陪你练到会为止💪', '哎呀，就差一点点！看看解析记住它～'];
         petPeek(petCheer[Math.floor(Math.random() * petCheer.length)], 4500);
       } else if (session.combo === 5) {
-        petPeek('馃敟 杩炲 5 棰橈紒鎵嬫劅鐑捣鏉ヤ簡锛岀户缁啿锛?, 4500);
+        petPeek('🔥 连对 5 题！手感热起来了，继续冲！', 4500);
       } else if (session.combo === 10) {
-        petPeek('馃帀 杩炲 10 棰橈紒浣犲氨鏄搴撻噷鐨勭帇鐗岄鎵嬶紒', 5000);
+        petPeek('🎉 连对 10 题！你就是题库里的王牌飞手！', 5000);
       }
     }
 
-    /** 鍒囨崲褰撳墠棰樼殑鏀惰棌鐘舵€?*/
+    /** 切换当前题的收藏状态 */
     function toggleFav() {
       if (!session) return;
       var q = session.queue[session.idx];
@@ -1855,7 +1875,7 @@
       renderPractice();
     }
 
-    /** 浠庡垪琛紙閿欓/鏀惰棌锛変腑绉婚櫎涓€椤瑰苟鍒锋柊褰撳墠瑙嗗浘 */
+    /** 从列表（错题/收藏）中移除一项并刷新当前视图 */
     function removeId(arr, id, save, rerender) {
       var i = arr.indexOf(id);
       if (i >= 0) { arr.splice(i, 1); save(); }
@@ -1869,22 +1889,25 @@
       var id = Number(el.getAttribute('data-id'));
 
       switch (act) {
-        /* --- 鍒烽 --- */
-        case 'opt': { // 鐐瑰嚮閫夐」
+        /* --- 刷题 --- */
+        case 'opt': { // 点击选项
           if (!session) return;
           var q = session.queue[session.idx];
-          if (!q || session.judged[q.id]) return; // 宸插垽瀹氾紝涓嶅彲淇敼
+          if (!q || session.judged[q.id]) return; // 已判定，不可修改
           var letter = el.getAttribute('data-letter');
           if (q.type === 'single') {
-            judge(q, [letter]); // 鍗曢€夛細鐐瑰嚮鍗冲垽瀹?          } else {
-            // 澶氶€夛細浠呭垏鎹㈠嬀閫夌姸鎬侊紝寰呯‘璁?            var picks = session.picks[q.id] || (session.picks[q.id] = []);
+            judge(q, [letter]); // 单选：点击即判定
+          } else {
+            // 多选：仅切换勾选状态，待确认
+            var picks = session.picks[q.id] || (session.picks[q.id] = []);
             var i = picks.indexOf(letter);
             if (i >= 0) picks.splice(i, 1); else picks.push(letter);
             renderPractice();
           }
           break;
         }
-        case 'confirm': { // 澶氶€夌‘璁?          if (!session) return;
+        case 'confirm': { // 多选确认
+          if (!session) return;
           var qc = session.queue[session.idx];
           var pc = session.picks[qc.id] || [];
           if (pc.length) judge(qc, pc);
@@ -1897,24 +1920,7 @@
         case 'next':
           if (session && session.idx < session.queue.length) {
             session.idx++;
-            // 鍏冲崱鍒讹細璺ㄨ繃 10 棰樺叧鍗¤竟鐣岋紙涓斿悗闈㈣繕鏈夐锛夆啋 鍏堝脊鏈叧缁撶畻
-            if (session.idx % 10 === 0 && session.idx < session.queue.length) {
-              renderChunkDone(session.idx / 10);
-            } else {
-              renderPractice();
-            }
-          }
-          break;
-        case 'chunknext':
-          if (session) {
-            // 棣栨瀹屾垚鏈叧锛氳鍏ュ叧鍗℃暟
-            var cno = Math.ceil(session.idx / 10);
-            session.chunksDone = session.chunksDone || {};
-            if (!session.chunksDone[cno]) {
-              session.chunksDone[cno] = 1;
-              game.levels = (game.levels || 0) + 1;
-              lsSet(KEY_GAME, game);
-            }
+            // 本组最多 12 题：答完最后一题 → 直接进结算页
             renderPractice();
           }
           break;
@@ -1922,12 +1928,12 @@
           if (session) { session = buildSession(session.mode); renderPractice(); }
           break;
 
-        /* --- 妯℃嫙鑰?--- */
+        /* --- 模拟考 --- */
         case 'exampick': {
           if (!exam || exam.submitted) return;
           var qe = exam.queue[exam.idx];
           var le = el.getAttribute('data-letter');
-          // 鍗曢€夊彲鏀归€夛紱鍐嶆鐐瑰嚮鍚屼竴椤瑰彇娑堥€夋嫨
+          // 单选可改选；再次点击同一项取消选择
           if (exam.picks[qe.id] === le) delete exam.picks[qe.id];
           else exam.picks[qe.id] = le;
           renderExam();
@@ -1944,19 +1950,21 @@
         case 'examrestart': newExam(); renderExamIntro(); break;
         case 'lvretry':     newLvExam(); renderExamIntro(); break;
 
-        /* --- 閿欓鏈?/ 鏀惰棌 --- */
-        case 'share': { // 涓€閿垎浜細浼樺厛绯荤粺鍒嗕韩锛岄檷绾у鍒堕摼鎺?          var shareData = { title: '鏃犱汉鏈洪搴撳疂鍏?, text: '1422閬揅AAC鏃犱汉鏈虹悊璁洪鍏嶈垂鍒凤紝杩樻湁瑙ｆ瀽鍜屾ā鎷熻€冿紒', url: location.origin + location.pathname };
+        /* --- 错题本 / 收藏 --- */
+        case 'share': { // 一键分享：优先系统分享，降级复制链接
+          var shareData = { title: '无人机题库宝典', text: '1422道CAAC无人机理论题免费刷，还有解析和模拟考！', url: location.origin + location.pathname };
           function shareFallback() {
             if (navigator.clipboard && navigator.clipboard.writeText) {
-              navigator.clipboard.writeText(shareData.url).then(function () { petSay('閾炬帴宸插鍒讹紝鍘荤矘璐寸粰鏈嬪弸鍚?馃搵'); }, function () { petSay('澶嶅埗澶辫触锛岃鎵嬪姩澶嶅埗鍦板潃鏍忛摼鎺?); });
-            } else { petSay('璇峰湪鍦板潃鏍忓鍒堕摼鎺ュ垎浜粰鏈嬪弸'); }
+              navigator.clipboard.writeText(shareData.url).then(function () { petSay('链接已复制，去粘贴给朋友吧 📋'); }, function () { petSay('复制失败，请手动复制地址栏链接'); });
+            } else { petSay('请在地址栏复制链接分享给朋友'); }
           }
           if (navigator.share) {
             navigator.share(shareData).catch(function (e) { if (e && e.name !== 'AbortError') shareFallback(); });
           } else { shareFallback(); }
           break;
         }
-        case 'dopt': { // 姣忔棩涓€棰樹綔绛?          dailyPick(el.getAttribute('data-letter'));
+        case 'dopt': { // 每日一题作答
+          dailyPick(el.getAttribute('data-letter'));
           break;
         }
         case 'delwrong':
@@ -1969,17 +1977,18 @@
     });
 
     /* =====================================================================
-     * 涓冦€佸惎鍔?     * ===================================================================== */
+     * 七、启动
+     * ===================================================================== */
 
     /* =====================================================================
-     * 涓壜峰叚銆佸疇鐗╀紮浼淬€屽皬椋炪€嶏細鎯呯华浠峰€?+ 鎯呭鎻愰啋 + 鏂版墜寮曞
+     * 三·六、宠物伙伴「小飞」：情绪价值 + 情境提醒 + 新手引导
      * ===================================================================== */
     var KEY_TUTORIAL = 'wrh5_tutorial';
-    var petPrevWrong = null;   // 涓婃鍥炲鏃剁殑閿欓鏁帮紙妫€娴嬫柊澧為敊棰橈級
-    var petPrevLv = null;      // 涓婃妫€娴嬫椂鐨勭瓑绾э紙妫€娴嬪崌绾э級
-    var petLineIdx = 0;        // 鐐瑰嚮杞挱涓嬫爣
+    var petPrevWrong = null;   // 上次回家时的错题数（检测新增错题）
+    var petPrevLv = null;      // 上次检测时的等级（检测升级）
+    var petLineIdx = 0;        // 点击轮播下标
 
-    /** 瀹犵墿姘旀场璇磋瘽锛堥粯璁?6 绉掑悗鑷姩娑堝け锛?*/
+    /** 宠物气泡说话（默认 6 秒后自动消失） */
     function petSay(msg, ms) {
       var b = document.getElementById('petBubble');
       var p = document.getElementById('pet');
@@ -1991,7 +2000,7 @@
       petSay._t = setTimeout(function () { b.classList.remove('show'); }, ms || 6000);
     }
 
-    /** 鍒烽椤电瓑闅愯棌瑙嗗浘閲岀殑"鎺㈠ご"璇磋瘽锛氳瀹岃嚜鍔ㄧ缉鍥炲幓 */
+    /** 刷题页等隐藏视图里的"探头"说话：说完自动缩回去 */
     function petPeek(msg, ms) {
       var p = document.getElementById('pet');
       petSay(msg, ms);
@@ -2004,14 +2013,14 @@
       }, (ms || 6000) + 400);
     }
 
-    /** 鐐瑰嚮灏忛锛氬揩閫熻繛鐐?鐥掔棐褰╄泲锛涘惁鍒欏脊姘旀场+浜掑姩鎸夐挳锛堟懜鎽稿ご/鍠傞浂椋燂級 */
+    /** 点击小飞：快速连点=痒痒彩蛋；否则弹气泡+互动按钮（摸摸头/喂零食） */
     var KEY_PETBOND = 'wrh5_pet'; // { bond, lastPet, lastFeed, fxDay, fxN }
     var BOND_TIERS = [
-      { min: 0,   name: '鍒濊瘑' },
-      { min: 20,  name: '鐔熻瘑' },
-      { min: 50,  name: '濂藉弸' },
-      { min: 100, name: '鎸氬弸' },
-      { min: 200, name: '鐏甸瓊浼翠荆' }
+      { min: 0,   name: '初识' },
+      { min: 20,  name: '熟识' },
+      { min: 50,  name: '好友' },
+      { min: 100, name: '挚友' },
+      { min: 200, name: '灵魂伴侣' }
     ];
     function petState() {
       var s = {};
@@ -2026,21 +2035,21 @@
       for (var i = 0; i < BOND_TIERS.length; i++) { if (bond >= BOND_TIERS[i].min) n = BOND_TIERS[i].name; }
       return n;
     }
-    /** 鎾掔埍蹇冪矑瀛?*/
+    /** 撒爱心粒子 */
     function petHearts(n) {
       var p = document.getElementById('pet');
       if (!p) return;
       for (var i = 0; i < (n || 2); i++) {
         var h = document.createElement('span');
         h.className = 'pet-heart';
-        h.textContent = i % 2 === 0 ? '鉂わ笍' : '馃挍';
+        h.textContent = i % 2 === 0 ? '❤️' : '💛';
         h.style.setProperty('--dx', (Math.round(Math.random() * 44) - 22) + 'px');
         h.style.animationDelay = (i * 0.16) + 's';
         p.appendChild(h);
         (function (el) { setTimeout(function () { el.remove(); }, 1500); })(h);
       }
     }
-    /** 灏忛琛ㄦ儏涓存椂鍙樺寲 */
+    /** 小飞表情临时变化 */
     function petFace(emoji, ms) {
       var b = document.querySelector('#pet .pet-body');
       if (!b) return;
@@ -2051,12 +2060,12 @@
 
     function petClick() {
       var now = Date.now();
-      // 蹇€熻繛鐐?鈫?鐥掔棐褰╄泲
+      // 快速连点 → 痒痒彩蛋
       if (petClick._last && now - petClick._last < 400) {
         petClick._last = now;
         var el = document.getElementById('pet');
         if (el) { el.classList.remove('excited'); void el.offsetWidth; el.classList.add('excited'); }
-        petSay('鍝堝搱鍝堝搱濂界棐锝炲埆鎴冲暒馃ぃ', 2600);
+        petSay('哈哈哈哈好痒～别戳啦🤣', 2600);
         petHearts(1);
         return;
       }
@@ -2066,34 +2075,34 @@
       var tips = [];
       var done = progress.doneId.length;
       var ri = (typeof rankInfo === 'function') && rankInfo();
-      if (wrongIds.length > 0) tips.push('閿欓鏈噷鏈?<b>' + wrongIds.length + '</b> 閬撻绛変綘娑堢伃锛屽幓鍒蜂竴閬撹瘯璇曪紵');
+      if (wrongIds.length > 0) tips.push('错题本里有 <b>' + wrongIds.length + '</b> 道题等你消灭，去刷一道试试？');
       var t = tasks && tasks.date === todayStr() ? tasks : { answers: 0, corrects: 0, maxCombo: 0, awarded: {} };
-      if (!t.awarded || !t.awarded.a1) tips.push('浠婂ぉ鐨?<b>鍒?0閬撻</b> 浠诲姟杩樻病瀹屾垚鍝︼紝+20XP 绛夌潃浣狅紒');
-      if (ri && !ri.examUnlocked && ri.remain > 0) tips.push('銆? + ri.rank.name + '銆嶈繕宸?<b>' + ri.remain + '</b> 棰樺氨鑳借€冩檵绾у暒锛屽姞娌癸紒');
-      if (ri && ri.examUnlocked) tips.push('鏅嬬骇鑰冭瘯宸茶В閿侊紒鑰冭繃灏辨槸銆? + (ri.next ? ri.next.name : '') + '銆嶄簡锛?);
+      if (!t.awarded || !t.awarded.a1) tips.push('今天的 <b>刷10道题</b> 任务还没完成哦，+20XP 等着你！');
+      if (ri && !ri.examUnlocked && ri.remain > 0) tips.push('「' + ri.rank.name + '」还差 <b>' + ri.remain + '</b> 题就能考晋级啦，加油！');
+      if (ri && ri.examUnlocked) tips.push('晋级考试已解锁！考过就是「' + (ri.next ? ri.next.name : '') + '」了！');
       var c = weakCats();
-      if (c.length) tips.push('浣犵殑寮辩偣鏄?<b>' + esc(c[0].cat) + '</b>锛岃涓嶈鏉ヤ竴缁勭壒璁紵');
-      if (done === 0) tips.push('浣犲ソ鍛€锛屾垜鏄皬椋烉煔?鐐广€岄『搴忓埛棰樸€嶅紑濮嬩綘鐨勭涓€棰樺惂锛?);
-      tips.push('宸插埛 <b>' + done + '</b> 棰橈紝姣忓ぉ杩涙涓€鐐圭偣锝?);
-      tips.push('杩炵画鍒烽浼氭湁馃敟杩炲嚮鍔犳垚锛屽埆鍋滀笅鏉ワ紒');
+      if (c.length) tips.push('你的弱点是 <b>' + esc(c[0].cat) + '</b>，要不要来一组特训？');
+      if (done === 0) tips.push('你好呀，我是小飞🚁 点「顺序刷题」开始你的第一题吧！');
+      tips.push('已刷 <b>' + done + '</b> 题，每天进步一点点～');
+      tips.push('连续刷题会有🔥连击加成，别停下来！');
       var msg = tips[petLineIdx % tips.length];
       petLineIdx++;
       petSay(
         msg +
         '<div class="pet-acts">' +
-          '<button class="pet-act" data-act="petCaress">馃憢 鎽告懜澶?/button>' +
-          '<button class="pet-act" data-act="petFeed">馃崻 鍠傞浂椋?/button>' +
+          '<button class="pet-act" data-act="petCaress">👋 摸摸头</button>' +
+          '<button class="pet-act" data-act="petFeed">🍪 喂零食</button>' +
         '</div>' +
-        '<div style="margin-top:7px;font-size:11px;color:#94a3b8">鍜屼綘鐨勪翰瀵嗗害锛? + s.bond + '锛? + bondName(s.bond) + '锛?/div>'
+        '<div style="margin-top:7px;font-size:11px;color:#94a3b8">和你的亲密度：' + s.bond + '（' + bondName(s.bond) + '）</div>'
       );
     }
 
-    /** 鎽告懜澶达細+1 浜插瘑搴︼紙30 绉掑喎鍗达級锛屽啋鐖卞績 */
+    /** 摸摸头：+1 亲密度（30 秒冷却），冒爱心 */
     function petCaress() {
       var s = petState();
       var now = Date.now();
       if (s.lastPet && now - s.lastPet < 30000) {
-        petSay('鍒氬垰鎽歌繃澶村暒锛屽厛鍘诲埛涓ら锛屽洖澶村啀鏉ユ壘鎴戠帺锝?, 3000);
+        petSay('刚刚摸过头啦，先去刷两题，回头再来找我玩～', 3000);
         return;
       }
       var before = bondName(s.bond);
@@ -2101,21 +2110,21 @@
       s.lastPet = now;
       savePetState(s);
       petHearts(3);
-      petFace('馃槉', 1400);
+      petFace('😊', 1400);
       if (bondName(s.bond) !== before) {
-        petSay('馃挄 浜插瘑搴﹁揪鍒?<b>' + s.bond + '</b>锛屾垜浠幇鍦ㄦ槸銆? + bondName(s.bond) + '銆嶅暒锛?);
+        petSay('💕 亲密度达到 <b>' + s.bond + '</b>，我们现在是「' + bondName(s.bond) + '」啦！');
       } else {
-        var petWords = ['濂借垝鏈嶅憖锝炰綘涔熻鍔犳补鍒烽鍝︼紒', '鍢垮樋锛屾渶鍠滄浣犲暒锛?, '鎽稿畬澶村厖婊″共鍔诧紝鍘诲埛涓€閬撻鍚э紒'];
+        var petWords = ['好舒服呀～你也要加油刷题哦！', '嘿嘿，最喜欢你啦！', '摸完头充满干劲，去刷一道题吧！'];
         petSay(petWords[Math.floor(Math.random() * petWords.length)], 3600);
       }
     }
 
-    /** 鍠傞浂椋燂細+2 浜插瘑搴︼紙10 鍒嗛挓鍐峰嵈锛夛紝20% 姒傜巼鎺?+5XP锛堟瘡澶?3 娆℃帀钀戒笂闄愶級 */
+    /** 喂零食：+2 亲密度（10 分钟冷却），20% 概率掉 +5XP（每天 3 次掉落上限） */
     function petFeed() {
       var s = petState();
       var now = Date.now();
       if (s.lastFeed && now - s.lastFeed < 600000) {
-        petSay('鍒氬悆杩囧暒锛屽悆澶浼氶涓嶅姩鐨勶綖鍏堝幓鍒烽鍚э紒', 3000);
+        petSay('刚吃过啦，吃太多会飞不动的～先去刷题吧！', 3000);
         return;
       }
       var today = todayStr();
@@ -2123,25 +2132,25 @@
       var before = bondName(s.bond);
       s.bond += 2;
       s.lastFeed = now;
-      var msg = '馃崻 濂藉悆锛佽阿璋㈡姇鍠傦綖浜插瘑搴?+2锛? + s.bond + ' ' + bondName(s.bond) + '锛?;
+      var msg = '🍪 好吃！谢谢投喂～亲密度 +2（' + s.bond + ' ' + bondName(s.bond) + '）';
       if (Math.random() < 0.2 && s.fxN < 3) {
         s.fxN += 1;
         addXp(5);
-        msg = '馃崻 鍝囷紒灏忛浠庡彛琚嬮噷缈诲嚭浜?<b>+5 XP</b> 閫佺粰浣狅紒锛堜粖鏃ュ僵铔?' + s.fxN + '/3锛?;
+        msg = '🍪 哇！小飞从口袋里翻出了 <b>+5 XP</b> 送给你！（今日彩蛋 ' + s.fxN + '/3）';
       }
       savePetState(s);
       petHearts(2);
-      petFace('馃構', 1600);
+      petFace('😋', 1600);
       var el = document.getElementById('pet');
       if (el) { el.classList.remove('excited'); void el.offsetWidth; el.classList.add('excited'); }
       if (bondName(s.bond) !== before) {
-        petSay('馃挄 浜插瘑搴﹁揪鍒?<b>' + s.bond + '</b>锛屾垜浠崌绾ф垚銆? + bondName(s.bond) + '銆嶄簡锛?, 5000);
+        petSay('💕 亲密度达到 <b>' + s.bond + '</b>，我们升级成「' + bondName(s.bond) + '」了！', 5000);
       } else {
         petSay(msg, 4200);
       }
     }
 
-    /** 姣忔璺敱鍚庡悓姝ュ疇鐗╂樉闅?+ 鐜鎯呯华妫€娴?*/
+    /** 每次路由后同步宠物显隐 + 环境情绪检测 */
     function petSync(view) {
       var p = document.getElementById('pet');
       if (!p) return;
@@ -2149,45 +2158,46 @@
       p.classList.toggle('off', !show);
       if (!show) return;
 
-      // 鈶?鏂板閿欓 鈫?娓╂煍鎻愰啋锛堥潪璇存暀锛?      if (petPrevWrong !== null && wrongIds.length > petPrevWrong) {
+      // ① 新增错题 → 温柔提醒（非说教）
+      if (petPrevWrong !== null && wrongIds.length > petPrevWrong) {
         var d = wrongIds.length - petPrevWrong;
-        petSay(d === 1 ? '鍝庡憖閿欎簡涓€棰橈紝娌″叧绯伙紝鎴戝凡缁忓府浣犳敹杩涢敊棰樻湰浜嗮煋? : '鏈?<b>' + d + '</b> 閬撻杩涗簡閿欓鏈紝鎴戦櫔浣犱竴璧锋敹鎷惧畠浠紒');
+        petSay(d === 1 ? '哎呀错了一题，没关系，我已经帮你收进错题本了📝' : '有 <b>' + d + '</b> 道题进了错题本，我陪你一起收拾它们！');
       }
       petPrevWrong = wrongIds.length;
 
-      // 鈶?姣忔棩浠诲姟鍏ㄩ儴瀹屾垚 鈫?琛ㄦ壃锛堟瘡澶╂渶澶氫竴娆★級
+      // ② 每日任务全部完成 → 表扬（每天最多一次）
       var t = tasks && tasks.date === todayStr() ? tasks : null;
       if (t && t.awarded && t.awarded.a1 && t.awarded.a2 && t.awarded.a3) {
         var cheer = localStorage.getItem('wrh5_petCheer');
         if (cheer !== todayStr()) {
           localStorage.setItem('wrh5_petCheer', todayStr());
-          petSay('馃帀 浠婂ぉ鐨勪换鍔″叏閮ㄥ畬鎴愶紒浣犲氨鏄渶鑷緥鐨勯鎵嬶紒');
+          petSay('🎉 今天的任务全部完成！你就是最自律的飞手！');
         }
       }
 
-      // 鈶?娈典綅/绛夌骇鍙樺寲 鈫?搴嗙
+      // ③ 段位/等级变化 → 庆祝
       var lv = levelInfo().lv;
       if (petPrevLv !== null && lv > petPrevLv) {
-        petSay('馃帄 鍗囩骇鍒?Lv.' + lv + ' 浜嗭紒灏忛涓轰綘楠勫偛锝?);
+        petSay('🎊 升级到 Lv.' + lv + ' 了！小飞为你骄傲～');
       }
       petPrevLv = lv;
 
-      // 鈶?鏅嬬骇鑰冭瘯瑙ｉ攣 鈫?鎻愰啋涓€娆★紙姣忔浼氳瘽鍙涓€娆★級
+      // ④ 晋级考试解锁 → 提醒一次（每次会话只说一次）
       if (!petSync.examReminded && typeof rankInfo === 'function') {
         var ri = rankInfo();
         if (ri.examUnlocked) {
           petSync.examReminded = true;
-          petSay('馃摑 鏅嬬骇鑰冭瘯瑙ｉ攣鍟︼紒閫氳繃灏辫兘鏅嬪崌銆? + (ri.next ? ri.next.name : '') + '銆嶏綖');
+          petSay('📝 晋级考试解锁啦！通过就能晋升「' + (ri.next ? ri.next.name : '') + '」～');
         }
       }
     }
 
-    /* ---------- 鏂版墜寮曞锛堥娆¤闂?4 姝ュ崱鐗囷級 ---------- */
+    /* ---------- 新手引导（首次访问 4 步卡片） ---------- */
     var TUT_STEPS = [
-      { ico: '馃摉', t: '椤哄簭鍒烽锛岀敱鏄撳埌闅?, d: '浠庣 1 绾с€岃涔犻鎵嬨€嶅紑濮嬶紝10 棰樹竴鍏筹紝绛斿寰?XP 鍗囩骇锛岀瓟閿欒嚜鍔ㄨ繘閿欓鏈€? },
-      { ico: '馃幆', t: '浠婃棩浠诲姟 + 姣忔棩涓€棰?, d: '棣栭〉姣忓ぉ 3 涓皬浠诲姟锛堣嚜鍔ㄥ彂 XP锛夛紝鍒繕浜嗘瘡鏃ヤ竴棰樻墦鍗★紝杩炵画鎵撳崱鏈夎褰曪紒' },
-      { ico: '馃┖', t: '閿欓鏈?+ 鏄撻敊鐐圭壒璁?, d: '绛斿閿欓浼氳嚜鍔ㄧЩ鍑猴紱鍒?10 棰樺悗灏忛浼氫负浣犵敓鎴愩€屽急鐐圭敾鍍忋€嶏紝涓€閿壒璁杽寮卞垎绫汇€? },
-      { ico: '馃摑', t: '娈典綅鏅嬬骇鑰冭瘯', d: '鏈骇棰樺簱缁冩弧 60% 瑙ｉ攣鏅嬬骇鑰冭瘯锛?0 棰?15 鍒嗛挓锛夛紝鈮?5% 閫氳繃鍗虫檵鍗囨浣嶏紒' }
+      { ico: '📖', t: '顺序刷题，由易到难', d: '从第 1 级「见习飞手」开始，每轮 12 题、断点续刷，答对得 XP 升级，答错自动进错题本。' },
+      { ico: '🎯', t: '今日任务 + 每日一题', d: '首页每天 3 个小任务（自动发 XP），别忘了每日一题打卡，连续打卡有记录！' },
+      { ico: '🩺', t: '错题本 + 易错点特训', d: '答对错题会自动移出；刷 10 题后小飞会为你生成「弱点画像」，一键特训薄弱分类。' },
+      { ico: '📝', t: '段位晋级考试', d: '本级题库练满 60% 解锁晋级考试（20 题/15 分钟），≥75% 通过即晋升段位！' }
     ];
     function renderTutorial() {
       var old = document.getElementById('tutMask');
@@ -2200,8 +2210,8 @@
         var s = TUT_STEPS[step];
         mask.innerHTML =
           '<div class="tut-card">' +
-            '<div class="tut-ico">馃殎</div>' +
-            '<div class="tut-title">浣犲ソ锛屾垜鏄皬椋烇紒</div>' +
+            '<div class="tut-ico">🚁</div>' +
+            '<div class="tut-title">你好，我是小飞！</div>' +
             '<div class="tut-ico" style="font-size:34px">' + s.ico + '</div>' +
             '<div class="tut-title" style="margin-top:2px;font-size:15px">' + s.t + '</div>' +
             '<div class="tut-desc">' + s.d + '</div>' +
@@ -2209,15 +2219,15 @@
               return '<span class="tut-dot' + (i === step ? ' on' : '') + '"></span>';
             }).join('') + '</div>' +
             '<div class="tut-btns">' +
-              '<button class="tut-skip" id="tutSkip">璺宠繃</button>' +
-              '<button class="tut-next" id="tutNext">' + (step === TUT_STEPS.length - 1 ? '寮€濮嬪埛棰橈紝鍑哄彂锛? : '涓嬩竴姝?) + '</button>' +
+              '<button class="tut-skip" id="tutSkip">跳过</button>' +
+              '<button class="tut-next" id="tutNext">' + (step === TUT_STEPS.length - 1 ? '开始刷题，出发！' : '下一步') + '</button>' +
             '</div>' +
           '</div>';
       }
       function finish() {
         localStorage.setItem(KEY_TUTORIAL, '1');
         mask.remove();
-        petSay('鍑哄彂鍚э紒閬囧埌涓嶆噦鐨勯殢鏃剁偣鎴戯綖', 5000);
+        petSay('出发吧！遇到不懂的随时点我～', 5000);
       }
       mask.addEventListener('click', function (e) {
         if (e.target.id === 'tutSkip') { finish(); return; }
@@ -2230,12 +2240,12 @@
     }
 
     window.addEventListener('hashchange', route);
-    route(); // 棣栨杩涘叆鎸夊綋鍓?hash 娓叉煋
-    // 瀹犵墿浜嬩欢缁戝畾锛?pet 鍦?#app 澶栵紝涓嶄細琚噸缁樺啿鎺夛級
+    route(); // 首次进入按当前 hash 渲染
+    // 宠物事件绑定（#pet 在 #app 外，不会被重绘冲掉）
     (function () {
       var p = document.getElementById('pet');
       if (p) p.addEventListener('click', petClick);
-      // 姘旀场鍐呬簰鍔ㄦ寜閽紙鎽告懜澶?/ 鍠傞浂椋燂級鐢ㄥ鎵橈紱闃绘鍐掓场閬垮厤瑙﹀彂瀹犵墿鐐瑰嚮/杩炵偣褰╄泲
+      // 气泡内互动按钮（摸摸头 / 喂零食）用委托；阻止冒泡避免触发宠物点击/连点彩蛋
       var b = document.getElementById('petBubble');
       if (b) b.addEventListener('click', function (e) {
         var act = e.target.getAttribute && e.target.getAttribute('data-act');
@@ -2246,14 +2256,15 @@
         }
       });
     })();
-    // 鏂版墜寮曞锛氶娆¤闂脊鍑?    if (!localStorage.getItem(KEY_TUTORIAL)) {
+    // 新手引导：首次访问弹出
+    if (!localStorage.getItem(KEY_TUTORIAL)) {
       renderTutorial();
-      petPrevWrong = wrongIds.length; // 寮曞鏈熼棿涓嶆姤"鏂板閿欓"
+      petPrevWrong = wrongIds.length; // 引导期间不报"新增错题"
     }
   })();
   </script>
   <script>
-    /* PWA锛歨ttps/localhost 涓嬫敞鍐岀绾縎erviceWorker */
+    /* PWA：https/localhost 下注册离线ServiceWorker */
     if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
       navigator.serviceWorker.register('./sw.js').catch(function(){});
     }
