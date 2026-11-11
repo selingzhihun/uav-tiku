@@ -394,6 +394,54 @@
       background: #FEE2E2; border-radius: 9px; padding: 3px 9px;
     }
 
+    /* ---------- 变现：冲刺卷卡 / 购买弹窗 / 错题册打印 ---------- */
+    .rush-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 4px; border-bottom: 1px dashed var(--line);
+      font-size: 13.5px; font-weight: 700; color: var(--ink); text-decoration: none;
+    }
+    .rush-item:last-child { border-bottom: none; }
+    .rush-item.locked { color: var(--muted); }
+    .rush-ico { font-size: 17px; }
+    .rush-name { flex: 1; }
+    .rush-go { font-size: 11.5px; font-weight: 800; color: var(--brand); }
+    .rush-item.locked .rush-go { color: #B45309; background: #FEF3C7; border-radius: 8px; padding: 2px 8px; }
+    #paymask {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(15,23,42,.55);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .pay-card {
+      position: relative; width: 100%; max-width: 360px;
+      background: #fff; border-radius: 18px; padding: 22px 18px 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3); text-align: center;
+    }
+    .pay-x {
+      position: absolute; right: 10px; top: 10px; width: 30px; height: 30px;
+      border: none; background: #F1F5F9; border-radius: 50%; font-size: 13px; color: var(--muted); cursor: pointer;
+    }
+    .pay-title { font-size: 16px; font-weight: 800; }
+    .pay-price { font-size: 30px; font-weight: 800; color: #EA580C; margin: 8px 0 4px; }
+    .pay-list { text-align: left; margin: 0 0 12px; padding-left: 20px; font-size: 12.5px; color: var(--muted); line-height: 1.9; }
+    .pay-qr img { width: 132px; height: 132px; border: 1px solid var(--line); border-radius: 10px; }
+    .pay-qr p { font-size: 11px; margin: 6px 0 10px; }
+    .pay-input {
+      width: 100%; box-sizing: border-box; border: 2px solid var(--line); border-radius: 12px;
+      padding: 11px 12px; font-size: 14px; font-weight: 700; text-align: center; margin-bottom: 10px;
+    }
+    .pay-err { color: #DC2626; font-size: 12px; min-height: 16px; margin: 8px 0 0; font-weight: 700; }
+    #printarea { display: block; font-size: 13px; line-height: 1.7; }
+    .pr-q { page-break-inside: avoid; border-bottom: 1px dashed #CBD5E1; padding: 10px 2px; }
+    .pr-n { font-weight: 800; margin-bottom: 4px; }
+    .pr-opt { padding-left: 18px; }
+    .pr-ans { color: #059669; font-weight: 700; margin-top: 4px; }
+    @media print {
+      body * { visibility: hidden; }
+      #printarea, #printarea * { visibility: visible; }
+      #printarea { position: absolute; left: 0; top: 0; width: 100%; }
+      .tabbar, #pet, #paymask { display: none !important; }
+    }
+
     /* ---------- 段位晋级卡 ---------- */
     .rank-card {
       border: 2px solid rgba(37,99,235,.14);
@@ -789,8 +837,54 @@
     // 各刷题模式的标题
     var MODE_TITLE = {
       seq: '顺序刷题', rand: '随机刷题', multi: '多选题专练',
-      wrong: '错题本重练', fav: '收藏重练', weak: '易错点特训', lv: '等级挑战'
+      wrong: '错题本重练', fav: '收藏重练', weak: '易错点特训', lv: '等级挑战',
+      rush1: '冲刺卷 · 一', rush2: '冲刺卷 · 二', rush3: '冲刺卷 · 三'
     };
+
+    /* =====================================================================
+     * 变现：付费点（兑换码解锁制——扫码付款后发放码，静态站无需后端）
+     *   rush = 考前冲刺卷（3套×20题，¥9.9）
+     *   pdf  = 我的错题册 PDF 导出（¥6.6）
+     * ===================================================================== */
+    var PRICE_RUSH = '¥9.9';
+    var PRICE_PDF  = '¥6.6';
+    var PAID_KEY   = 'wrh5_paid';
+    var paid = lsGet(PAID_KEY, {});
+    if (!paid || typeof paid !== 'object') paid = {};
+    function isPaid(k) { return !!paid[k]; }
+    function setPaid(k) { paid[k] = 1; lsSet(PAID_KEY, paid); }
+    // 兑换码表（新码在 素材\兑换码-付费解锁码表.csv 里同步追加）
+    var VALID_CODES = {
+      'RUSH-7HK2QM': 'rush', 'RUSH-3XP9WD': 'rush', 'RUSH-K8T4ZR': 'rush', 'RUSH-5MV2NB': 'rush',
+      'RUSH-QW63JF': 'rush', 'RUSH-9DZ4HK': 'rush', 'RUSH-T2XR8C': 'rush', 'RUSH-6FV7LM': 'rush',
+      'PDF-4NQ8RT': 'pdf', 'PDF-9KW3XM': 'pdf', 'PDF-H6P2VD': 'pdf', 'PDF-RT57JC': 'pdf',
+      'PDF-3MZ9QL': 'pdf', 'PDF-7XB4NW': 'pdf', 'PDF-K5TD8R': 'pdf', 'PDF-2VF6HC': 'pdf',
+      'ALL-9TQ4XW': 'all', 'ALL-3KR8MD': 'all', 'ALL-H2VP7N': 'all', 'ALL-6WZ5RC': 'all', 'ALL-5MJ9TF': 'all'
+    };
+    function applyCode(raw) {
+      var code = String(raw || '').trim().toUpperCase();
+      var p = VALID_CODES[code];
+      if (!p) return false;
+      if (p === 'all') { setPaid('rush'); setPaid('pdf'); }
+      else setPaid(p);
+      return true;
+    }
+    // 冲刺卷：按考试权重抽高频考点（法规6/领航5/气象3/设备3/原理3），种子固定保证三卷稳定
+    var RUSH_QUOTA = [['法规与空域', 6], ['领航与任务规划', 5], ['航空气象', 3], ['设备与维护', 3], ['飞行原理', 3]];
+    function seededShuffle(arr, seed) {
+      var a = arr.slice(); var s = seed % 2147483647; if (s <= 0) s += 2147483646;
+      function rnd() { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; }
+      for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+      return a;
+    }
+    function buildRushSet(idx) {
+      var out = [];
+      RUSH_QUOTA.forEach(function (qi, k) {
+        var pool = QBANK.filter(function (q) { return q.cat === qi[0]; });
+        out = out.concat(seededShuffle(pool, 20260101 + idx * 977 + k * 13).slice(0, qi[1]));
+      });
+      return seededShuffle(out, 20260101 + idx * 31);
+    }
 
     /**
      * 按模式构建刷题队列：
@@ -821,6 +915,9 @@
         pool = lvPool(getRank().lv);
         var un = pool.filter(function (q) { return progress.doneId.indexOf(q.id) < 0; });
         pool = (un.length ? un : pool).slice(0, SESSION_CAP);
+      } else if (mode === 'rush1' || mode === 'rush2' || mode === 'rush3') {
+        // 冲刺卷：固定 20 题成卷，不受每轮 12 题上限约束
+        pool = buildRushSet(parseInt(mode.slice(4), 10) - 1);
       } else { // fav
         pool = favIds.map(function (id) { return qById[id]; }).filter(Boolean).slice(0, SESSION_CAP);
       }
@@ -1244,11 +1341,29 @@
         case 'lvexam':  renderLvExamRoute(); break;
         case 'wrong':   renderBook(false); break;
         case 'fav':     renderBook(true); break;
+        case 'print':   renderPrintView(); break;
         case 'me':      renderMe(); break;
         default:        renderHome();
       }
       syncTabbar(view);
       if (typeof petSync === 'function') petSync(view); // 宠物显隐 + 情绪检测
+    }
+
+    /** 错题册打印视图：屏幕上可预览，「调起打印」另存为 PDF */
+    function renderPrintView() {
+      var list = wrongIds.map(function (id) { return qById[id]; }).filter(Boolean);
+      var items = list.map(function (q, i) {
+        return '<div class="pr-q"><div class="pr-n">' + (i + 1) + '. ' + esc(q.stem) + '</div>' +
+          ['A', 'B', 'C', 'D'].map(function (L) {
+            return q[L] ? '<div class="pr-opt">' + L + '. ' + esc(q[L]) + '</div>' : '';
+          }).join('') +
+          '<div class="pr-ans">答案：' + esc(q.answer) + (q.exp ? '　|　解析：' + esc(q.exp) : '') + '</div></div>';
+      }).join('');
+      app.innerHTML = topbar('错题册') +
+        '<div class="view"><div class="card print-note">✅ 已按你的错题本生成，共 <b>' + list.length + '</b> 题（含答案与解析）' +
+          '<button class="btn btn-primary btn-block" data-act="doprint" style="margin-top:12px;">🖨️ 调起打印 / 保存为 PDF</button>' +
+          '<p class="muted" style="font-size:11.5px;margin-top:8px;">手机端在打印菜单里选「保存为 PDF」；电脑端直接打印即可。题目过多时建议分批导出。</p></div></div>' +
+        '<div id="printarea">' + items + '</div>';
     }
 
     /** 底部导航栏：按当前视图显示/隐藏并同步高亮角标 */
@@ -1318,9 +1433,62 @@
         '</div>';
     }
 
+    /** 冲刺卷卡片：已解锁=三卷直达；未解锁=显示价格点按弹购买窗 */
+    function rushCardHTML() {
+      var names = ['一', '二', '三'];
+      var h = '<div class="card rush"><div class="sec-inline">🔥 考前冲刺卷 <span class="muted" style="font-weight:400">高频考点 · 每卷20题 · 带解析</span></div>';
+      for (var i = 1; i <= 3; i++) {
+        if (isPaid('rush')) {
+          h += '<a class="rush-item" href="#/practice/rush' + i + '"><span class="rush-ico">📄</span><span class="rush-name">冲刺卷 ' + names[i - 1] + '</span><span class="rush-go">开始 →</span></a>';
+        } else {
+          h += '<a class="rush-item locked" data-act="buyrush"><span class="rush-ico">🔒</span><span class="rush-name">冲刺卷 ' + names[i - 1] + '</span><span class="rush-go">' + PRICE_RUSH + ' 解锁全部3卷</span></a>';
+        }
+      }
+      h += '</div>';
+      return h;
+    }
+
+    /** 购买弹窗：收款码占位 + 兑换码输入（静态站免后端方案） */
+    function payFor(product) {
+      closePay();
+      var isRush = product === 'rush';
+      var d = document.createElement('div');
+      d.id = 'paymask';
+      d.innerHTML = '<div class="pay-card" data-product="' + product + '">' +
+        '<button class="pay-x" data-payact="close">✕</button>' +
+        '<div class="pay-title">' + (isRush ? '🔥 考前冲刺卷（3套）' : '🖨️ 我的错题册 PDF') + '</div>' +
+        '<div class="pay-price">' + (isRush ? PRICE_RUSH : PRICE_PDF) + '</div>' +
+        '<ul class="pay-list">' + (isRush ?
+          '<li>3 套高频考点卷，每卷 20 题</li><li>每题带解析与考点标注</li><li>一次解锁，永久有效</li>' :
+          '<li>按你的错题本实时生成</li><li>题目 + 答案 + 解析，打印店直接印</li><li>手机 / 电脑均可保存 PDF</li>') + '</ul>' +
+        '<div class="pay-qr"><img src="buy-qr.png" alt="收款码">' +
+          '<p class="muted">扫码支付 → 向客服索取兑换码</p></div>' +
+        '<input id="paycode" class="pay-input" placeholder="输入兑换码，例如 RUSH-7HK2QM" />' +
+        '<button class="btn btn-primary btn-block" data-payact="apply">解 锁</button>' +
+        '<p class="pay-err" id="payerr"></p>' +
+        '</div>';
+      document.body.appendChild(d);
+    }
+    function closePay() {
+      var m = document.getElementById('paymask');
+      if (m) m.remove();
+    }
+    function applyPay() {
+      var card = document.querySelector('.pay-card');
+      var input = document.getElementById('paycode');
+      var err = document.getElementById('payerr');
+      if (!card || !input) return;
+      if (applyCode(input.value)) {
+        closePay();
+        petSay('✅ 解锁成功，马上开始吧～');
+        route();
+      } else if (err) {
+        err.textContent = '兑换码无效，请检查后重试';
+      }
+    }
+
     /** 弱点诊断卡：错误最多的分类 + 易错点特训入口 */
-    function weakCardHTML() {
-      var weak = weakCats();
+    function weakCardHTML() {      var weak = weakCats();
       var h = '<div class="card weak-card"><div class="sec-inline">🩺 易错点诊断</div>';
       if (!weak.length) {
         h += '<p class="muted" style="font-size:12.5px;line-height:1.7;">先刷 10 题以上，这里会生成你的<b>弱点分类画像</b>，并为你组一套"易错点特训"卷。</p>';
@@ -1387,6 +1555,7 @@
         rankCardHTML() +
         tasksCardHTML() +
         weakCardHTML() +
+        rushCardHTML() +
         '<div class="entries">' +
           tile('#/practice/seq', '📖', '顺序刷题', '按题库顺序逐题练') +
           tile('#/practice/weak', '🎯', '易错点特训', '弱点分类强化训练', wrongIds.length) +
@@ -1822,6 +1991,13 @@
         var prMode = isFav ? 'fav' : 'wrong';
         html += '<div class="view"><a class="btn btn-primary btn-block" href="#/practice/' + prMode + '">' +
           '▶ 重练本组（' + list.length + ' 题）</a></div>';
+        if (!isFav && list.length >= 20) {
+          html += '<div class="view" style="margin-top:10px;">' +
+            (isPaid('pdf')
+              ? '<a class="btn btn-ghost btn-block" href="#/print">🖨️ 生成《我的错题册》PDF（' + list.length + ' 题）</a>'
+              : '<button class="btn btn-ghost btn-block" data-act="buypdf">🖨️ 导出《我的错题册》PDF ' + PRICE_PDF + '</button>') +
+            '</div>';
+        }
         html += list.map(function (q) {
           return '<div class="bk-item">' +
             '<div class="q-meta">' +
@@ -1927,6 +2103,9 @@
             renderPractice();
           }
           break;
+        case 'buyrush': payFor('rush'); break;
+        case 'buypdf':  payFor('pdf'); break;
+        case 'doprint': window.print(); break;
         case 'restart':
           if (session) { session = buildSession(session.mode); renderPractice(); }
           break;
@@ -2264,6 +2443,15 @@
       renderTutorial();
       petPrevWrong = wrongIds.length; // 引导期间不报"新增错题"
     }
+    // 购买弹窗（#paymask 在 #app 之外，单独委托）
+    document.addEventListener('click', function (e) {
+      if (e.target.id === 'paymask') { closePay(); return; }
+      var a = e.target.closest('[data-payact]');
+      if (!a) return;
+      var act = a.getAttribute('data-payact');
+      if (act === 'close') closePay();
+      else if (act === 'apply') applyPay();
+    });
   })();
   </script>
   <script>
