@@ -817,7 +817,10 @@
       } else if (mode === 'weak') {
         pool = weakPool().slice(0, SESSION_CAP);
       } else if (mode === 'lv') {
-        pool = lvPool(getRank().lv).slice(0, SESSION_CAP); // 当前段位题池：按难度从低到高
+        // 当前段位题池：按难度从低到高；断点续刷——优先没答过的题
+        pool = lvPool(getRank().lv);
+        var un = pool.filter(function (q) { return progress.doneId.indexOf(q.id) < 0; });
+        pool = (un.length ? un : pool).slice(0, SESSION_CAP);
       } else { // fav
         pool = favIds.map(function (id) { return qById[id]; }).filter(Boolean).slice(0, SESSION_CAP);
       }
