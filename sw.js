@@ -1,5 +1,5 @@
-// sw.js 鈥?绂荤嚎缂撳瓨锛堥鐩簲鐢ㄩ浂澶栭儴渚濊禆锛岀紦瀛橀椤典笌鍥炬爣鍗冲彲鍏ㄧ绾匡級
-const CACHE = 'wrh5-v12';
+// sw.js — 离线缓存（题目应用零外部依赖，缓存首页与图标即可全离线）
+const CACHE = 'wrh5-v13';
 const ASSETS = ['./', './index.html', './data.js', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -13,7 +13,8 @@ self.addEventListener('activate', e => {
   );
 });
 
-// 缂撳瓨浼樺厛锛屽洖婧愬悗鏇存柊缂撳瓨锛堥鐩暟鎹湰鍦版墦鍖咃紝鏇存柊闈犵増鏈彿鍗嘋ACHE锛?self.addEventListener('fetch', e => {
+// 缓存优先，回源后更新缓存（题目数据本地打包，更新靠版本号升CACHE）
+self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
     caches.match(e.request).then(hit => {
