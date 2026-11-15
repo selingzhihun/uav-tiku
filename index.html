@@ -1498,6 +1498,9 @@
       var h = (location.hash || '').replace(/^#\/?/, '');
       var parts = h.split('/');
       var view = parts[0] || '';
+      // 路由切换时清掉遗留的成绩海报弹层
+      var staleOv = document.getElementById('poster-close');
+      if (staleOv) staleOv.parentElement.remove();
       // 离开模拟考页面即丢弃考试会话（含未交卷的作答与倒计时）
       if (view !== 'exam' && view !== 'lvexam') { stopExamTimer(); exam = null; }
       window.scrollTo(0, 0);
@@ -2413,11 +2416,11 @@
           // 分数大圆
           var cc = W / 2, ccy = cardY + 180;
           cx.beginPath(); cx.arc(cc, ccy, 130, 0, 7);
-          cx.fillStyle = r.score >= 60 ? '#E8F8DE' : '#FEE2E2'; cx.fill();
-          cx.lineWidth = 10; cx.strokeStyle = r.score >= 60 ? '#58CC02' : '#EF4444'; cx.stroke();
-          cx.fillStyle = r.score >= 60 ? '#3E9A02' : '#DC2626';
+          cx.fillStyle = pr.score >= 60 ? '#E8F8DE' : '#FEE2E2'; cx.fill();
+          cx.lineWidth = 10; cx.strokeStyle = pr.score >= 60 ? '#58CC02' : '#EF4444'; cx.stroke();
+          cx.fillStyle = pr.score >= 60 ? '#3E9A02' : '#DC2626';
           cx.font = '900 96px "PingFang SC","Microsoft YaHei",sans-serif';
-          cx.fillText(String(r.score), cc, ccy + 20);
+          cx.fillText(String(pr.score), cc, ccy + 20);
           cx.font = '600 30px "PingFang SC","Microsoft YaHei",sans-serif';
           cx.fillStyle = '#64748B';
           cx.fillText('得分', cc, ccy + 66);
@@ -2441,7 +2444,7 @@
           // 底部文案
           cx.textAlign = 'center';
           cx.fillStyle = '#fff'; cx.font = '800 34px "PingFang SC","Microsoft YaHei",sans-serif';
-          cx.fillText(r.score >= 60 ? '逢考必过，稳了！💪' : '错题已收录，再接再厉！🔥', W / 2, 830);
+          cx.fillText(pr.score >= 60 ? '逢考必过，稳了！💪' : '错题已收录，再接再厉！🔥', W / 2, 830);
           cx.font = '600 28px "PingFang SC","Microsoft YaHei",sans-serif';
           cx.fillStyle = 'rgba(255,255,255,.9)';
           cx.fillText('1422 题免费刷 · 模拟考 · 错题本 · 易错点特训', W / 2, 886);
