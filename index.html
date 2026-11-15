@@ -14,10 +14,11 @@
   <meta name="apple-mobile-web-app-title" content="题库宝典">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <meta name="description" content="CAAC无人机理论考试1428题免费在线刷题：顺序/随机练习、多选专练、20分钟模拟考、错题本、收藏，全离线可用。">
+  <meta name="description" content="CAAC无人机理论考试1422题免费在线刷题：顺序/随机练习、多选专练、30题模拟考、错题本、易错点特训、每日打卡，全离线可用。">
+  <meta name="keywords" content="无人机题库,CAAC,无人机执照,无人机理论考试,无人机驾驶员,刷题,模拟考,题库">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="无人机题库宝典 - 1428题免费刷">
-  <meta property="og:description" content="CAAC理论考试1428题免费在线刷：模拟考+错题本，手机直接用。">
+  <meta property="og:title" content="无人机题库宝典 - 1422题免费刷">
+  <meta property="og:description" content="CAAC理论考试1422题免费在线刷：模拟考+错题本，手机直接用。">
 
   <style>
     /* ================= 全局与布局 ================= */
@@ -337,6 +338,23 @@
       font-weight: 700; display: flex; align-items: center; justify-content: center;
     }
     body.tabbed .view { padding-bottom: 96px; }
+
+    /* ---------- 优化：hero大CTA / 备份提醒条 ---------- */
+    .hero-cta {
+      display: block; width: calc(100% - 48px); margin: 14px auto 0;
+      background: #fff; color: #46A302; text-align: center;
+      font-size: 16.5px; font-weight: 800; text-decoration: none;
+      padding: 13px 0; border-radius: 999px;
+      box-shadow: 0 4px 0 rgba(20, 83, 45, .35);
+    }
+    .hero-cta:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(20, 83, 45, .35); }
+    .bk-bar {
+      background: #FFFBEB; border: 2px solid #FDE68A; border-radius: 14px;
+      padding: 10px 14px; margin: 14px 16px 0; font-size: 12.5px; color: #92400E;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .bk-bar a { color: #B45309; font-weight: 800; }
+    .bk-x { margin-left: auto; cursor: pointer; color: #B45309; font-weight: 800; padding: 0 4px; }
 
     /* ---------- 游戏化：XP / 等级 / 任务 / 连击 / 结算 / 弱点 ---------- */
     .lvl-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
@@ -1544,7 +1562,11 @@
           '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
             '<div class="lvl-bar"><i style="width:' + Math.round(lv.cur / lv.need * 100) + '%"></i></div>' +
             '<span class="lvl-num">' + lv.cur + '/' + lv.need + ' XP</span></div>' +
+          '<a class="hero-cta" href="#/practice/seq">' + (done > 0 ? '▶ 继续刷题 · 已刷 ' + done + ' 题' : '▶ 开始刷题') + '</a>' +
         '</div>' +
+        (done >= 100 && done >= (parseInt(localStorage.getItem('wrh5_bkhint') || '0', 10) + 100)
+          ? '<div class="bk-bar">💾 你已刷完 <b>' + done + '</b> 题，建议 <a href="#/me">导出备份</a> 防止清缓存丢失 <span class="bk-x" data-act="bkdismiss">✕</span></div>'
+          : '') +
         '<div class="card stat-card">' +
           '<div class="stat-row">' +
             stat(QBANK.length, '总题数') + stat(singles, '单选题') + stat(multis, '多选题') +
@@ -2133,6 +2155,10 @@
         case 'lvretry':     newLvExam(); renderExamIntro(); break;
 
         /* --- 错题本 / 收藏 --- */
+        case 'bkdismiss': // 备份提醒：按每100题一档折叠
+          try { localStorage.setItem('wrh5_bkhint', String(Math.floor(progress.doneId.length / 100) * 100)); } catch (e) {}
+          route();
+          break;
         case 'share': { // 一键分享：优先系统分享，降级复制链接
           var shareData = { title: '无人机题库宝典', text: '1422道CAAC无人机理论题免费刷，还有解析和模拟考！', url: location.origin + location.pathname };
           function shareFallback() {
