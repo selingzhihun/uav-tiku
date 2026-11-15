@@ -356,6 +356,23 @@
     .bk-bar a { color: #B45309; font-weight: 800; }
     .bk-x { margin-left: auto; cursor: pointer; color: #B45309; font-weight: 800; padding: 0 4px; }
 
+    /* ---------- v2：相似题 / 章节热力 / 考试倒计时 ---------- */
+    .sim-row { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 12px; padding: 10px 14px; margin-top: 8px; font-size: 13.5px; color: #1D4ED8; display: flex; align-items: center; gap: 8px; }
+    .sim-link { color: #2563EB; font-weight: 800; }
+    .cat-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed #EEF2F7; font-size: 12.5px; }
+    .cat-row:last-child { border-bottom: none; }
+    .cat-name { width: 92px; color: var(--muted); font-weight: 600; flex: none; }
+    .cat-bar { flex: 1; height: 10px; border-radius: 5px; background: #EEF2F7; overflow: hidden; }
+    .cat-bar i { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, #F87171, #FBBF24, #4ADE80); }
+    .cat-pct { width: 42px; text-align: right; color: #334155; font-weight: 700; flex: none; }
+    .cat-btn { flex: none; font-size: 11.5px; font-weight: 800; color: #2563EB; background: #EFF6FF; border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+    .examdate-row { display: flex; align-items: center; gap: 12px; }
+    .examdate-row input[type="date"] { border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px 10px; font-size: 14px; color: #334155; }
+    .examdate-days { font-weight: 800; color: #2563EB; }
+    .examdate-days.soon { color: #EA580C; }
+    .hero-exam-chip { margin-top: 8px; display: inline-block; background: rgba(255,255,255,.18); border-radius: 999px; padding: 4px 14px; font-size: 12.5px; font-weight: 700; color: #fff; }
+    .hero-exam-chip.soon { background: #FDE047; color: #7C2D12; }
+
     /* ---------- 游戏化：XP / 等级 / 任务 / 连击 / 结算 / 弱点 ---------- */
     .lvl-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
     .lvl-chip {
@@ -853,9 +870,105 @@
     var examTimer = null; // 模拟考倒计时句柄
 
     // 各刷题模式的标题
+    /* =====================================================================
+     * v2 优化：相似题推荐（三字组 Jaccard）/ 章节掌握度 / 考试倒计时
+     * ===================================================================== */
+    function triSet(str) {
+      str = String(str || '').replace(/[，。、；：？！""''（）《》\s,.:;?!"'()]/g, '');
+      var out = {};
+      for (var i = 0; i < str.length - 2; i++) out[str.slice(i, i + 3)] = 1;
+      return out;
+    }
+    var _triCache = {}, _triN = {};
+    function tris(qid) {
+      if (!_triCache[qid]) {
+        var q = qById[qid];
+        var t = q ? triSet(q.stem) : {};
+        _triCache[qid] = t;
+        _triN[qid] = Object.keys(t).length;
+      }
+      return _triCache[qid];
+    }
+    var _simCache = {};
+    /** 相似题：与目标题三字组 Jaccard ≥0.4，同分类优先，未刷过的优先 */
+    function similarOf(qid, n) {
+      n = n || 3;
+      qid = Number(qid);
+      if (_simCache[qid]) return _simCache[qid].slice(0, n);
+      var base = tris(qid), bq = qById[qid];
+      var bkeys = Object.keys(base), bn = bkeys.length;
+      if (!bn) { _simCache[qid] = []; return []; }
+      var scored = QBANK.map(function (q) {
+        if (q.id === qid) return null;
+        var t = tris(q.id), inter = 0;
+        for (var i = 0; i < bn; i++) if (t[bkeys[i]]) inter++;
+        var uni = bn + _triN[q.id] - inter;
+        return { id: q.id, sim: uni ? inter / uni : 0, bonus: (bq && q.cat === bq.cat ? 0.05 : 0) + (progress.doneId.indexOf(q.id) < 0 ? 0.02 : 0) };
+      }).filter(Boolean);
+      scored.sort(function (a, b) { return (b.sim + b.bonus) - (a.sim + a.bonus); });
+      var hits = scored.filter(function (x) { return x.sim >= 0.3; }).map(function (x) { return x.id; });
+      // 不足 n 道时用同分类未刷题补齐（保证入口始终有 3 道）
+      if (hits.length < n && bq) {
+        var have = {}; hits.forEach(function (i2) { have[i2] = 1; });
+        QBANK.forEach(function (q) {
+          if (hits.length >= n) return;
+          if (q.id !== qid && !have[q.id] && q.cat === bq.cat) { hits.push(q.id); have[q.id] = 1; }
+        });
+      }
+      _simCache[qid] = hits;
+      return _simCache[qid].slice(0, n);
+    }
+    var simQueue = [];   // 相似题特训队列（data-act simgo 写入）
+    var weakCatSel = ''; // 章节特训选中分类（个人主页热力图写入）
+    /** 章节掌握度：per-cat 已掌握/总数，弱章节排前 */
+    function catStats() {
+      var byCat = {};
+      QBANK.forEach(function (q) {
+        var c = q.cat || '未分类';
+        if (!byCat[c]) byCat[c] = { total: 0, mastered: 0 };
+        byCat[c].total++;
+        if (isMastered(q.id)) byCat[c].mastered++;
+      });
+      return byCat;
+    }
+    function catHeatHTML() {
+      var st = catStats();
+      var rows = Object.keys(st).map(function (c) {
+        var o = st[c];
+        return { cat: c, total: o.total, pct: o.total ? Math.round(o.mastered / o.total * 100) : 0 };
+      }).sort(function (a, b) { return a.pct - b.pct; });
+      return '<div class="card"><div class="me-sec-title">章节掌握度 <span class="me-lit">连对2次=已掌握</span></div>' +
+        rows.map(function (r) {
+          return '<div class="cat-row"><span class="cat-name">' + esc(r.cat) + '</span>' +
+            '<div class="cat-bar"><i style="width:' + r.pct + '%"></i></div>' +
+            '<span class="cat-pct">' + r.pct + '%</span>' +
+            '<span class="cat-btn" data-act="simcat" data-cat="' + esc(r.cat) + '">特训</span></div>';
+        }).join('') + '</div>';
+    }
+    var KEY_EXAMDATE = 'wrh5_examDate';
+    function examDaysLeft(d) {
+      var t = new Date(); t.setHours(0, 0, 0, 0);
+      var dt = new Date(String(d) + 'T00:00:00');
+      return Math.round((dt - t) / 86400000);
+    }
+    function examDateLabel(d) {
+      var n = examDaysLeft(d);
+      if (n > 0) return '距考试 ' + n + ' 天';
+      if (n === 0) return '今天考试！';
+      return '考试已过 ' + (-n) + ' 天';
+    }
+    function examChipHTML() {
+      var d = lsGet(KEY_EXAMDATE, '');
+      if (!d) return '';
+      var n = examDaysLeft(d);
+      if (n < 0) return '';
+      return '<div class="hero-exam-chip' + (n <= 14 ? ' soon' : '') + '">🎯 ' + examDateLabel(d) + '</div>';
+    }
+
     var MODE_TITLE = {
       seq: '顺序刷题', rand: '随机刷题', multi: '多选题专练',
       wrong: '错题本重练', fav: '收藏重练', weak: '易错点特训', lv: '等级挑战',
+      sim: '相似题特训', weakcat: '章节特训',
       rush1: '冲刺卷 · 一', rush2: '冲刺卷 · 二', rush3: '冲刺卷 · 三'
     };
 
@@ -936,6 +1049,15 @@
       } else if (mode === 'rush1' || mode === 'rush2' || mode === 'rush3') {
         // 冲刺卷：固定 20 题成卷，不受每轮 12 题上限约束
         pool = buildRushSet(parseInt(mode.slice(4), 10) - 1);
+      } else if (mode === 'sim') {
+        // 相似题特训：错题判定区进入，练 3 道相似题
+        pool = simQueue.map(function (id2) { return qById[id2]; }).filter(Boolean);
+        if (!pool.length) pool = shuffle(QBANK).slice(0, 3);
+      } else if (mode === 'weakcat') {
+        // 章节特训：指定分类的未掌握题优先，最多 20 题
+        var cpool = QBANK.filter(function (q) { return (q.cat || '未分类') === weakCatSel && !isMastered(q.id); });
+        if (!cpool.length) cpool = QBANK.filter(function (q) { return (q.cat || '未分类') === weakCatSel; });
+        pool = shuffle(cpool).slice(0, 20);
       } else { // fav
         pool = favIds.map(function (id) { return qById[id]; }).filter(Boolean).slice(0, SESSION_CAP);
       }
@@ -1248,6 +1370,8 @@
         meStat(s.streak + ' 天', '连续打卡') + meStat(s.examBest || '--', '模考最佳') +
         meStat(s.wrong, '待消灭错题') + meStat(s.fav, '收藏') +
         '</div></div>';
+      // 章节掌握度热力（弱→强 + 一键特训）
+      html += catHeatHTML();
       // 成就徽章
       html += '<div class="card"><div class="me-sec-title">成就徽章 <span class="me-lit">' + lit + '/' + badges.length + '</span></div><div class="badge-grid">';
       badges.forEach(function (b) {
@@ -1261,6 +1385,12 @@
         html += '<div class="cal-cell lv' + c.level + '" title="' + c.key + (c.count ? ' · 刷了 ' + c.count + ' 题' : '') + '"></div>';
       });
       html += '</div><div class="cal-legend">颜色越深 = 当天刷题越多</div></div>';
+      // 考试倒计时
+      var ed = lsGet(KEY_EXAMDATE, '');
+      html += '<div class="card"><div class="me-sec-title">考试倒计时</div>' +
+        '<div class="examdate-row"><input type="date" id="examDate" value="' + esc(ed) + '">' +
+        (ed && examDaysLeft(ed) >= 0 ? '<span class="examdate-days' + (examDaysLeft(ed) <= 14 ? ' soon' : '') + '">' + examDateLabel(ed) + '</span>' : '') +
+        '</div><div class="cal-legend">设置后首页显示倒计时，临近 14 天进入冲刺氛围</div></div>';
       // 账号与云同步
       html += accountSectionHTML();
       // 数据管理
@@ -1280,6 +1410,12 @@
       if (nick) nick.addEventListener('change', function () {
         profile.nick = nick.value.trim();
         lsSet(KEY_PROFILE, profile);
+        renderMe();
+      });
+      // 考试日期修改
+      var edin = document.getElementById('examDate');
+      if (edin) edin.addEventListener('change', function () {
+        lsSet(KEY_EXAMDATE, edin.value || '');
         renderMe();
       });
       // 头像 / 按钮（本页独立委托，避免干扰全局路由）
@@ -1557,6 +1693,7 @@
           '<div class="hero-title">🚁 无人机题库宝典</div>' +
           '<div class="hero-sub">CAAC 无人机理论考试 · 全离线刷题</div>' +
           '<div class="hero-chip">' + QBANK.length + ' 题免费刷 · ' + expN + ' 题带解析</div>' +
+          examChipHTML() +
           '<a class="hero-me" href="#/me" title="个人主页"><span class="hero-me-emoji">' + esc(profile.avatar || '🦁') + '</span><span class="hero-me-nick">' + (profile.nick ? esc(profile.nick) : '我的') + '</span></a>' +
           // 等级进度条（Duolingo 式）
           '<div class="lvl-row"><span class="lvl-chip">Lv.' + lv.lv + '</span>' +
@@ -1675,7 +1812,7 @@
       var picks = s.picks[q.id] || []; // 多选未判定前的已勾选字母
       var isFav = favIds.indexOf(q.id) >= 0;
       var pct = Math.round(((s.idx + 1) / s.queue.length) * 100);
-      var titleText = MODE_TITLE[s.mode];
+      var titleText = s.mode === 'weakcat' ? ('章节特训 · ' + (weakCatSel || '')) : MODE_TITLE[s.mode];
 
       var html = '<div class="topbar"><a class="back" href="#/">‹ 返回</a>' +
         '<div class="topbar-title">' + titleText + '</div>' +
@@ -1721,7 +1858,8 @@
             (s.combo >= 2 ? '<small class="combo-hot">🔥 连对 ' + s.combo + '</small>' : '') +
             '<span class="xp-pop">+10 XP</span></div>'
           : '<div class="judge-strip no">❌ 回答错误<small>你的答案：' + esc(judged.picks) +
-            ' · 正确答案：' + esc(q.answer) + '</small></div>';
+            ' · 正确答案：' + esc(q.answer) + '</small></div>' +
+            (similarOf(q.id, 3).length ? '<div class="sim-row">📎 这题容易混？<a class="sim-link" data-act="simgo" data-id="' + q.id + '">练 3 道相似题 →</a></div>' : '');
         if (q.exp) html += '<div class="exp-box">💡 解析：' + esc(q.exp) + '</div>';
       }
       html += '</div>';
@@ -2091,6 +2229,16 @@
 
       switch (act) {
         /* --- 刷题 --- */
+        case 'simgo': { // 相似题特训：错题判定区进入
+          var sq = similarOf(id || (session && session.queue[session.idx] ? session.queue[session.idx].id : 0), 3);
+          if (sq.length) { simQueue = sq; location.hash = '#/practice/sim'; }
+          break;
+        }
+        case 'simcat': { // 章节特训：个人主页热力图进入
+          weakCatSel = el.getAttribute('data-cat') || '';
+          location.hash = '#/practice/weakcat';
+          break;
+        }
         case 'opt': { // 点击选项
           if (!session) return;
           var q = session.queue[session.idx];
