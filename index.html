@@ -217,6 +217,20 @@
     .rv-line.bad { color: var(--red); }
     .rv-line.good { color: var(--green); }
     .bk-actions { display: flex; gap: 10px; margin-top: 10px; }
+
+    /* ---------- 题库搜索 ---------- */
+    .search-wrap { margin: 14px 16px 0; }
+    .search-input {
+      width: 100%; box-sizing: border-box; padding: 13px 18px;
+      border: 2px solid var(--line); border-radius: 14px;
+      font-size: 15px; font-weight: 600; color: var(--ink);
+      background: #fff; outline: none;
+    }
+    .search-input:focus { border-color: #58CC02; }
+    .search-count { font-size: 12px; color: var(--muted); margin: 12px 16px 0; font-weight: 600; }
+    mark.kw { background: #FEF08A; color: inherit; padding: 0 2px; border-radius: 3px; font-weight: 800; }
+    #search-results .bk-item { margin: 12px 16px 0; }
+    #search-results .empty { margin: 0 16px; }
     .bk-actions .btn { flex: 1; padding: 9px 0; font-size: 14px; border-radius: 10px; min-height: 38px; }
     .sec-title { margin: 18px 16px 12px; font-size: 16px; }
 
@@ -1494,6 +1508,7 @@
         case 'exam':    renderExamRoute(); break;
         case 'lvexam':  renderLvExamRoute(); break;
         case 'wrong':   renderBook(false); break;
+        case 'search':  renderSearch(); break;
         case 'fav':     renderBook(true); break;
         case 'print':   renderPrintView(); break;
         case 'me':      renderMe(); break;
@@ -1717,6 +1732,7 @@
         rushCardHTML() +
         '<div class="entries">' +
           tile('#/practice/seq', '📖', '顺序刷题', '按题库顺序逐题练') +
+          tile('#/search', '🔍', '题库搜索', '1422题关键词直查') +
           tile('#/practice/weak', '🎯', '易错点特训', '弱点分类强化训练', wrongIds.length) +
           tile('#/practice/rand', '🎲', '随机刷题', '乱序巩固记忆') +
           tile('#/practice/multi', '✅', '多选专练', '194道漏选克星') +
@@ -2123,6 +2139,7 @@
         }).join('');
       }
       html += '<div class="navbtns">' +
+        '<button class="btn btn-ghost" data-act="shareposter">📸 生成成绩海报</button>' +
         (exam.lv
           ? (r.verdict === 'pass'
             ? '<a class="btn btn-primary" href="#/practice/lv">挑战下一级 →</a>'
@@ -2132,6 +2149,63 @@
             '<a class="btn btn-ghost" href="#/">返回首页</a>') +
         '</div></div>';
       app.innerHTML = html;
+    }
+
+    /* ---------- 题库搜索 ---------- */
+    function searchHit(q, kw) {
+      if (q.stem.indexOf(kw) !== -1) return true;
+      for (var k in q) {
+        if ((k === 'A' || k === 'B' || k === 'C' || k === 'D') && String(q[k]).indexOf(kw) !== -1) return true;
+      }
+      return false;
+    }
+    function highlight(text, kw) {
+      var i = String(text).indexOf(kw);
+      if (i === -1) return esc(text);
+      return esc(text.slice(0, i)) + '<mark class="kw">' + esc(kw) + '</mark>' + esc(text.slice(i + kw.length));
+    }
+    function renderSearchRows(kw) {
+      var box = document.getElementById('search-results');
+      if (!box) return;
+      kw = kw.trim();
+      if (kw.length < 2) {
+        box.innerHTML = '<div class="empty"><div class="big">🔍</div><p>输入关键词搜索题干或选项<br>至少 2 个字</p></div>';
+        return;
+      }
+      var hits = QBANK.filter(function (q) { return searchHit(q, kw); }).slice(0, 60);
+      if (!hits.length) {
+        box.innerHTML = '<div class="empty"><div class="big">🤔</div><p>没有找到含"' + esc(kw) + '"的题目<br>换个关键词试试</p></div>';
+        return;
+      }
+      var nAll = QBANK.filter(function (q) { return searchHit(q, kw); }).length;
+      box.innerHTML = '<div class="search-count">找到 ' + nAll + ' 题' + (nAll > 60 ? '，显示前 60 题' : '') + '</div>' +
+        hits.map(function (q) {
+          var isFav = favIds.indexOf(q.id) !== -1;
+          return '<div class="bk-item">' +
+            '<div class="q-meta">' +
+              '<span class="chip chip-blue">' + (q.type === 'multi' ? '多选题' : '单选题') + '</span>' +
+              '<span class="chip">' + esc(q.cat || '未分类') + '</span>' +
+            '</div>' +
+            '<div class="bk-stem">' + highlight(q.stem, kw) + '</div>' +
+            '<div class="bk-ans">✔ 正确答案：' + esc(q.answer) + '</div>' +
+            (q.exp ? '<div class="exp-box">💡 解析：' + esc(q.exp) + '</div>' : '') +
+            '<div class="bk-actions">' +
+              '<button class="btn btn-ghost-red" data-act="searchfav" data-id="' + q.id + '">' + (isFav ? '★ 取消收藏' : '☆ 收藏') + '</button>' +
+            '</div></div>';
+        }).join('');
+    }
+    function renderSearch() {
+      app.innerHTML = topbar('题库搜索') +
+        '<div class="view">' +
+        '<div class="search-wrap"><input id="search-input" class="search-input" type="search" placeholder="搜题干 / 选项关键词，如：旋翼、法规…" autocomplete="off"></div>' +
+        '<div id="search-results"></div>' +
+        '</div>';
+      renderSearchRows('');
+      var inp = document.getElementById('search-input');
+      if (inp) {
+        inp.focus();
+        inp.addEventListener('input', function () { renderSearchRows(inp.value); });
+      }
     }
 
     /* ---------- 错题本 / 我的收藏 ---------- */
@@ -2303,6 +2377,99 @@
         case 'lvretry':     newLvExam(); renderExamIntro(); break;
 
         /* --- 错题本 / 收藏 --- */
+        case 'searchfav': // 搜索结果里的收藏切换：按 id 切换后仅刷新结果区
+          (function () {
+            var si = favIds.indexOf(id);
+            if (si >= 0) favIds.splice(si, 1); else favIds.push(id);
+            saveFav();
+          })();
+          renderSearchRows((document.getElementById('search-input') || {}).value || '');
+          break;
+        case 'shareposter': { // 成绩海报：canvas离屏绘制→弹层展示（长按/右键保存）
+          var pr = exam.result; if (!pr) break;
+          var W = 750, H = 1060;
+          var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+          var cx = cv.getContext('2d');
+          var g = cx.createLinearGradient(0, 0, 0, H);
+          g.addColorStop(0, '#58CC02'); g.addColorStop(1, '#3E9A02');
+          cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+          // 装饰圆
+          cx.fillStyle = 'rgba(255,255,255,.08)';
+          cx.beginPath(); cx.arc(W - 60, 120, 150, 0, 7); cx.fill();
+          cx.beginPath(); cx.arc(40, H - 180, 110, 0, 7); cx.fill();
+          // 标题
+          cx.fillStyle = '#fff'; cx.textAlign = 'center';
+          cx.font = '900 52px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillText('🚁 无人机题库宝典', W / 2, 130);
+          cx.font = '600 30px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillStyle = 'rgba(255,255,255,.92)';
+          cx.fillText('CAAC 理论 · 模拟考试成绩单', W / 2, 186);
+          // 白卡
+          var cardY = 250, cardH = 520;
+          cx.fillStyle = '#fff';
+          cx.beginPath();
+          if (cx.roundRect) { cx.roundRect(60, cardY, W - 120, cardH, 36); cx.fill(); }
+          else { cx.fillRect(60, cardY, W - 120, cardH); }
+          // 分数大圆
+          var cc = W / 2, ccy = cardY + 180;
+          cx.beginPath(); cx.arc(cc, ccy, 130, 0, 7);
+          cx.fillStyle = r.score >= 60 ? '#E8F8DE' : '#FEE2E2'; cx.fill();
+          cx.lineWidth = 10; cx.strokeStyle = r.score >= 60 ? '#58CC02' : '#EF4444'; cx.stroke();
+          cx.fillStyle = r.score >= 60 ? '#3E9A02' : '#DC2626';
+          cx.font = '900 96px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillText(String(r.score), cc, ccy + 20);
+          cx.font = '600 30px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillStyle = '#64748B';
+          cx.fillText('得分', cc, ccy + 66);
+          // 三项统计
+          cx.font = '700 34px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillStyle = '#1E293B';
+          var stats3 = [
+            ['正确率', Math.round(pr.correct / pr.total * 100) + '%'],
+            ['答对题数', pr.correct + ' / ' + pr.total],
+            ['用时', fmtTime(pr.used)]
+          ];
+          stats3.forEach(function (s2, i2) {
+            var y2 = cardY + 380 + i2 * 44;
+            cx.textAlign = 'left';
+            cx.fillStyle = '#94A3B8'; cx.font = '600 30px "PingFang SC","Microsoft YaHei",sans-serif';
+            cx.fillText(s2[0], 130, y2);
+            cx.textAlign = 'right';
+            cx.fillStyle = '#1E293B'; cx.font = '800 32px "PingFang SC","Microsoft YaHei",sans-serif';
+            cx.fillText(String(s2[1]), W - 130, y2);
+          });
+          // 底部文案
+          cx.textAlign = 'center';
+          cx.fillStyle = '#fff'; cx.font = '800 34px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillText(r.score >= 60 ? '逢考必过，稳了！💪' : '错题已收录，再接再厉！🔥', W / 2, 830);
+          cx.font = '600 28px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillStyle = 'rgba(255,255,255,.9)';
+          cx.fillText('1422 题免费刷 · 模拟考 · 错题本 · 易错点特训', W / 2, 886);
+          // 日期
+          var dstr = new Date();
+          cx.font = '500 24px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillStyle = 'rgba(255,255,255,.75)';
+          cx.fillText(dstr.getFullYear() + '.' + (dstr.getMonth() + 1) + '.' + dstr.getDate(), W / 2, 930);
+          // 域名胶囊
+          cx.fillStyle = 'rgba(255,255,255,.18)';
+          cx.beginPath();
+          if (cx.roundRect) { cx.roundRect(W / 2 - 265, 962, 530, 64, 32); cx.fill(); }
+          else { cx.fillRect(W / 2 - 265, 962, 530, 64); }
+          cx.fillStyle = '#fff'; cx.font = '800 30px "PingFang SC","Microsoft YaHei",sans-serif';
+          cx.fillText('selingzhihun.github.io/uav-tiku', W / 2, 1004);
+          // 弹层展示
+          var url2 = cv.toDataURL('image/png');
+          var ov = document.createElement('div');
+          ov.style.cssText = 'position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.72);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;';
+          ov.innerHTML = '<img src="' + url2 + '" style="width:min(88vw,400px);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.4);">' +
+            '<div style="margin-top:14px;color:#fff;font-size:14px;">长按图片保存 / 右键另存为</div>' +
+            '<button id="poster-close" style="margin-top:12px;background:#fff;border:none;border-radius:999px;padding:10px 36px;font-weight:800;color:#46A302;font-size:15px;">关 闭</button>';
+          document.body.appendChild(ov);
+          ov.addEventListener('click', function (ev3) {
+            if (ev3.target === ov || ev3.target.id === 'poster-close') ov.remove();
+          });
+          break;
+        }
         case 'bkdismiss': // 备份提醒：按每100题一档折叠
           try { localStorage.setItem('wrh5_bkhint', String(Math.floor(progress.doneId.length / 100) * 100)); } catch (e) {}
           route();
