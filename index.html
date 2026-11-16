@@ -294,14 +294,14 @@
     .me-stat b { display: block; font-size: 18px; color: #2563EB; }
     .me-stat span { font-size: 11px; color: var(--muted); }
     .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .badge {
+    .ach {
       text-align: center; background: #F8FAFC; border-radius: 12px;
       padding: 12px 4px; opacity: .4;
     }
-    .badge.on { opacity: 1; background: #FFF7E6; box-shadow: 0 2px 8px rgba(245,158,11,.15); }
-    .badge-ico { font-size: 24px; }
-    .badge-name { font-size: 12px; font-weight: 700; margin-top: 4px; }
-    .badge-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .ach.on { opacity: 1; background: #FFF7E6; box-shadow: 0 2px 8px rgba(245,158,11,.15); }
+    .ach-ico { font-size: 24px; }
+    .ach-name { font-size: 12px; font-weight: 700; margin-top: 4px; }
+    .ach-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
     .cal-cell { aspect-ratio: 1; border-radius: 4px; background: #F1F5F9; }
     .cal-cell.lv1 { background: #BFDBFE; }
@@ -658,7 +658,7 @@
     .tut-dot.on { background: var(--brand); }
     .tut-next { background: var(--brand); }
     .daily::before { background: var(--brand); }
-    .badge.on { background: #F0FFF8; }
+    .ach.on { background: #F0FFF8; }
   </style>
 </head>
 <body>
@@ -1429,8 +1429,8 @@
       // 成就徽章
       html += '<div class="card"><div class="me-sec-title">成就徽章 <span class="me-lit">' + lit + '/' + badges.length + '</span></div><div class="badge-grid">';
       badges.forEach(function (b) {
-        html += '<div class="badge' + (b.on ? ' on' : '') + '"><div class="badge-ico">' + b.icon + '</div>' +
-          '<div class="badge-name">' + b.name + '</div><div class="badge-desc">' + b.desc + '</div></div>';
+        html += '<div class="ach' + (b.on ? ' on' : '') + '"><div class="ach-ico">' + b.icon + '</div>' +
+          '<div class="ach-name">' + b.name + '</div><div class="ach-desc">' + b.desc + '</div></div>';
       });
       html += '</div></div>';
       // 学习日历
