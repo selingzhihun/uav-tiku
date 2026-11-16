@@ -1375,9 +1375,8 @@
     function accountSectionHTML() {
       if (!cloudReady()) {
         return '<div class="card"><div class="me-sec-title">账号与云同步</div>' +
-          '<div class="cloud-note">🔒 当前为<b>本地模式</b>：数据仅保存在这台设备，跨设备可用"导出/导入备份"迁移。<br>' +
-          '想开启注册登录 + 云端同步？按项目里的《云同步开通教程》注册 LeanCloud 免费版，' +
-          '把 AppID / AppKey 填进 <b>cloud-config.js</b>，刷新本页即可激活登录。</div></div>';
+          '<div class="cloud-note">📁 <b>本地模式</b>：数据保存在本机浏览器，跨设备用下方"导出/导入备份"一键迁移。<br>' +
+          '💡 账号云同步由<b>微信小程序版</b>提供：微信一键登录 + 自动云备份（小程序上架后即可使用）。</div></div>';
       }
       var sess = lsGet(KEY_SESSION, null);
       if (sess && sess.user) {
