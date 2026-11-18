@@ -674,6 +674,45 @@
     .celebrate-title { font-size: 20px; font-weight: 800; color: #16A34A; margin-top: 10px; }
     .celebrate-sub { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
     @keyframes celin { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    /* —— 岛屿航线 —— */
+    .isl-entry { display: block; text-align: center; margin-top: 10px; font-size: 12.5px;
+      color: #2563EB; text-decoration: none; font-weight: 600; }
+    .isl-head-main { font-size: 15px; color: var(--ink); }
+    .isl-head-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .isl-head-link { display: inline-block; margin-top: 10px; font-size: 12.5px; color: #2563EB;
+      text-decoration: none; font-weight: 600; }
+    .isl-row { display: flex; gap: 14px; padding: 0 4px; }
+    .isl-row.lock .isl-card { opacity: .62; }
+    .isl-node { width: 60px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+    .isl-dot { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 27px; background: linear-gradient(135deg, var(--c1), var(--c2)); color: #fff;
+      box-shadow: 0 4px 12px var(--c1); border: 3px solid #fff; flex-shrink: 0; }
+    .isl-row.cur .isl-dot { animation: islPulse 1.8s ease-in-out infinite; }
+    .isl-row.lock .isl-dot { background: linear-gradient(135deg, #CBD5E1, #94A3B8); box-shadow: none; filter: grayscale(.9); opacity: .8; }
+    @keyframes islPulse {
+      0%, 100% { box-shadow: 0 4px 12px var(--c1); }
+      50% { box-shadow: 0 4px 12px var(--c1), 0 0 0 10px rgba(148,163,184,.18); }
+    }
+    .isl-line { position: relative; flex: 1; width: 0; min-height: 26px; border-left: 3px dashed #CBD5E1; }
+    .isl-row.done .isl-line { border-left-color: var(--c1); border-left-style: solid; }
+    .isl-plane { position: absolute; left: -13px; top: 50%; margin-top: -11px; font-size: 18px;
+      animation: planeBob 2.2s ease-in-out infinite; }
+    @keyframes planeBob { 0%, 100% { transform: translateY(0) rotate(12deg); } 50% { transform: translateY(-5px) rotate(12deg); } }
+    .isl-card { flex: 1; background: #fff; border: 1.5px solid #E2E8F0; border-radius: 14px;
+      padding: 12px 14px; margin-bottom: 16px; }
+    .isl-row.cur .isl-card { border-color: var(--c1); box-shadow: 0 4px 14px rgba(148,163,184,.25); }
+    .isl-name { font-size: 14px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+    .isl-tag { font-size: 10.5px; font-weight: 600; color: #fff; white-space: nowrap; flex-shrink: 0; background: linear-gradient(135deg, var(--c1), var(--c2));
+      border-radius: 999px; padding: 2px 9px; }
+    .isl-row.lock .isl-tag { background: #CBD5E1; }
+    .isl-bar { height: 8px; border-radius: 4px; background: #EEF2F7; margin: 10px 0 6px; overflow: hidden; }
+    .isl-bar i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--c1), var(--c2));
+      transition: width .4s; }
+    .isl-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .isl-sub.ok { color: #16A34A; font-weight: 700; }
+    .isl-next { font-size: 12.5px; color: #B45309; background: #FFFBEB; border-radius: 10px;
+      padding: 8px 10px; margin-top: 8px; }
+    .isl-next b { color: #92400E; }
   </style>
 </head>
 <body>
@@ -682,7 +721,7 @@
   <!-- 宠物伙伴「小飞」：情绪价值 + 情境提醒（固定右下角，随视图显隐） -->
   <div id="pet" class="pet off" data-act="pet">
     <div class="pet-bubble" id="petBubble"></div>
-    <div class="pet-body">🚁</div>
+    <div class="pet-body">✈️</div>
   </div>
 
   <!-- 底部导航栏：首页 / 错题本 / 我的（刷题与考试页自动隐藏） -->
@@ -1151,6 +1190,14 @@
       { icon: '✈️',  name: '机长' },
       { icon: '👑',  name: '传奇教员' }
     ];
+    // 岛屿航线：每段位一座主题岛（c1/c2 渐变主色）
+    var ISLANDS = [
+      { c1: '#94A3B8', c2: '#64748B', tag: '雾隐岛' },
+      { c1: '#58CC02', c2: '#46A302', tag: '青草屿' },
+      { c1: '#3B82F6', c2: '#2563EB', tag: '远航港' },
+      { c1: '#8B5CF6', c2: '#7C3AED', tag: '星雾环礁' },
+      { c1: '#F59E0B', c2: '#D97706', tag: '黄金云端' }
+    ];
 
     /** 题目难度分（0~6，越高越难；仅用于分层排序） */
     function diffScore(q) {
@@ -1193,7 +1240,7 @@
       };
     }
 
-    var AVATARS = ['🦁','🐼','🦊','🐸','🐨','🦉','🐙','🦄','🐝','🐬','🚁','✈️'];
+    var AVATARS = ['🦁','🐼','🦊','🐸','🐨','🦉','🐙','🦄','🐝','🐬','✈️','✈️'];
 
     // 今日活跃 +1（供学习日历热力格）
     function bumpActivity() {
@@ -1584,6 +1631,7 @@
         case 'exam':    renderExamRoute(); break;
         case 'lvexam':  renderLvExamRoute(); break;
         case 'wrong':   renderBook(false); break;
+        case 'islands': renderIslands(); break;
         case 'cats':    renderCats(); break;
         case 'search':  renderSearch(); break;
         case 'fav':     renderBook(true); break;
@@ -1767,6 +1815,7 @@
         h += '<p class="muted" style="font-size:12px;margin-top:10px;">练满 ' + LV_EXAM_UNLOCK_PCT + '% 解锁晋级考试，还差 ' + ri.remain + ' 题 · 通过后晋级「' + esc((ri.next || {}).name || '') + '」</p>' +
           '<a class="btn btn-primary btn-block" href="#/practice/lv" style="margin-top:8px;">▶ 等级挑战（' + ri.pool.length + ' 题由易到难）</a>';
       }
+      h += '<a class="isl-entry" href="#/islands">🗺️ 查看完整岛屿航线 →</a>';
       h += '</div>';
       return h;
     }
@@ -1782,7 +1831,7 @@
       var lv = levelInfo();
       app.innerHTML =
         '<div class="hero">' +
-          '<div class="hero-title">🚁 无人机题库宝典</div>' +
+          '<div class="hero-title">✈️ 无人机题库宝典</div>' +
           '<div class="hero-sub">CAAC 无人机理论考试 · 全离线刷题</div>' +
           '<div class="hero-chip">' + QBANK.length + ' 题免费刷 · ' + expN + ' 题带解析</div>' +
           examChipHTML() +
@@ -1839,6 +1888,47 @@
             '<span class="crow-sub">' + r.done + '/' + r.total + ' 题 · 掌握 ' + r.pct + '%</span>' +
             '<span class="crow-go">›</span></a>';
         }).join('') + '</div>';
+    }
+
+    /* ---------- 岛屿航线：段位可视化，逐岛追逐 ---------- */
+    function renderIslands() {
+      var ri = rankInfo();
+      var rk = getRank();
+      var lv = levelInfo();
+      var rows = '';
+      for (var i = 0; i < LV_COUNT; i++) {
+        var no = i + 1;
+        var isl = ISLANDS[i];
+        var r2 = RANKS[i];
+        var state = no < ri.lv ? 'done' : (no === ri.lv ? 'cur' : 'lock');
+        var card = '';
+        if (state === 'done') {
+          card = '<div class="isl-sub ok">✓ 已征服 · 晋级考试通过</div>';
+        } else if (state === 'cur') {
+          var pool = lvPool(no);
+          var dn = pool.filter(function (q) { return progress.doneId.indexOf(q.id) !== -1; }).length;
+          var pct = pool.length ? Math.round(dn / pool.length * 100) : 0;
+          card = '<div class="isl-bar"><i style="width:' + pct + '%"></i></div>' +
+            '<div class="isl-sub">已练 <b>' + dn + '</b>/' + pool.length + ' 题（' + pct + '%）· 练满 ' + LV_EXAM_UNLOCK_PCT + '% 解锁晋级考试</div>';
+          if (ri.examUnlocked) {
+            card += '<a class="btn btn-primary btn-block" href="#/lvexam" style="margin-top:10px;">🎓 参加晋级考试 · ≥' + LV_PASS + '% 晋级下一站</a>';
+          } else {
+            card += '<div class="isl-next">✈️ 再练 <b>' + ri.remain + '</b> 题，飞往下一站</div>';
+          }
+        } else {
+          card = '<div class="isl-sub">🔒 通过上一站晋级考试后解锁</div>';
+        }
+        rows += '<div class="isl-row ' + state + '" style="--c1:' + isl.c1 + ';--c2:' + isl.c2 + '">' +
+          '<div class="isl-node"><div class="isl-dot">' + r2.icon + '</div>' +
+            (i < LV_COUNT - 1 ? '<div class="isl-line">' + (no === ri.lv ? '<span class="isl-plane">✈️</span>' : '') + '</div>' : '') + '</div>' +
+          '<div class="isl-card"><div class="isl-name">第' + no + '站 · ' + esc(r2.name) + '<span class="isl-tag">' + isl.tag + '</span></div>' + card + '</div></div>';
+      }
+      app.innerHTML = topbar('🗺️ 岛屿航线') +
+        '<div class="view"><div class="card isl-head">' +
+          '<div class="isl-head-main">' + ri.rank.icon + ' 当前停靠：<b>Lv.' + ri.lv + ' ' + esc(ri.rank.name) + '</b></div>' +
+          '<div class="isl-head-sub">XP Lv.' + lv.lv + '（' + lv.cur + '/' + lv.need + '）· 下一站：' + (ri.next ? ri.next.icon + ' ' + esc(ri.next.name) : '已是最高段位 👑') + '</div>' +
+          '<a class="isl-head-link" href="#/practice/lv">▶ 等级挑战 · 第 ' + ri.lv + ' 级题库由易到难</a>' +
+        '</div>' + rows + '</div>';
     }
 
     /* ---------- 每日一题 ---------- */
@@ -2517,7 +2607,7 @@
           // 标题
           cx.fillStyle = '#fff'; cx.textAlign = 'center';
           cx.font = '900 52px "PingFang SC","Microsoft YaHei",sans-serif';
-          cx.fillText('🚁 无人机题库宝典', W / 2, 130);
+          cx.fillText('✈️ 无人机题库宝典', W / 2, 130);
           cx.font = '600 30px "PingFang SC","Microsoft YaHei",sans-serif';
           cx.fillStyle = 'rgba(255,255,255,.92)';
           cx.fillText('CAAC 理论 · 模拟考试成绩单', W / 2, 186);
@@ -2725,7 +2815,7 @@
       if (ri && ri.examUnlocked) tips.push('晋级考试已解锁！考过就是「' + (ri.next ? ri.next.name : '') + '」了！');
       var c = weakCats();
       if (c.length) tips.push('你的弱点是 <b>' + esc(c[0].cat) + '</b>，要不要来一组特训？');
-      if (done === 0) tips.push('你好呀，我是小飞🚁 点「顺序刷题」开始你的第一题吧！');
+      if (done === 0) tips.push('你好呀，我是小飞✈️ 点「顺序刷题」开始你的第一题吧！');
       tips.push('已刷 <b>' + done + '</b> 题，每天进步一点点～');
       tips.push('连续刷题会有🔥连击加成，别停下来！');
       var msg = tips[petLineIdx % tips.length];
@@ -2853,7 +2943,7 @@
         var s = TUT_STEPS[step];
         mask.innerHTML =
           '<div class="tut-card">' +
-            '<div class="tut-ico">🚁</div>' +
+            '<div class="tut-ico">✈️</div>' +
             '<div class="tut-title">你好，我是小飞！</div>' +
             '<div class="tut-ico" style="font-size:34px">' + s.ico + '</div>' +
             '<div class="tut-title" style="margin-top:2px;font-size:15px">' + s.t + '</div>' +
