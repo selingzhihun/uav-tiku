@@ -659,6 +659,21 @@
     .tut-next { background: var(--brand); }
     .daily::before { background: var(--brand); }
     .ach.on { background: #F0FFF8; }
+    /* —— 章节专项选择页 + 清零庆祝 —— */
+    .crow { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #E2E8F0;
+      border-radius: 14px; padding: 15px 16px; margin-bottom: 10px; text-decoration: none; }
+    .crow:active { background: #F8FAFC; }
+    .crow-name { font-weight: 700; font-size: 14.5px; color: var(--ink); flex: 1; }
+    .crow-sub { font-size: 11.5px; color: var(--muted); }
+    .crow-go { font-size: 18px; color: #CBD5E1; }
+    .celebrate { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(15, 23, 42, .45); z-index: 300; pointer-events: none; }
+    .celebrate-in { background: #fff; border-radius: 20px; padding: 30px 40px; text-align: center;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, .35); animation: celin .45s cubic-bezier(.2, 1.4, .4, 1); }
+    .celebrate-emoji { font-size: 52px; line-height: 1; }
+    .celebrate-title { font-size: 20px; font-weight: 800; color: #16A34A; margin-top: 10px; }
+    .celebrate-sub { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+    @keyframes celin { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   </style>
 </head>
 <body>
@@ -935,6 +950,7 @@
     }
     var simQueue = [];   // 相似题特训队列（data-act simgo 写入）
     var weakCatSel = ''; // 章节特训选中分类（个人主页热力图写入）
+    var catSel = '';     // 章节专项选中分类（#/cats 选择页写入）
     /** 章节掌握度：per-cat 已掌握/总数，弱章节排前 */
     function catStats() {
       var byCat = {};
@@ -983,7 +999,7 @@
     var MODE_TITLE = {
       seq: '顺序刷题', rand: '随机刷题', multi: '多选题专练',
       wrong: '错题本重练', fav: '收藏重练', weak: '易错点特训', lv: '等级挑战',
-      sim: '相似题特训', weakcat: '章节特训',
+      sim: '相似题特训', weakcat: '章节特训', cat: '章节专项',
       rush1: '冲刺卷 · 一', rush2: '冲刺卷 · 二', rush3: '冲刺卷 · 三'
     };
 
@@ -1068,6 +1084,12 @@
         // 相似题特训：错题判定区进入，练 3 道相似题
         pool = simQueue.map(function (id2) { return qById[id2]; }).filter(Boolean);
         if (!pool.length) pool = shuffle(QBANK).slice(0, 3);
+      } else if (mode === 'cat') {
+        // 章节专项：整章系统过一遍（id 顺序 + 断点续刷），不受 12 题上限约束
+        pool = QBANK.filter(function (q) { return (q.cat || '未分类') === catSel; })
+          .sort(function (a, b) { return a.id - b.id; });
+        var catUn = pool.filter(function (q) { return progress.doneId.indexOf(q.id) < 0; });
+        pool = (catUn.length ? catUn : pool);
       } else if (mode === 'weakcat') {
         // 章节特训：指定分类的未掌握题优先，最多 20 题
         var cpool = QBANK.filter(function (q) { return (q.cat || '未分类') === weakCatSel && !isMastered(q.id); });
@@ -1090,9 +1112,9 @@
       if (right) progress.correct++;
       var wi = wrongIds.indexOf(q.id);
       if (right) {
-        if (wi >= 0) { wrongIds.splice(wi, 1); saveWrong(); }
+        if (wi >= 0) { wrongIds.splice(wi, 1); saveWrong(); if (!wrongIds.length) celebrateClear(); }
       } else if (wi < 0) {
-        wrongIds.push(q.id); saveWrong();
+        wrongIds.push(q.id); saveWrong(); clearedCelebrated = false;
       }
       saveProgress();
       bumpActivity(); // 学习日历：记录今日活跃
@@ -1562,6 +1584,7 @@
         case 'exam':    renderExamRoute(); break;
         case 'lvexam':  renderLvExamRoute(); break;
         case 'wrong':   renderBook(false); break;
+        case 'cats':    renderCats(); break;
         case 'search':  renderSearch(); break;
         case 'fav':     renderBook(true); break;
         case 'print':   renderPrintView(); break;
@@ -1787,6 +1810,7 @@
         '<div class="entries">' +
           tile('#/practice/seq', '📖', '顺序刷题', '按题库顺序逐题练') +
           tile('#/search', '🔍', '题库搜索', '1422题关键词直查') +
+          tile('#/cats', '🗂️', '章节专项', '8大章节逐章攻克') +
           tile('#/practice/weak', '🎯', '易错点特训', '弱点分类强化训练', wrongIds.length) +
           tile('#/practice/rand', '🎲', '随机刷题', '乱序巩固记忆') +
           tile('#/practice/multi', '✅', '多选专练', '194道漏选克星') +
@@ -1796,6 +1820,25 @@
         '</div>' +
         '<a class="btn btn-ghost btn-block" style="margin-top:18px;" data-act="share" href="javascript:void(0)">📣 分享给朋友，一起免费刷</a>' +
         '<p class="footer-note">题库仅供学习参考，非官方题库</p>';
+    }
+
+    /* ---------- 章节专项：选章节 → 整章系统刷 ---------- */
+    function renderCats() {
+      var st = catStats();
+      var rows = Object.keys(st).map(function (c) {
+        var o = st[c];
+        var pool = QBANK.filter(function (q) { return (q.cat || '未分类') === c; });
+        var doneN = pool.filter(function (q) { return progress.doneId.indexOf(q.id) >= 0; }).length;
+        return { cat: c, total: o.total, done: doneN, pct: o.total ? Math.round(o.mastered / o.total * 100) : 0 };
+      }).sort(function (a, b) { return b.total - a.total; });
+      app.innerHTML = topbar('章节专项') +
+        '<div class="view"><div class="card" style="padding:14px 16px;margin-bottom:14px;">📖 点开任意章节，系统刷完整章（自动优先没刷过的题）</div>' +
+        rows.map(function (r) {
+          return '<a class="crow" href="javascript:void(0)" data-act="catgo" data-cat="' + esc(r.cat) + '">' +
+            '<span class="crow-name">' + esc(r.cat) + '</span>' +
+            '<span class="crow-sub">' + r.done + '/' + r.total + ' 题 · 掌握 ' + r.pct + '%</span>' +
+            '<span class="crow-go">›</span></a>';
+        }).join('') + '</div>';
     }
 
     /* ---------- 每日一题 ---------- */
@@ -1861,7 +1904,7 @@
       if (!MODE_TITLE[mode]) mode = 'seq';
       // 错题本/收藏重练：每次进入都按最新列表重建；
       // 常规模式：中途退出再进入可沿用未完成的会话
-      if (!session || session.mode !== mode || mode === 'wrong' || mode === 'fav') {
+      if (!session || session.mode !== mode || mode === 'wrong' || mode === 'fav' || mode === 'cat') {
         session = buildSession(mode);
       }
       if (!session.queue.length) {
@@ -1882,7 +1925,8 @@
       var picks = s.picks[q.id] || []; // 多选未判定前的已勾选字母
       var isFav = favIds.indexOf(q.id) >= 0;
       var pct = Math.round(((s.idx + 1) / s.queue.length) * 100);
-      var titleText = s.mode === 'weakcat' ? ('章节特训 · ' + (weakCatSel || '')) : MODE_TITLE[s.mode];
+      var titleText = s.mode === 'weakcat' ? ('章节特训 · ' + (weakCatSel || '')) :
+                      s.mode === 'cat' ? ('章节专项 · ' + (catSel || '')) : MODE_TITLE[s.mode];
 
       var html = '<div class="topbar"><a class="back" href="#/">‹ 返回</a>' +
         '<div class="topbar-title">' + titleText + '</div>' +
@@ -2342,6 +2386,20 @@
       renderPractice();
     }
 
+    /* 错题清零庆祝：全屏 🎉 横幅 2.6s（同一轮只庆祝一次，再次答错复位） */
+    var clearedCelebrated = false;
+    function celebrateClear() {
+      if (clearedCelebrated) return;
+      clearedCelebrated = true;
+      var ov = document.createElement('div');
+      ov.className = 'celebrate';
+      ov.innerHTML = '<div class="celebrate-in"><div class="celebrate-emoji">🎉</div>' +
+        '<div class="celebrate-title">错题清零！</div>' +
+        '<div class="celebrate-sub">错题本已空，太棒了，继续保持 💪</div></div>';
+      document.body.appendChild(ov);
+      setTimeout(function () { if (ov.parentElement) ov.parentElement.removeChild(ov); }, 2600);
+    }
+
     /** 从列表（错题/收藏）中移除一项并刷新当前视图 */
     function removeId(arr, id, save, rerender) {
       var i = arr.indexOf(id);
@@ -2365,6 +2423,11 @@
         case 'simcat': { // 章节特训：个人主页热力图进入
           weakCatSel = el.getAttribute('data-cat') || '';
           location.hash = '#/practice/weakcat';
+          break;
+        }
+        case 'catgo': { // 章节专项：#/cats 选择页进入
+          catSel = el.getAttribute('data-cat') || '';
+          location.hash = '#/practice/cat';
           break;
         }
         case 'opt': { // 点击选项
@@ -2545,7 +2608,10 @@
           break;
         }
         case 'delwrong':
-          removeId(wrongIds, id, saveWrong, function () { renderBook(false); syncTabbar('wrong'); });
+          removeId(wrongIds, id, saveWrong, function () {
+            renderBook(false); syncTabbar('wrong');
+            if (!wrongIds.length) celebrateClear();
+          });
           break;
         case 'delfav':
           removeId(favIds, id, saveFav, function () { renderBook(true); syncTabbar('fav'); });
