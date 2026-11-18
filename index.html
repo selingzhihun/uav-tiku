@@ -695,7 +695,10 @@
     }
     .isl-line { position: relative; flex: 1; width: 0; min-height: 26px; border-left: 3px dashed #CBD5E1; }
     .isl-row.done .isl-line { border-left-color: var(--c1); border-left-style: solid; }
-    .isl-plane { position: absolute; left: -13px; top: 50%; margin-top: -11px; font-size: 18px;
+    .isl-plane { position: absolute; left: 50%; margin-left: -17px; top: 50%; margin-top: -17px;
+      width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 2px solid #FFD8A8;
+      display: flex; align-items: center; justify-content: center; font-size: 19px;
+      box-shadow: 0 3px 10px rgba(234, 88, 12, .35);
       animation: planeBob 2.2s ease-in-out infinite; }
     @keyframes planeBob { 0%, 100% { transform: translateY(0) rotate(12deg); } 50% { transform: translateY(-5px) rotate(12deg); } }
     .isl-card { flex: 1; background: #fff; border: 1.5px solid #E2E8F0; border-radius: 14px;
@@ -710,9 +713,17 @@
       transition: width .4s; }
     .isl-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .isl-sub.ok { color: #16A34A; font-weight: 700; }
-    .isl-next { font-size: 12.5px; color: #B45309; background: #FFFBEB; border-radius: 10px;
-      padding: 8px 10px; margin-top: 8px; }
-    .isl-next b { color: #92400E; }
+    .isl-next { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #B45309;
+      background: #FFFBEB; border: 1.5px dashed #FCD34D; border-radius: 10px;
+      padding: 9px 12px; margin-top: 8px; }
+    .isl-next b { color: #92400E; font-size: 15px; }
+    .isl-next-ico { font-size: 20px; flex-shrink: 0; }
+    .isl-notice { display: flex; align-items: center; gap: 10px; }
+    .isl-ico-badge { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; }
+    .isl-ico-badge.done { background: #DCFCE7; color: #16A34A; border: 2px solid #86EFAC; font-size: 22px; }
+    .isl-ico-badge.lock { background: #F1F5F9; border: 2px solid #CBD5E1; filter: none; }
+    .isl-row.lock .isl-notice .isl-sub { font-weight: 600; }
   </style>
 </head>
 <body>
@@ -1903,7 +1914,7 @@
         var state = no < ri.lv ? 'done' : (no === ri.lv ? 'cur' : 'lock');
         var card = '';
         if (state === 'done') {
-          card = '<div class="isl-sub ok">✓ 已征服 · 晋级考试通过</div>';
+          card = '<div class="isl-notice"><span class="isl-ico-badge done">✓</span><span class="isl-sub ok">已征服 · 晋级考试通过</span></div>';
         } else if (state === 'cur') {
           var pool = lvPool(no);
           var dn = pool.filter(function (q) { return progress.doneId.indexOf(q.id) !== -1; }).length;
@@ -1913,10 +1924,10 @@
           if (ri.examUnlocked) {
             card += '<a class="btn btn-primary btn-block" href="#/lvexam" style="margin-top:10px;">🎓 参加晋级考试 · ≥' + LV_PASS + '% 晋级下一站</a>';
           } else {
-            card += '<div class="isl-next">✈️ 再练 <b>' + ri.remain + '</b> 题，飞往下一站</div>';
+            card += '<div class="isl-next"><span class="isl-next-ico">✈️</span><span>再练 <b>' + ri.remain + '</b> 题，飞往下一站</span></div>';
           }
         } else {
-          card = '<div class="isl-sub">🔒 通过上一站晋级考试后解锁</div>';
+          card = '<div class="isl-notice"><span class="isl-ico-badge lock">🔒</span><span class="isl-sub">通过上一站晋级考试后解锁</span></div>';
         }
         rows += '<div class="isl-row ' + state + '" style="--c1:' + isl.c1 + ';--c2:' + isl.c2 + '">' +
           '<div class="isl-node"><div class="isl-dot">' + r2.icon + '</div>' +
